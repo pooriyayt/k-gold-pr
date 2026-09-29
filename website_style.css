@@ -1,0 +1,2040 @@
+/* ============================================================ */
+/* KEYGOLD APPLE / HYPEROS LUXURY OBSIDIAN & LIGHT THEME       */
+/* ============================================================ */
+
+/* Official Apple SF Pro Arabic Font Family */
+@font-face {
+    font-family: 'SF Pro Arabic';
+    src: url('/fonts/SFArabic-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'SF Pro Arabic';
+    src: url('/fonts/SF-Arabic-500.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'SF Pro Arabic';
+    src: url('/fonts/SF-Arabic-600.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'SF Pro Arabic';
+    src: url('/fonts/SF-Arabic-700.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'SF Pro Arabic';
+    src: url('/fonts/SFProArabic-Bold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base Font Override for entire document - Apple SF Pro Arabic */
+*, *::before, *::after, html, body, input, button, select, textarea,
+.vazirmatn_3ce704c3-module__s-zZEa__variable,
+[class*="vazirmatn"] {
+    font-family: 'SF Pro Arabic', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================ */
+/* 1. THEME VARIABLES                                           */
+/* ============================================================ */
+
+/* DARK MODE (Default / html.dark) */
+:root, html.dark {
+    --bg-screen: #07090E;
+    --card-bg: rgba(18, 24, 38, 0.72);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    --card-highlight: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.22) 40%, rgba(255, 255, 255, 0.06) 80%, transparent 100%);
+    
+    --accent-gold: #F59E0B;
+    --accent-gold-light: #FBBF24;
+    --accent-green: #30D158;
+    --accent-red: #FF453A;
+    
+    --text-primary: #FFFFFF;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    
+    --pill-bar-bg: rgba(255, 255, 255, 0.04);
+    --pill-bar-border: rgba(255, 255, 255, 0.08);
+    --pill-active-bg: #27272A;
+    --pill-active-border: rgba(255, 255, 255, 0.16);
+    --pill-active-text: #FFFFFF;
+    --pill-text: #94A3B8;
+    
+    --status-bg: rgba(255, 255, 255, 0.03);
+    --status-border: rgba(255, 255, 255, 0.07);
+    --status-text: #94A3B8;
+    
+    --header-btn-bg: rgba(255, 255, 255, 0.06);
+    --header-btn-border: rgba(255, 255, 255, 0.1);
+    --header-btn-color: #CBD5E1;
+    --header-btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    
+    --table-divider: rgba(255, 255, 255, 0.045);
+    
+    --sheet-bg: rgba(18, 24, 38, 0.98);
+    --sheet-border: rgba(255, 255, 255, 0.16);
+    --sheet-shadow: 0 -20px 60px rgba(0, 0, 0, 0.9);
+    --sheet-group-bg: rgba(255, 255, 255, 0.04);
+    --sheet-group-border: rgba(255, 255, 255, 0.07);
+    --sheet-switch-bg: rgba(0, 0, 0, 0.45);
+    --sheet-switch-border: rgba(255, 255, 255, 0.1);
+    --sheet-switch-active: rgba(255, 255, 255, 0.22);
+    --sheet-switch-active-text: #FFFFFF;
+    --sheet-close-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* LIGHT MODE */
+html.light {
+    --bg-screen: #F3F4F6;
+    --card-bg: rgba(255, 255, 255, 0.88);
+    --card-border: rgba(0, 0, 0, 0.07);
+    --card-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    --card-highlight: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0.3) 80%, transparent 100%);
+    
+    --accent-gold: #D97706;
+    --accent-gold-light: #F59E0B;
+    --accent-green: #15803D;
+    --accent-red: #DC2626;
+    
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    
+    --pill-bar-bg: rgba(0, 0, 0, 0.04);
+    --pill-bar-border: rgba(0, 0, 0, 0.06);
+    --pill-active-bg: #FFFFFF;
+    --pill-active-border: rgba(0, 0, 0, 0.08);
+    --pill-active-text: #0F172A;
+    --pill-text: #64748B;
+    
+    --status-bg: rgba(0, 0, 0, 0.03);
+    --status-border: rgba(0, 0, 0, 0.06);
+    --status-text: #475569;
+    
+    --header-btn-bg: rgba(0, 0, 0, 0.04);
+    --header-btn-border: rgba(0, 0, 0, 0.07);
+    --header-btn-color: #334155;
+    --header-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    
+    --table-divider: rgba(0, 0, 0, 0.05);
+    
+    --sheet-bg: #FFFFFF;
+    --sheet-border: rgba(0, 0, 0, 0.08);
+    --sheet-shadow: 0 -16px 50px rgba(0, 0, 0, 0.15);
+    --sheet-group-bg: rgba(0, 0, 0, 0.03);
+    --sheet-group-border: rgba(0, 0, 0, 0.06);
+    --sheet-switch-bg: rgba(0, 0, 0, 0.06);
+    --sheet-switch-border: rgba(0, 0, 0, 0.06);
+    --sheet-switch-active: #FFFFFF;
+    --sheet-switch-active-text: #0F172A;
+    --sheet-close-bg: rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================================ */
+/* 2. CORE BODY & BACKGROUND                                     */
+/* ============================================================ */
+
+body, .bg-background {
+    background-color: var(--bg-screen) !important;
+    color: var(--text-primary) !important;
+    direction: rtl;
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================================ */
+/* 3. HEADER                                                    */
+/* ============================================================ */
+
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0 10px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.brand-title {
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+html:not(.dark) .brand-title {
+    background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.header-btn-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--header-btn-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--header-btn-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--header-btn-color);
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: var(--header-btn-shadow);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-btn-circle:hover {
+    transform: scale(1.05);
+}
+
+.header-btn-circle:active {
+    transform: scale(0.95);
+}
+
+/* ============================================================ */
+/* 4. CAPSULE NAVIGATION BAR                                    */
+/* ============================================================ */
+
+.nav-pill-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+.nav-pill-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--pill-bar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--pill-bar-border);
+    border-radius: 30px;
+    padding: 3px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.nav-pill-capsule::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-tab-item {
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--pill-text);
+    white-space: nowrap;
+    border-radius: 20px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab-item.active { background: transparent !important; border: none !important; box-shadow: none !important; }
+
+/* ============================================================ */
+/* 5. STATUS BANNER                                             */
+/* ============================================================ */
+
+.status-pill-capsule {
+    background: var(--status-bg);
+    border: 1px solid var(--status-border);
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10.5px;
+    color: var(--status-text);
+    margin-bottom: 14px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    line-height: 1.4;
+}
+
+.pulse-dot-live {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #30D158;
+    box-shadow: 0 0 6px #30D158;
+    display: inline-block;
+    margin-left: 5px;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(48, 209, 88, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(48, 209, 88, 0); }
+}
+
+/* ============================================================ */
+/* 6. HERO TITLE SECTION                                        */
+/* ============================================================ */
+
+.hero-section {
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-heading {
+    font-size: 16.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-primary) !important;
+    margin-bottom: 3px;
+    letter-spacing: -0.2px;
+}
+
+.hero-subheading {
+    font-size: 11px;
+    color: var(--text-muted) !important;
+    font-weight: 400;
+}
+
+/* ============================================================ */
+/* 7. HERO CARDS (2x2 GRID)                                     */
+/* ============================================================ */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 10;
+}
+
+.squircle-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 11px 11px 10px 11px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease;
+}
+
+.squircle-card:hover {
+    transform: translateY(-1px);
+}
+
+.squircle-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--card-highlight);
+    pointer-events: none;
+}
+
+.card-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.card-identity {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.circle-disc {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+}
+
+.circle-disc.gold-disc {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.card-name-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.card-subtitle {
+    font-size: 11px !important;
+    color: #94A3B8 !important;
+    margin-top: 1px !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+html:not(.dark) .card-subtitle {
+    color: #64748B !important;
+}
+
+.card-price-row {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.card-main-price {
+    font-size: 15.5px;
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.2px;
+    line-height: 1.15;
+}
+
+.card-currency-unit {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: #94A3B8 !important;
+}
+html:not(.dark) .card-currency-unit {
+    color: #64748B !important;
+}
+
+.card-bottom-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.chart-container {
+    width: 64px;
+    height: 22px;
+}
+
+.badge-pill {
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    direction: ltr !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.badge-green {
+    background: rgba(48, 209, 88, 0.14);
+    color: #30D158;
+    border: 1px solid rgba(48, 209, 88, 0.22);
+}
+
+html:not(.dark) .badge-green {
+    background: rgba(21, 128, 61, 0.1);
+    color: #15803D;
+    border: 1px solid rgba(21, 128, 61, 0.2);
+}
+
+.badge-gold {
+    background: rgba(245, 158, 11, 0.14);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.22);
+}
+
+html:not(.dark) .badge-gold {
+    background: rgba(217, 119, 6, 0.1);
+    color: #D97706;
+    border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.badge-red {
+    background: rgba(255, 69, 58, 0.14);
+    color: #FF453A;
+    border: 1px solid rgba(255, 69, 58, 0.22);
+}
+
+html:not(.dark) .badge-red {
+    background: rgba(220, 38, 38, 0.1);
+    color: #DC2626;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.badge-gray {
+    background: rgba(148, 163, 184, 0.12);
+    color: #94A3B8;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* ============================================================ */
+/* 8. MARKET OVERVIEW TABLE CARD                                */
+/* ============================================================ */
+
+.market-table-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 12px 14px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    z-index: 10;
+    margin-bottom: 24px;
+}
+
+.table-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--table-divider);
+    margin-bottom: 3px;
+}
+
+.table-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+}
+
+.table-filter-pills {
+    display: flex;
+    gap: 3px;
+}
+
+.filter-pill {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--pill-text);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+    background: var(--pill-active-bg);
+    color: var(--pill-active-text);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-row-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--table-divider);
+}
+
+.table-row-item:last-child {
+    border-bottom: none;
+    padding-bottom: 2px;
+}
+
+.row-item-info {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.row-item-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+}
+
+.row-item-sub {
+    font-size: 9.5px;
+    color: var(--text-muted) !important;
+    margin-top: 1px;
+    font-weight: 400;
+}
+
+.row-item-sparkline {
+    width: 56px;
+    height: 20px;
+}
+
+.row-item-pricing {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    direction: ltr;
+}
+
+.row-item-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.2px;
+}
+
+.row-item-chg {
+    font-size: 9.5px;
+    font-weight: 600;
+    margin-top: 1px;
+}
+
+/* ============================================================ */
+/* 9. SETTINGS BOTTOM SHEET MODAL                               */
+/* ============================================================ */
+
+.settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    animation: fadeInOverlay 0.25s ease forwards;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.settings-sheet {
+    background: var(--sheet-bg);
+    backdrop-filter: blur(50px) saturate(210%);
+    -webkit-backdrop-filter: blur(50px) saturate(210%);
+    border-top: 1px solid var(--sheet-border);
+    border-radius: 28px 28px 0 0;
+    padding: 12px 18px 28px 18px;
+    box-shadow: var(--sheet-shadow);
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+    animation: slideUpSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpSheet {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--card-border);
+    border-radius: 2px;
+    margin: 0 auto 12px auto;
+}
+
+.sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--table-divider);
+}
+
+.sheet-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+}
+
+.sheet-close-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--sheet-close-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.sheet-close-btn:hover {
+    color: var(--text-primary);
+}
+
+.settings-group {
+    background: var(--sheet-group-bg);
+    border: 1px solid var(--sheet-group-border);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.setting-label-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-main-label {
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+}
+html:not(.dark) .setting-main-label {
+    color: #0F172A !important;
+}
+
+.setting-caption {
+    font-size: 12.5px !important;
+    font-weight: 400 !important;
+    color: #94A3B8 !important;
+    line-height: 1.5 !important;
+    margin-top: 3px !important;
+}
+html:not(.dark) .setting-caption {
+    color: #64748B !important;
+}
+
+.settings-segmented-switch {
+    display: flex;
+    background: var(--sheet-switch-bg);
+    border: 1px solid var(--sheet-switch-border);
+    border-radius: 20px;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.settings-seg-btn {
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.settings-seg-btn.active {
+    background: var(--sheet-switch-active);
+    color: var(--sheet-switch-active-text);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ios-toggle {
+    width: 44px;
+    height: 25px;
+    background: var(--sheet-switch-bg);
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    flex-shrink: 0;
+    border: 1px solid var(--sheet-switch-border);
+}
+
+.ios-toggle.active {
+    background: #30D158;
+    border-color: #30D158;
+}
+
+.ios-toggle-knob {
+    width: 21px;
+    height: 21px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.ios-toggle.active .ios-toggle-knob {
+    transform: translateX(19px);
+}
+
+.btn-primary-apply {
+    width: 100%;
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    color: #07090E;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    padding: 11px;
+    margin-top: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25);
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.btn-primary-apply:hover {
+    filter: brightness(1.05);
+}
+
+.btn-primary-apply:active {
+    transform: scale(0.98);
+}
+/* ============================================================ */
+
+/* ============================================================ */
+/* DESKTOP & WIDE SCREEN MOBILE-APP CENTERING (v12 - 700px)     */
+/* ============================================================ */
+
+@media (min-width: 680px) {
+    html {
+        background-color: #03050A !important;
+    }
+    html.light {
+        background-color: #E2E8F0 !important;
+    }
+    body {
+        background-color: #03050A !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 100vh !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+    html.light body {
+        background-color: #E2E8F0 !important;
+    }
+    body > div:first-of-type,
+    .min-h-screen {
+        max-width: 700px !important;
+        width: 100% !important;
+        min-height: 100vh !important;
+        margin: 0 auto !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.8) !important;
+        position: relative !important;
+        background-color: var(--bg-screen) !important;
+    }
+    html.light body > div:first-of-type,
+    html.light .min-h-screen {
+        border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+        border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+    .glass-header {
+        max-width: 700px !important;
+        width: 100% !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        margin: 0 auto !important;
+    }
+    .bottom-sheet-backdrop {
+        max-width: 700px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+    .bottom-sheet-content {
+        max-width: 700px !important;
+    }
+    main, .max-w-\[1400px\] {
+        max-width: 700px !important;
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 14px !important;
+    }
+    .nav-capsule {
+        gap: 4px !important;
+        padding: 4px 6px !important;
+    }
+    .nav-tab-item {
+        padding: 7px 14px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* ============================================================ */
+/* LIGHT MODE GOLD & COIN DISC ENHANCEMENTS (High Contrast)     */
+/* ============================================================ */
+html.light .circle-disc.gold-disc {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+    border: 1.5px solid #B45309 !important;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35) !important;
+}
+html.light .circle-disc.gold-disc svg line,
+html.light .circle-disc.gold-disc svg polygon,
+html.light .circle-disc.gold-disc svg path,
+html.light .circle-disc.gold-disc svg ellipse {
+    stroke: #FFFFFF !important;
+}
+html.light .circle-disc.gold-disc svg polygon,
+html.light .circle-disc.gold-disc svg path,
+html.light .circle-disc.gold-disc svg ellipse {
+    fill: rgba(255, 255, 255, 0.28) !important;
+}
+
+/* ============================================================ */
+
+
+/* ============================================================ */
+/* v16 CARD ARCHITECTURE - FULL WIDTH NAMES, ZERO TRUNCATION   */
+/* ============================================================ */
+
+.cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+    position: relative !important;
+    z-index: 10 !important;
+    width: 100% !important;
+}
+
+@media (min-width: 640px) {
+    .cards-grid {
+        gap: 14px !important;
+    }
+}
+
+.squircle-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 18px !important;
+    padding: 11px 11px 8px 11px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 122px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.squircle-card:active {
+    transform: scale(0.98) !important;
+}
+
+/* Row 1: Icon on right, Badge pill on left */
+.card-top-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin-bottom: 6px !important;
+}
+
+/* Row 2: Asset Names full width across card */
+.card-names-row {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-bottom: 6px !important;
+    text-align: right !important;
+}
+
+.card-title {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    line-height: 1.35 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-word !important;
+    min-height: 17px !important;
+    max-height: 38px !important;
+}
+
+.card-subtitle {
+    font-size: 10.5px !important;
+    color: #94A3B8 !important;
+    margin-top: 1.5px !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+html:not(.dark) .card-subtitle {
+    color: #64748B !important;
+}
+
+/* Row 3: Price + Unit */
+.card-price-row {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    width: 100% !important;
+    margin-bottom: 5px !important;
+}
+
+.card-main-price {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.2px !important;
+    line-height: 1.15 !important;
+}
+
+.card-currency-unit {
+    font-size: 10.5px !important;
+    font-weight: 400 !important;
+    color: #94A3B8 !important;
+}
+
+html:not(.dark) .card-currency-unit {
+    color: #64748B !important;
+}
+
+/* Row 4: Sparkline */
+.card-bottom-row {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: auto !important;
+}
+
+.chart-container {
+    width: 100% !important;
+    height: 24px !important;
+    overflow: hidden !important;
+}
+
+/* Numbers: Elegant Medium 500 */
+.card-main-price,
+.price-tag,
+.price-val,
+.row-item-val,
+.stat-value,
+.change-val,
+.tabular-nums,
+[class*="tabular-nums"],
+.font-bold.tabular-nums,
+span[dir="ltr"].font-bold {
+    font-weight: 500 !important;
+    letter-spacing: -0.2px !important;
+}
+
+/* Headings: Semibold 600 */
+h1, h2, h3, h4,
+.brand-title,
+.sheet-title {
+    font-weight: 600 !important;
+}
+
+
+/* ============================================================ */
+/* v17 APPLE / HYPEROS IPHONE HEADER WHITE HALO & GLASS GLOW    */
+/* ============================================================ */
+
+/* 1. Header Top Bar */
+.glass-header {
+    background: rgba(7, 9, 14, 0.82) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+html:not(.dark) .glass-header {
+    background: rgba(248, 250, 252, 0.88) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 -1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 2. iPhone Header Circular Action Buttons (Settings, Theme, Refresh) */
+.header-btn-circle {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.09) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.35), 0 2px 10px rgba(0, 0, 0, 0.45), 0 0 12px rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.header-btn-circle:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-color: rgba(255, 255, 255, 0.38) !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 255, 255, 0.16) !important;
+    transform: scale(1.06) !important;
+}
+
+.header-btn-circle:active {
+    transform: scale(0.95) !important;
+}
+
+html:not(.dark) .header-btn-circle {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.95), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    color: #0F172A !important;
+}
+
+/* 3. Capsule Navigation Bar - iPhone Glass Border & Inset Halo */
+.nav-pill-capsule {
+    background: rgba(255, 255, 255, 0.07) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: inset 0 1px 1.5px rgba(255, 255, 255, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav-tab-item.active { background: transparent !important; border: none !important; box-shadow: none !important; }
+
+html:not(.dark) .nav-pill-capsule {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+}
+
+html:not(.dark) .nav-tab-item.active { background: transparent !important; border: none !important; box-shadow: none !important; }
+
+/* 4. Status Banner Capsule */
+.status-pill-capsule {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+html:not(.dark) .status-pill-capsule {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.85), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+
+/* ============================================================ */
+/* v20 RECTANGULAR PAIRED CARDS & VIBRANT GREEN/RED BADGES      */
+/* ============================================================ */
+
+.rect-pair-card {
+    background: rgba(15, 23, 42, 0.68) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    border-radius: 18px !important;
+    padding: 6px 10px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 100% !important;
+}
+
+html:not(.dark) .rect-pair-card {
+    background: rgba(255, 255, 255, 0.84) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+}
+
+.rect-pair-card:hover {
+    border-color: rgba(255, 255, 255, 0.24) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+}
+
+html:not(.dark) .rect-pair-card:hover {
+    border-color: rgba(0, 0, 0, 0.14) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 1. GOLD DIVIDERS (GOLD TAB) */
+.divider-gold-v {
+    background: linear-gradient(to bottom, transparent, rgba(234, 179, 8, 0.9) 50%, transparent) !important;
+}
+
+.divider-gold-h {
+    background: linear-gradient(to right, transparent, rgba(234, 179, 8, 0.9) 50%, transparent) !important;
+}
+
+/* 2. STANDARD DIVIDERS (CURRENCIES, CRYPTO, CARS) */
+.divider-std-v {
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.22) 50%, transparent) !important;
+}
+
+.divider-std-h {
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.22) 50%, transparent) !important;
+}
+
+html:not(.dark) .divider-std-v {
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.15) 50%, transparent) !important;
+}
+
+html:not(.dark) .divider-std-h {
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.15) 50%, transparent) !important;
+}
+
+/* 3. HIGH-CONTRAST GREEN & RED BADGES FOR ALL CHANGE RATES */
+.chg-badge-up {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    background: rgba(48, 209, 88, 0.18) !important;
+    color: #30D158 !important;
+    border: 1px solid rgba(48, 209, 88, 0.38) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+}
+
+html:not(.dark) .chg-badge-up {
+    background: rgba(22, 163, 74, 0.14) !important;
+    color: #16A34A !important;
+    border: 1px solid rgba(22, 163, 74, 0.3) !important;
+}
+
+.chg-badge-down {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    background: rgba(255, 69, 58, 0.18) !important;
+    color: #FF453A !important;
+    border: 1px solid rgba(255, 69, 58, 0.38) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+}
+
+html:not(.dark) .chg-badge-down {
+    background: rgba(220, 38, 38, 0.14) !important;
+    color: #DC2626 !important;
+    border: 1px solid rgba(220, 38, 38, 0.3) !important;
+}
+
+.chg-badge-neutral {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    background: rgba(148, 163, 184, 0.14) !important;
+    color: #94a3b8 !important;
+    border: 1px solid rgba(148, 163, 184, 0.25) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+}
+
+/* 4. FALLBACK TEXT COLORS */
+.price-up, .text-green-400, .text-emerald-400 {
+    color: #30D158 !important;
+}
+html:not(.dark) .price-up, html:not(.dark) .text-green-400, html:not(.dark) .text-emerald-400 {
+    color: #16A34A !important;
+}
+
+.price-down, .text-red-400, .text-rose-400 {
+    color: #FF453A !important;
+}
+html:not(.dark) .price-down, html:not(.dark) .text-red-400, html:not(.dark) .text-rose-400 {
+    color: #DC2626 !important;
+}
+
+.price-flat {
+    color: #94a3b8 !important;
+}
+
+
+.car-brand-disc {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+html:not(.dark) .car-brand-disc {
+    background: #f8fafc !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+.car-brand-disc:hover {
+    transform: scale(1.05) !important;
+}
+
+.nav-pill-wrapper {
+    position: relative !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 6px 0 !important;
+    overflow: visible !important;
+}
+
+.nav-pill-capsule {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    border-radius: 30px !important;
+    padding: 3px 5px !important;
+    overflow: visible !important;
+    scrollbar-width: none !important;
+    background: rgba(15, 20, 32, 0.72) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+        inset 0 1.5px 3px rgba(0, 0, 0, 0.5),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.05),
+        0 4px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+html:not(.dark) .nav-pill-capsule {
+    background: rgba(226, 232, 240, 0.75) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 
+        inset 0 1.5px 3px rgba(0, 0, 0, 0.1),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.8),
+        0 2px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+.nav-pill-sliding-bubble {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    border-radius: 22px !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    opacity: 0;
+    will-change: transform, width, height;
+    transition: opacity 0.2s ease !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(28px) saturate(200%) brightness(115%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(115%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.42) !important;
+    box-shadow: 
+        inset 0 2px 3.5px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.5),
+        0 10px 25px -2px rgba(0, 0, 0, 0.65),
+        0 4px 10px rgba(0, 0, 0, 0.4),
+        0 0 14px rgba(255, 255, 255, 0.08) !important;
+}
+
+html:not(.dark) .nav-pill-sliding-bubble {
+    background: rgba(255, 255, 255, 0.68) !important;
+    backdrop-filter: blur(28px) saturate(190%) brightness(105%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(190%) brightness(105%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 
+        inset 0 2.5px 3.5px #FFFFFF,
+        inset 0 -2px 3px rgba(0, 0, 0, 0.08),
+        0 10px 24px -3px rgba(0, 0, 0, 0.15),
+        0 3px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.nav-pill-capsule .nav-tab-item {
+    position: relative !important;
+    z-index: 2 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    padding: 6.5px 14px !important;
+    border-radius: 20px !important;
+    white-space: nowrap !important;
+    transition: color 0.25s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
+    transform: none !important;
+}
+
+.nav-pill-capsule .nav-tab-item:hover {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.nav-pill-capsule .nav-tab-item.active {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode Capsule Navigation Items - Sharp High Contrast */
+html:not(.dark) .nav-pill-capsule .nav-tab-item,
+html.light .nav-pill-capsule .nav-tab-item,
+body.light .nav-pill-capsule .nav-tab-item {
+    color: #475569 !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+}
+
+html:not(.dark) .nav-pill-capsule .nav-tab-item:hover,
+html.light .nav-pill-capsule .nav-tab-item:hover,
+body.light .nav-pill-capsule .nav-tab-item:hover {
+    color: #0F172A !important;
+}
+
+html:not(.dark) .nav-pill-capsule .nav-tab-item.active,
+html.light .nav-pill-capsule .nav-tab-item.active,
+body.light .nav-pill-capsule .nav-tab-item.active {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+}
+
+.pwa-install-header-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2)) !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    color: #10B981 !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    white-space: nowrap !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+html.dark .pwa-install-header-btn {
+    color: #34D399 !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.25)) !important;
+    border-color: rgba(52, 211, 153, 0.5) !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.2) !important;
+}
+
+.pwa-install-header-btn:hover {
+    transform: scale(1.04) !important;
+    filter: brightness(1.1) !important;
+}
+
+@media (display-mode: standalone) {
+    .pwa-install-header-btn {
+        display: none !important;
+    }
+}
+html.is-telegram .pwa-install-header-btn {
+    display: none !important;
+}
+
+/* K-GOLD NATIVE APP SPLASH: HIDDEN BY DEFAULT FOR BROWSER & TELEGRAM */
+#app-native-splash {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: -9999 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+}
+
+/* ONLY display when installed as standalone PWA on phone */
+@media (display-mode: standalone) {
+    html:not(.is-telegram):not([data-telegram="true"]) body:not(.is-telegram) #app-native-splash {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 9999999 !important;
+        background: #07090E !important;
+        display: flex !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: inherit !important;
+        opacity: 1 !important;
+        transition: opacity 0.5s ease, visibility 0.5s ease !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Telegram Mini App: PERMANENTLY SUPPRESS SPLASH & MODAL */
+.is-telegram #app-native-splash,
+html.is-telegram #app-native-splash,
+html[data-telegram="true"] #app-native-splash,
+body.is-telegram #app-native-splash,
+body[data-telegram="true"] #app-native-splash {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+html.light #app-native-splash,
+body.light #app-native-splash {
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+}
+
+.splash-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 320px !important;
+}
+
+.splash-logo-wrap {
+    position: relative !important;
+    width: 88px !important;
+    height: 88px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 22px !important;
+}
+
+.splash-logo {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 20px !important;
+    object-fit: contain !important;
+    position: relative !important;
+    z-index: 2 !important;
+    box-shadow: 0 10px 30px rgba(234, 179, 8, 0.25) !important;
+    animation: splashLogoFloat 3s ease-in-out infinite !important;
+}
+
+.splash-pulse-ring {
+    position: absolute !important;
+    inset: -6px !important;
+    border-radius: 26px !important;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.4) 0%, transparent 70%) !important;
+    animation: splashPulse 2s ease-in-out infinite !important;
+    z-index: 1 !important;
+}
+
+.splash-brand-title {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 6px !important;
+    background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FDE68A 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.splash-brand-sub {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    margin-bottom: 36px !important;
+}
+
+html.light .splash-brand-sub,
+body.light .splash-brand-sub {
+    color: rgba(15, 23, 42, 0.55) !important;
+}
+
+.splash-progress-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.splash-progress-track {
+    width: 100% !important;
+    height: 6px !important;
+    border-radius: 3px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.light .splash-progress-track,
+body.light .splash-progress-track {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+.splash-progress-bar {
+    width: 0%;
+    height: 100% !important;
+    border-radius: 3px !important;
+    background: linear-gradient(90deg, #F59E0B, #10B981) !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.6) !important;
+    transition: width 0.08s linear !important;
+}
+
+.splash-status-text {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 500 !important;
+    min-height: 18px !important;
+    transition: opacity 0.25s ease !important;
+}
+
+html.light .splash-status-text,
+body.light .splash-status-text {
+    color: rgba(15, 23, 42, 0.5) !important;
+}
+
+.splash-fade-out {
+    opacity: 0 !important;
+    transform: scale(1.04) !important;
+    pointer-events: none !important;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes splashLogoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes splashPulse {
+    0%, 100% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.ios-offline-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000000 !important;
+    display: none !important; /* HIDDEN BY DEFAULT */
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+.ios-offline-backdrop.active,
+.ios-offline-backdrop.show,
+.ios-offline-backdrop[data-visible="true"] {
+    display: flex !important;
+    animation: iosBackdropFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.ios-offline-card {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 330px !important;
+    border-radius: 28px !important;
+    padding: 24px 20px 20px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(35px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(35px) saturate(190%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 
+        inset 0 1.5px 2px #FFFFFF,
+        0 20px 50px -10px rgba(0, 0, 0, 0.25),
+        0 8px 16px rgba(0, 0, 0, 0.1) !important;
+    animation: iosCardSpringUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+html.dark .ios-offline-card {
+    background: rgba(26, 32, 48, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.25),
+        0 25px 60px -10px rgba(0, 0, 0, 0.7),
+        0 8px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.ios-offline-icon-wrap {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 12px !important;
+    background: rgba(255, 69, 58, 0.1) !important;
+}
+
+.ios-offline-title {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    margin-bottom: 6px !important;
+    letter-spacing: -0.01em !important;
+}
+
+html.dark .ios-offline-title {
+    color: #FFFFFF !important;
+}
+
+.ios-offline-desc {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: rgba(15, 23, 42, 0.65) !important;
+    margin-bottom: 20px !important;
+    line-height: 1.5 !important;
+}
+
+html.dark .ios-offline-desc {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.ios-offline-btn {
+    width: 100% !important;
+    height: 48px !important;
+    border-radius: 24px !important;
+    background: #007AFF !important;
+    color: #FFFFFF !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.ios-offline-btn:active {
+    transform: scale(0.97) !important;
+    filter: brightness(0.9) !important;
+}
+
+@keyframes iosBackdropFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes iosCardSpringUp {
+    from {
+        opacity: 0;
+        transform: scale(0.88) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+/* ============================================================ */
+/* TELEGRAM MINI APP SAFE AREA TOP INSET & CONTROLS v32         */
+/* ============================================================ */
+:root {
+    --tg-top-safe-pad: 0px;
+}
+
+html.is-telegram,
+html[data-telegram="true"],
+body.is-telegram,
+body[data-telegram="true"] {
+    --tg-top-safe-pad: 96px;
+}
+
+.glass-header {
+    padding-top: max(
+        var(--tg-content-safe-area-inset-top, 0px),
+        var(--tg-safe-area-inset-top, 0px),
+        var(--tg-top-safe-pad, 0px),
+        env(safe-area-inset-top, 0px),
+        0px
+    ) !important;
+}
+
+html.is-telegram .glass-header,
+html[data-telegram="true"] .glass-header,
+body.is-telegram .glass-header,
+body[data-telegram="true"] .glass-header,
+.is-telegram .glass-header {
+    padding-top: max(
+        var(--tg-content-safe-area-inset-top, 0px),
+        var(--tg-safe-area-inset-top, 0px),
+        var(--tg-top-safe-pad, 0px),
+        env(safe-area-inset-top, 0px),
+        96px
+    ) !important;
+}
+
+/* Hide PWA install button & guide modal inside Telegram Mini App */
+html.is-telegram .pwa-install-header-btn,
+html[data-telegram="true"] .pwa-install-header-btn,
+body.is-telegram .pwa-install-header-btn,
+body[data-telegram="true"] .pwa-install-header-btn,
+.is-telegram .pwa-install-header-btn,
+html.is-telegram #pwa-install-modal-root,
+html[data-telegram="true"] #pwa-install-modal-root,
+body.is-telegram #pwa-install-modal-root,
+body[data-telegram="true"] #pwa-install-modal-root,
+.is-telegram #pwa-install-modal-root {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hide PWA install button & guide modal when ALREADY installed as standalone PWA */
+@media (display-mode: standalone) {
+    .pwa-install-header-btn,
+    #pwa-install-modal-root {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Suppress any legacy Next.js / v0 splash elements completely */
+.jsx-2db7e3c896778519,
+[class*="2db7e3c896778519"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Light Mode Capsule Navigation Enhancement v33 */
+html:not(.dark) .nav-pill-capsule,
+html.light .nav-pill-capsule,
+body.light .nav-pill-capsule {
+    background: rgba(226, 232, 240, 0.85) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+html:not(.dark) .nav-pill-sliding-bubble,
+html.light .nav-pill-sliding-bubble,
+body.light .nav-pill-sliding-bubble {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+html:not(.dark) .nav-pill-capsule .nav-tab-item,
+html.light .nav-pill-capsule .nav-tab-item,
+body.light .nav-pill-capsule .nav-tab-item {
+    color: #475569 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+html:not(.dark) .nav-pill-capsule .nav-tab-item.active,
+html.light .nav-pill-capsule .nav-tab-item.active,
+body.light .nav-pill-capsule .nav-tab-item.active {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+}
+
+
+
+/* ============================================================ */
+/* 4.1 APPLE FLUID SUSPENDED WATER DROP (آب معلق) SWITCHER v34  */
+/* ============================================================ */
+
+.nav-pill-sliding-bubble {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    border-radius: 9999px !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    opacity: 0;
+    will-change: transform, width, height;
+    transition: opacity 0.2s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+    background: rgba(255, 255, 255, 0.16) !important;
+    backdrop-filter: blur(28px) saturate(200%) brightness(115%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(115%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.38) !important;
+    box-shadow: 
+        0 4px 14px rgba(0, 0, 0, 0.4),
+        inset 0 1.5px 2.5px rgba(255, 255, 255, 0.8),
+        inset 0 -1.5px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Suspended Liquid Water Droplet State (Active During Switcher Transition) */
+.nav-pill-sliding-bubble.is-liquid-moving {
+    background: rgba(255, 255, 255, 0.28) !important;
+    border-color: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 
+        0 14px 32px -4px rgba(0, 0, 0, 0.55),
+        0 0 22px rgba(255, 255, 255, 0.38),
+        inset 0 2.5px 4px rgba(255, 255, 255, 0.95),
+        inset 0 -2.5px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Light Mode Resting Pill (Clean Apple Segmented Indicator) */
+html:not(.dark) .nav-pill-sliding-bubble,
+html.light .nav-pill-sliding-bubble,
+body.light .nav-pill-sliding-bubble {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 
+        0 3px 10px rgba(0, 0, 0, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.06),
+        inset 0 1px 1.5px rgba(255, 255, 255, 1) !important;
+}
+
+/* Light Mode Liquid Suspended Water Droplet State */
+html:not(.dark) .nav-pill-sliding-bubble.is-liquid-moving,
+html.light .nav-pill-sliding-bubble.is-liquid-moving,
+body.light .nav-pill-sliding-bubble.is-liquid-moving {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.5px solid rgba(255, 255, 255, 1) !important;
+    box-shadow: 
+        0 14px 32px -4px rgba(0, 0, 0, 0.18),
+        0 2px 12px rgba(0, 0, 0, 0.1),
+        inset 0 3px 5px #FFFFFF,
+        inset 0 -2px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Inner Water Meniscus Specular Reflection Layer */
+.liquid-water-sheen {
+    position: absolute !important;
+    inset: 1px !important;
+    border-radius: 9999px !important;
+    pointer-events: none !important;
+    opacity: 0;
+    transition: opacity 0.16s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    background: radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 65%) !important;
+}
+
+.nav-pill-sliding-bubble.is-liquid-moving .liquid-water-sheen {
+    opacity: 1 !important;
+}
+
+/* Inner Crescent Liquid Contour (matching Apple reference images media_1789676856887.png) */
+.liquid-droplet-svg {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    opacity: 0;
+    filter: drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.95));
+    transition: opacity 0.16s ease !important;
+    transform-origin: center center;
+}
+
+.nav-pill-sliding-bubble.moving-right .liquid-droplet-svg {
+    transform: scaleX(-1) !important;
+}
+
+.nav-pill-sliding-bubble.moving-left .liquid-droplet-svg {
+    transform: none !important;
+}
+
+.nav-pill-sliding-bubble.is-liquid-moving .liquid-droplet-svg {
+    opacity: 1 !important;
+}
+

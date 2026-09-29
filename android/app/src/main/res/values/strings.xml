@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KGold | کی گلد</string>
+    <string name="title_activity_main">KGold | کی گلد</string>
+    <string name="package_name">com.kgold.app</string>
+    <string name="custom_url_scheme">com.kgold.app</string>
+</resources>

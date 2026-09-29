@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production web build
+dist/
+
+# Android build files & caches
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+
+# Temporary & scratch test files
+scratch/
+scratch_*.mjs
+test_*.mjs
+generate_icons.ps1
+
+# System & OS
+.DS_Store
+Thumbs.db
+*.log

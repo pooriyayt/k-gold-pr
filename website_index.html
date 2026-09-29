@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="fa" dir="rtl" class="bg-background"><head><script>
+(function(){
+  try {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        for (var r of regs) r.update();
+      });
+    }
+    if (window.caches) {
+      caches.keys().then(function(names) {
+        for (var n of names) {
+          if (n !== 'kgold-cache-v35') caches.delete(n);
+        }
+      });
+    }
+  } catch(e){}
+})();
+</script><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/><link rel="preload" href="/_next/static/media/f1d25eabcf1db66d-s.p.0nzxm55-ppifn.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/btc.svg" crossorigin=""/><link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eth.svg" crossorigin=""/><link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdt.svg" crossorigin=""/><link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bnb.svg" crossorigin=""/><link rel="stylesheet" href="/_next/static/chunks/13l7cb.36g9g3.css" data-precedence="next"/><link rel="stylesheet" href="/apple_hyperos_v35.css?v=35"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/0e~sf-tpqke1t.js"/><script src="/telegram-web-app.js"></script><style>html,body{overflow-x:hidden!important;max-width:100vw!important;width:100%!important;}#v0-built-with-button-240e2bd7-9bf2-435f-aa16-3d16305005e2{display:none!important;}.nav-mobile-btn{padding:3px 6px!important;font-size:11px!important;}.nav-mobile-pipe{margin:0 2px!important;}</style></head><body class="vazirmatn_3ce704c3-module__s-zZEa__variable font-sans">
+<div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","system",null,["light","dark"],null,true,true)</script><!--$?--><template id="B:0"></template><!--/$--><div><div id="v0-built-with-button-240e2bd7-9bf2-435f-aa16-3d16305005e2" style="
+border: 1px solid hsl(0deg 0% 100% / 12%);
+position: fixed;
+bottom: 24px;
+right: 24px;
+z-index: 1000;
+background: #121212;
+color: white;
+padding: 8px 12px;
+border-radius: 8px;
+font-weight: 400;
+font-size: 14px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+letter-spacing: 0.02em;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+gap: 4px;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+">
+<a
+  href="https://v0.app/chat/api/open/built-with-v0/b_mnqWU8KSQ8j?ref=6UKF98"
+  target="_blank"
+  rel="noopener"
+  style="
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  "
+>
+  Built with
+  <svg
+    fill="currentColor"
+    viewBox="0 0 147 70"
+    xmlns="http://www.w3.org/2000/svg"
+    style="width: 20px; height: 20px;"
+  >
+    <path d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z" />
+    <path d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z" />
+  </svg>
+</a>
+
+<button
+  onclick="document.getElementById('v0-built-with-button-240e2bd7-9bf2-435f-aa16-3d16305005e2').style.display='none'"
+  onmouseenter="this.style.opacity='1'"
+  onmouseleave="this.style.opacity='0.7'"
+  style="
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 2px;
+    margin-left: 4px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    transform: translateZ(0);
+  "
+  aria-label="Close"
+>
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 6L6 18M6 6l12 12"/>
+  </svg>
+</button>
+
+<span style="
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+">
+  v0
+</span>
+</div></div><script>requestAnimationFrame(function(){$RT=performance.now()});</script><script src="/_next/static/chunks/0e~sf-tpqke1t.js" id="_R_" async=""></script>
+<script src="/_next/static/chunks/14gj-9dbjqdrr.js" async=""></script>
+<script src="/_next/static/chunks/01v4ji714~oz7.js" async=""></script>
+<script src="/_next/static/chunks/05vn6-nz71c1w.js" async=""></script>
+<script src="/_next/static/chunks/0wgprl~pyn999.js" async=""></script>
+<script src="/_next/static/chunks/0j8gtwbi~cars_v35.js" async=""></script>
+<script src="/_next/static/chunks/turbopack-10d0th-9_vwt0.js" async=""></script><div hidden id="S:0"><div class="min-h-screen flex flex-col bg-background"><header class="glass-header sticky top-0 z-50 px-4 sm:px-6 lg:px-8"><div class="max-w-[1400px] mx-auto flex items-center justify-between h-16 gap-3 sm:gap-6"><div class="flex items-center gap-2 shrink-0"><span class="text-sm font-bold logo-gradient tracking-tight">کی گلد | قیمت لحظه‌ای ارز و طلا</span></div><nav class="hidden sm:flex items-center justify-center flex-1"><div class="inline-flex items-center px-3 py-2 border border-border/40 rounded-[var(--radius)] bg-card/50 backdrop-blur"><div class="flex items-center"><button class="px-2.5 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-foreground font-semibold">داشبورد</button><span class="mx-1.5 text-muted-foreground/40">|</span></div><div class="flex items-center"><button class="px-2.5 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">ارز دیجیتال</button><span class="mx-1.5 text-muted-foreground/40">|</span></div><div class="flex items-center"><button class="px-2.5 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">ارز دولتی</button><span class="mx-1.5 text-muted-foreground/40">|</span></div><div class="flex items-center"><button class="px-2.5 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">طلا و سکه</button><span class="mx-1.5 text-muted-foreground/40">|</span></div><div class="flex items-center"><button class="px-2.5 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">خودرو</button></div></div></nav><div class="flex items-center gap-1.5 sm:gap-2 shrink-0"><button class="flex items-center justify-center h-8 w-8 rounded-[var(--radius)] border border-border/40 bg-card/50 hover:bg-card/70 transition-all text-muted-foreground hover:text-foreground" title="بروزرسانی"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-ccw h-4 w-4"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 16h5v5"></path></svg></button><button class="h-9 px-2 rounded-[var(--radius)] border border-border/40 bg-card/50 hover:bg-card/70 transition-all flex items-center gap-1.5 text-muted-foreground hover:text-foreground" aria-label="تغییر تم"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-4 w-4 transition-all dark:opacity-40"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon h-4 w-4 transition-all dark:opacity-100 opacity-40"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><span class="sr-only">تغییر تم</span></button></div></div><div class="sm:hidden flex justify-center px-4 pb-2"><div class="inline-flex items-center px-2 py-1.5 border border-border/40 rounded-[var(--radius)] bg-card/50 backdrop-blur gap-0"><div class="flex items-center"><button class="nav-mobile-btn px-2 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-foreground font-semibold">داشبورد</button><span class="nav-mobile-pipe mx-1 text-muted-foreground/40 text-xs">|</span></div><div class="flex items-center"><button class="nav-mobile-btn px-2 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">ارز دیجیتال</button><span class="nav-mobile-pipe mx-1 text-muted-foreground/40 text-xs">|</span></div><div class="flex items-center"><button class="nav-mobile-btn px-2 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">ارز دولتی</button><span class="nav-mobile-pipe mx-1 text-muted-foreground/40 text-xs">|</span></div><div class="flex items-center"><button class="nav-mobile-btn px-2 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">طلا و سکه</button><span class="nav-mobile-pipe mx-1 text-muted-foreground/40 text-xs">|</span></div><div class="flex items-center"><button class="nav-mobile-btn px-2 py-1 text-xs font-medium transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground/70">خودرو</button></div></div></div></header><div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 mt-2"><div class="rounded-[var(--radius)] border border-border/30 bg-card/40 backdrop-blur-sm overflow-hidden"><div class="flex items-center justify-between min-h-9 px-3 sm:px-4 py-1.5 text-xs gap-2" dir="rtl"><div class="flex items-center gap-1.5 text-muted-foreground min-w-0 shrink-0"><span class="relative flex h-1.5 w-1.5 shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span></span><span class="whitespace-nowrap">آخرین بروزرسانی:</span><span class="font-medium text-foreground tabular-nums whitespace-nowrap"><span class="sm:hidden"></span><span class="hidden sm:inline"></span></span></div></div></div></div><div class="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 mt-2 space-y-2"></div><main class="flex-1 max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 pb-24"><div class="space-y-6 animate-fadeIn"><div class="flex flex-col lg:flex-row gap-6"><div class="lg:w-1/3 flex flex-col justify-center gap-3"><h1 class="text-2xl sm:text-3xl font-bold leading-snug text-foreground text-balance">قیمت لحظه‌ای ارز دیجیتال،<br/>ارزهای جهانی و طلا</h1><p class="text-sm text-muted-foreground">اطلاعات دقیق، لحظه‌ای و قابل اعتماد</p><div class="inline-flex items-center gap-2 px-3 py-1.5 border border-border/40 rounded-full bg-card/50 backdrop-blur text-xs text-muted-foreground mt-2 w-fit"><span class="status-indicator animate-blink"></span><span>آخرین بروزرسانی: </span></div></div><div class="lg:w-2/3 relative rounded-3xl p-6 overflow-hidden price-box"><div class="flex gap-1 mb-5 relative"><button class="px-5 py-2 text-sm font-medium transition-all duration-200 relative rounded-full text-foreground">ارز دیجیتال<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-purple-500"></div></button><button class="px-5 py-2 text-sm font-medium transition-all duration-200 relative rounded-full text-muted-foreground hover:text-foreground/70">ارز دولتی</button></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-4"><div class="rounded-[var(--radius)] p-4 flex flex-col gap-3 border border-border bg-card hover:bg-muted/40 transition-all"><div class="flex items-center gap-2.5"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/btc.svg" alt="BTC" class="w-8 h-8 rounded-full shrink-0 bg-muted" crossorigin="anonymous"/><div><div class="text-sm font-bold text-foreground leading-none">BTC</div><div class="text-xs text-muted-foreground mt-0.5 truncate max-w-[80px]">Bitcoin</div></div></div><div class="text-base font-bold text-foreground tabular-nums" dir="ltr">—</div><div class="text-sm font-medium flex items-center gap-1.5 price-flat"><svg width="56" height="14" viewBox="0 0 56 14" fill="none" class="shrink-0"><polyline points="0,7 8,6 16,8 24,7 32,7 40,6 48,8 56,7" stroke="#6b7280" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><span class="tabular-nums">0.00<!-- -->%</span></div></div><div class="rounded-[var(--radius)] p-4 flex flex-col gap-3 border border-border bg-card hover:bg-muted/40 transition-all"><div class="flex items-center gap-2.5"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eth.svg" alt="ETH" class="w-8 h-8 rounded-full shrink-0 bg-muted" crossorigin="anonymous"/><div><div class="text-sm font-bold text-foreground leading-none">ETH</div><div class="text-xs text-muted-foreground mt-0.5 truncate max-w-[80px]">Ethereum</div></div></div><div class="text-base font-bold text-foreground tabular-nums" dir="ltr">—</div><div class="text-sm font-medium flex items-center gap-1.5 price-flat"><svg width="56" height="14" viewBox="0 0 56 14" fill="none" class="shrink-0"><polyline points="0,7 8,6 16,8 24,7 32,7 40,6 48,8 56,7" stroke="#6b7280" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><span class="tabular-nums">0.00<!-- -->%</span></div></div><div class="rounded-[var(--radius)] p-4 flex flex-col gap-3 border border-border bg-card hover:bg-muted/40 transition-all"><div class="flex items-center gap-2.5"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/usdt.svg" alt="USDT" class="w-8 h-8 rounded-full shrink-0 bg-muted" crossorigin="anonymous"/><div><div class="text-sm font-bold text-foreground leading-none">USDT</div><div class="text-xs text-muted-foreground mt-0.5 truncate max-w-[80px]">Tether</div></div></div><div class="text-base font-bold text-foreground tabular-nums" dir="ltr">—</div><div class="text-sm font-medium flex items-center gap-1.5 price-flat"><svg width="56" height="14" viewBox="0 0 56 14" fill="none" class="shrink-0"><polyline points="0,7 8,6 16,8 24,7 32,7 40,6 48,8 56,7" stroke="#6b7280" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><span class="tabular-nums">0.00<!-- -->%</span></div></div><div class="rounded-[var(--radius)] p-4 flex flex-col gap-3 border border-border bg-card hover:bg-muted/40 transition-all"><div class="flex items-center gap-2.5"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bnb.svg" alt="BNB" class="w-8 h-8 rounded-full shrink-0 bg-muted" crossorigin="anonymous"/><div><div class="text-sm font-bold text-foreground leading-none">BNB</div><div class="text-xs text-muted-foreground mt-0.5 truncate max-w-[80px]">Binance</div></div></div><div class="text-base font-bold text-foreground tabular-nums" dir="ltr">—</div><div class="text-sm font-medium flex items-center gap-1.5 price-flat"><svg width="56" height="14" viewBox="0 0 56 14" fill="none" class="shrink-0"><polyline points="0,7 8,6 16,8 24,7 32,7 40,6 48,8 56,7" stroke="#6b7280" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><span class="tabular-nums">0.00<!-- -->%</span></div></div></div></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-4"><div class="price-box flex flex-col"><div class="flex items-center justify-between px-4 py-3.5 border-b price-box-divider"><div class="flex items-center gap-2"><svg class="w-5 h-5 text-foreground" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg><span class="font-bold text-sm text-foreground">ارز دیجیتال</span></div><div class="inline-flex items-center rounded-full border border-border overflow-hidden text-xs font-medium select-none"><button class="px-3 py-1 transition-colors text-muted-foreground">دلار</button><span class="w-px h-3.5 bg-border shrink-0"></span><button class="px-3 py-1 transition-colors text-foreground font-bold">تومان</button></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2 text-[11px] text-muted-foreground bg-muted/30 border-b price-box-divider"><span>نام</span><span>قیمت</span><span class="w-14 text-center">تغییر ۲۴h</span><span>نمودار</span></div><div class="flex-1 divide-y price-box-divider"><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div><div class="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 items-center"><div class="flex items-center gap-2"><div data-slot="skeleton" class="bg-accent animate-pulse h-7 w-7 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-12"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-12"></div></div></div><div class="px-3 py-3 border-t price-box-divider"><button class="view-all-btn flex items-center justify-between w-full px-4 py-2.5 rounded-[var(--radius)] text-xs font-medium text-muted-foreground hover:text-foreground transition-colors bg-muted/50 hover:bg-muted border border-border/60"><svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg><span>مشاهده همه ارزهای دیجیتال</span><span class="w-4"></span></button></div></div><div class="price-box flex flex-col"><div class="flex items-center justify-between px-4 py-3.5 border-b price-box-divider"><div class="flex items-center gap-2"><svg class="w-5 h-5 text-foreground" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg><span class="font-bold text-sm text-foreground">ارز دولتی</span></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2 text-[11px] text-muted-foreground bg-muted/30 border-b price-box-divider"><span>کشور</span><span>نام</span><span>قیمت (تومان)</span><span class="w-14 text-center">تغییر ۲۴h</span><span>نمودار</span></div><div class="flex-1 divide-y price-box-divider"><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-5 w-7 rounded-sm shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-20"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-14"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div></div><div class="px-3 py-3 border-t price-box-divider"><button class="view-all-btn flex items-center justify-between w-full px-4 py-2.5 rounded-[var(--radius)] text-xs font-medium text-muted-foreground hover:text-foreground transition-colors bg-muted/50 hover:bg-muted border border-border/60"><svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg><span>مشاهده همه ارزهای دولتی</span><span class="w-4"></span></button></div></div><div class="price-box flex flex-col"><div class="flex items-center justify-between px-4 py-3.5 border-b price-box-divider"><div class="flex items-center gap-2"><svg class="w-5 h-5 text-gold" fill="currentColor" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="10" rx="1.5"></rect><path d="M7 8V6a1 1 0 011-1h8a1 1 0 011 1v2"></path></svg><span class="font-bold text-sm text-foreground">طلا و سکه</span></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2 text-[11px] text-muted-foreground bg-muted/30 border-b price-box-divider"><span></span><span>نام</span><span>قیمت (تومان)</span><span class="w-14 text-center">تغییر ۲۴h</span><span>نمودار</span></div><div class="flex-1 divide-y price-box-divider"><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div><div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-2 px-4 py-2.5 items-center"><div data-slot="skeleton" class="bg-accent animate-pulse h-6 w-6 rounded-full shrink-0"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-24"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-16"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-3 w-10"></div><div data-slot="skeleton" class="bg-accent animate-pulse rounded-md h-4 w-10"></div></div></div><div class="px-3 py-3 border-t price-box-divider"><button class="view-all-btn flex items-center justify-between w-full px-4 py-2.5 rounded-[var(--radius)] text-xs font-medium text-muted-foreground hover:text-foreground transition-colors bg-muted/50 hover:bg-muted border border-border/60"><svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg><span>مشاهده همه طلا و سکه</span><span class="w-4"></span></button></div></div></div></div></main><footer class="mt-8 border-t border-border/40 py-6"><div class="flex items-center justify-center gap-1.5 text-sm text-muted-foreground" dir="rtl"><span>ساخته شده با</span><svg class="h-4 w-4 text-gold" viewBox="0 0 24 24" fill="currentColor" aria-label="قلب"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg><span>توسط تیم کی گلد</span></div></footer></div><!--$--><!--/$--></div><script>$RB=[];$RV=function(a){$RT=performance.now();for(var b=0;b<a.length;b+=2){var c=a[b],e=a[b+1];null!==e.parentNode&&e.parentNode.removeChild(e);var f=c.parentNode;if(f){var g=c.previousSibling,h=0;do{if(c&&8===c.nodeType){var d=c.data;if("/$"===d||"/&"===d)if(0===h)break;else h--;else"$"!==d&&"$?"!==d&&"$~"!==d&&"$!"!==d&&"&"!==d||h++}d=c.nextSibling;f.removeChild(c);c=d}while(c);for(;e.firstChild;)f.insertBefore(e.firstChild,c);g.data="$";g._reactRetry&&requestAnimationFrame(g._reactRetry)}}a.length=0};
+$RC=function(a,b){if(b=document.getElementById(b))(a=document.getElementById(a))?(a.previousSibling.data="$~",$RB.push(a,b),2===$RB.length&&("number"!==typeof $RT?requestAnimationFrame($RV.bind(null,$RB)):(a=performance.now(),setTimeout($RV.bind(null,$RB),2300>a&&2E3<a?2300-a:$RT+300-a)))):b.parentNode.removeChild(b)};$RC("B:0","S:0")</script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:I[90861,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"LoadingBoundaryProvider\"]\n2:\"$Sreact.fragment\"\n19:I[50909,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"default\",1]\n:HL[\"/_next/static/chunks/13l7cb.36g9g3.css\",\"style\"]\n:HL[\"/_next/static/media/f1d25eabcf1db66d-s.p.0nzxm55-ppifn.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"c\":[\"\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",20],[[\"$\",\"$L1\",null,{\"loading\":[null,[],[]],\"children\":[\"$\",\"$2\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/13l7cb.36g9g3.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/05vn6-nz71c1w.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/0wgprl~pyn999.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"fa\",\"dir\":\"rtl\",\"suppressHydrationWarning\":true,\"className\":\"bg-background\",\"children\":[[\"$\",\"head\",null,{\"children\":[[\"$\",\"script\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"\\n              // حذف تگ generator بعد از بارگذاری\\n              document.addEventListener('DOMContentLoaded', function() {\\n                const generatorMeta = document.querySelector('meta[name=\\\"generator\\\"]');\\n                if (generatorMeta) {\\n                  generatorMeta.remove();\\n                }\\n              });\\n            \"}}],[\"$\",\"meta\",null,{\"name\":\"apple-mobile-web-app-capable\",\"content\":\"yes\"}],[\"$\",\"meta\",null,{\"name\":\"apple-mobile-web-app-status-bar-style\",\"content\":\"default\"}],[\"$\",\"meta\",null,{\"name\":\"apple-mobile-web-app-title\",\"content\":\"KeyGold | کی گلد\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-icon\",\"href\":\"/images/logo.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-icon\",\"sizes\":\"152x152\",\"href\":\"/images/logo.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-icon\",\"sizes\":\"180x180\",\"href\":\"/images/logo.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-icon\",\"sizes\":\"167x167\",\"href\":\"/images/logo.png\"}],[\"$\",\"link\",null,{\"rel\":\"preconnect\",\"href\":\"https://fonts.googleapis.com\"}],[\"$\",\"link\",null,{\"rel\":\"preconnect\",\"href\":\"https://fonts.gstatic.com\",\"crossOrigin\":\"anonymous\"}],[\"$\",\"script\",null,{\"type\":\"application/ld+json\",\"dangerouslySetInnerHTML\":{\"__html\":\"{\\\"@context\\\":\\\"https://schema.org\\\",\\\"@type\\\":\\\"WebApplication\\\",\\\"name\\\":\\\"کی گلد\\\",\\\"alternateName\\\":\\\"KeyGold\\\",\\\"url\\\":\\\"https://keygold.ir\\\",\\\"description\\\":\\\"مشاهده قیمت لحظه‌ای و به‌روز ارز، طلا، سکه و ارزهای دیجیتال. دسترسی آفلاین، رابط کاربری ساده و سریع.\\\",\\\"applicationCategory\\\":\\\"FinanceApplication\\\",\\\"operatingSystem\\\":\\\"Any\\\",\\\"browserRequirements\\\":\\\"Requires JavaScript. Requires HTML5.\\\",\\\"offers\\\":{\\\"@type\\\":\\\"Offer\\\",\\\"price\\\":\\\"0\\\",\\\"priceCurrency\\\":\\\"IRR\\\"},\\\"aggregateRating\\\":{\\\"@type\\\":\\\"AggregateRating\\\",\\\"ratingValue\\\":\\\"4.8\\\",\\\"ratingCount\\\":\\\"1250\\\"},\\\"author\\\":{\\\"@type\\\":\\\"Organization\\\",\\\"name\\\":\\\"KeyGold Team\\\"},\\\"provider\\\":{\\\"@type\\\":\\\"Organization\\\",\\\"name\\\":\\\"KeyGold\\\",\\\"url\\\":\\\"https://keygold.ir\\\"},\\\"screenshot\\\":\\\"https://keygold.ir/images/screenshot.png\\\",\\\"featureList\\\":[\\\"قیمت لحظه‌ای ارز\\\",\\\"قیمت لحظه‌ای طلا و سکه\\\",\\\"قیمت لحظه‌ای ارزهای دیجیتال\\\",\\\"دسترسی آفلاین\\\",\\\"بروزرسانی خودکار\\\",\\\"رابط کاربری فارسی\\\"]}\"}}],[\"$\",\"script\",null,{\"type\":\"application/ld+json\",\"dangerouslySetInnerHTML\":{\"__html\":\"{\\\"@context\\\":\\\"https://schema.org\\\",\\\"@type\\\":\\\"Organization\\\",\\\"name\\\":\\\"کی گلد\\\",\\\"alternateName\\\":\\\"KeyGold\\\",\\\"url\\\":\\\"https://keygold.ir\\\",\\\"logo\\\":\\\"https://keygold.ir/images/logo.png\\\",\\\"sameAs\\\":[]}\"}}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_14_Pro_Max_portrait.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_14_Pro_portrait.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_12_Pro_Max_portrait.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_12_Pro_portrait.png\"}],[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_X_XS_11Pro_portrait.png\"}],\"$L3\",\"$L4\",\"$L5\",\"$L6\",\"$L7\",\"$L8\",\"$L9\",\"$La\",\"$Lb\",\"$Lc\",\"$Ld\",\"$Le\",\"$Lf\",\"$L10\",\"$L11\",\"$L12\",\"$L13\",\"$L14\",\"$L15\"]}],\"$L16\"]}]]}]}],{\"children\":[\"$L17\",{},null,false,null]},null,false,null],\"$L18\",false]],\"m\":\"$undefined\",\"G\":[\"$19\",[\"$L1a\"]],\"S\":true,\"h\":null,\"s\":\"$undefined\",\"l\":\"$undefined\",\"p\":\"$undefined\",\"d\":\"$undefined\",\"b\":\"dVT-ImfXzW8Ky46xyi5Dg\"}\n"])</script><script>self.__next_f.push([1,"1b:I[89554,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"ThemeProvider\"]\n1c:I[31794,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"PWASplashProvider\"]\n1d:I[90861,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"default\"]\n1e:I[57834,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"default\"]\n20:I[64936,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"ClientPageRoot\"]\n21:I[31713,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\",\"/_next/static/chunks/0j8gtwbi~cars_v35.js\"],\"default\"]\n24:I[46608,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"OutletBoundary\"]\n25:\"$Sreact.suspense\"\n27:I[46608,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"ViewportBoundary\"]\n29:I[46608,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"MetadataBoundary\"]\n3:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)\",\"href\":\"/splash/iPhone_XS_Max_11Pro_Max_portrait.png\"}]\n4:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPhone_XR_11_portrait.png\"}]\n5:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPad_12.9_portrait.png\"}]\n6:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPad_11_portrait.png\"}]\n7:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPad_10.5_portrait.png\"}]\n8:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPad_10.5_portrait.png\"}]\n9:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)\",\"href\":\"/splash/iPad_9.7_portrait.png\"}]\na:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_14_Pro_Max_landscape.png\"}]\nb:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_14_Pro_landscape.png\"}]\nc:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_12_Pro_Max_landscape.png\"}]\nd:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_12_Pro_landscape.png\"}]\ne:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_X_XS_11Pro_landscape.png\"}]\nf:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)\",\"href\":\"/splash/iPhone_XS_Max_11Pro_Max_landscape.png\"}]\n10:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: "])</script><script>self.__next_f.push([1,"landscape)\",\"href\":\"/splash/iPhone_XR_11_landscape.png\"}]\n11:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)\",\"href\":\"/splash/iPad_12.9_landscape.png\"}]\n12:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)\",\"href\":\"/splash/iPad_11_landscape.png\"}]\n13:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)\",\"href\":\"/splash/iPad_10.5_landscape.png\"}]\n14:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)\",\"href\":\"/splash/iPad_10.5_landscape.png\"}]\n15:[\"$\",\"link\",null,{\"rel\":\"apple-touch-startup-image\",\"media\":\"screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)\",\"href\":\"/splash/iPad_9.7_landscape.png\"}]\n1f:T84a,"])</script><script>self.__next_f.push([1,"\u003cdiv id=\"v0-built-with-button-240e2bd7-9bf2-435f-aa16-3d16305005e2\" style=\"\nborder: 1px solid hsl(0deg 0% 100% / 12%);\nposition: fixed;\nbottom: 24px;\nright: 24px;\nz-index: 1000;\nbackground: #121212;\ncolor: white;\npadding: 8px 12px;\nborder-radius: 8px;\nfont-weight: 400;\nfont-size: 14px;\nbox-shadow: 0 2px 8px rgba(0,0,0,0.12);\nletter-spacing: 0.02em;\ntransition: all 0.2s;\ndisplay: flex;\nalign-items: center;\ngap: 4px;\nfont-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n\"\u003e\n\u003ca\n  href=\"https://v0.app/chat/api/open/built-with-v0/b_mnqWU8KSQ8j?ref=6UKF98\"\n  target=\"_blank\"\n  rel=\"noopener\"\n  style=\"\n    color: inherit;\n    text-decoration: none;\n    display: flex;\n    align-items: center;\n    gap: 4px;\n  \"\n\u003e\n  Built with\n  \u003csvg\n    fill=\"currentColor\"\n    viewBox=\"0 0 147 70\"\n    xmlns=\"http://www.w3.org/2000/svg\"\n    style=\"width: 20px; height: 20px;\"\n  \u003e\n    \u003cpath d=\"M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z\" /\u003e\n    \u003cpath d=\"M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z\" /\u003e\n  \u003c/svg\u003e\n\u003c/a\u003e\n\n\u003cbutton\n  onclick=\"document.getElementById('v0-built-with-button-240e2bd7-9bf2-435f-aa16-3d16305005e2').style.display='none'\"\n  onmouseenter=\"this.style.opacity='1'\"\n  onmouseleave=\"this.style.opacity='0.7'\"\n  style=\"\n    background: none;\n    border: none;\n    color: white;\n    cursor: pointer;\n    padding: 2px;\n    margin-left: 4px;\n    border-radius: 2px;\n    display: flex;\n    align-items: center;\n    opacity: 0.7;\n    transition: opacity 0.2s;\n    transform: translateZ(0);\n  \"\n  aria-label=\"Close\"\n\u003e\n  \u003csvg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"\u003e\n    \u003cpath d=\"M18 6L6 18M6 6l12 12\"/\u003e\n  \u003c/svg\u003e\n\u003c/button\u003e\n\n\u003cspan style=\"\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n\"\u003e\n  v0\n\u003c/span\u003e\n\u003c/div\u003e"])</script><script>self.__next_f.push([1,"16:[\"$\",\"body\",null,{\"className\":\"vazirmatn_3ce704c3-module__s-zZEa__variable font-sans\",\"children\":[[\"$\",\"$L1b\",null,{\"attribute\":\"class\",\"defaultTheme\":\"system\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$L1c\",null,{\"children\":[\"$\",\"$L1d\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L1e\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}],[\"$\",\"div\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"$1f\"}}]]}]\n"])</script><script>self.__next_f.push([1,"17:[\"$\",\"$2\",\"c\",{\"children\":[[\"$\",\"$L20\",null,{\"Component\":\"$21\",\"serverProvidedParams\":{\"searchParams\":{},\"params\":{},\"promises\":[\"$@22\",\"$@23\"]}}],[[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/0j8gtwbi~cars_v35.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"$L24\",null,{\"children\":[\"$\",\"$25\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@26\"}]}]]}]\n18:[\"$\",\"$2\",\"h\",{\"children\":[null,[\"$\",\"$L27\",null,{\"children\":\"$L28\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$L29\",null,{\"children\":[\"$\",\"$25\",null,{\"name\":\"Next.Metadata\",\"children\":\"$L2a\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}]\n1a:[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/13l7cb.36g9g3.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]\n"])</script><script>self.__next_f.push([1,"22:{}\n23:\"$17:props:children:0:props:serverProvidedParams:params\"\n"])</script><script>self.__next_f.push([1,"28:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes\"}],[\"$\",\"meta\",\"2\",{\"name\":\"theme-color\",\"content\":\"#10b981\",\"media\":\"(prefers-color-scheme: light)\"}],[\"$\",\"meta\",\"3\",{\"name\":\"theme-color\",\"content\":\"#10b981\",\"media\":\"(prefers-color-scheme: dark)\"}]]\n"])</script><script>self.__next_f.push([1,"2b:I[91530,[\"/_next/static/chunks/05vn6-nz71c1w.js\",\"/_next/static/chunks/0wgprl~pyn999.js\"],\"IconMark\"]\n26:null\n"])</script><script>self.__next_f.push([1,"2a:[[\"$\",\"title\",\"0\",{\"children\":\"کی گلد | قیمت لحظه‌ای ارز، طلا و ارز دیجیتال\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"مشاهده قیمت لحظه‌ای و به‌روز ارز، طلا، سکه و ارزهای دیجیتال. دسترسی آفلاین، رابط کاربری ساده و سریع. قیمت دلار، یورو، بیت‌کوین، اتریوم و سکه بهار آزادی.\"}],[\"$\",\"meta\",\"2\",{\"name\":\"author\",\"content\":\"KeyGold Team\"}],[\"$\",\"link\",\"3\",{\"rel\":\"manifest\",\"href\":\"/manifest.json\",\"crossOrigin\":\"$undefined\"}],[\"$\",\"meta\",\"4\",{\"name\":\"keywords\",\"content\":\"قیمت ارز,قیمت طلا,قیمت سکه,قیمت دلار,قیمت یورو,قیمت بیت کوین,ارز دیجیتال,قیمت لحظه ای ارز,کی گلد,سکه بهار آزادی,قیمت انس طلا,قیمت ریال,قیمت تومان\"}],[\"$\",\"meta\",\"5\",{\"name\":\"creator\",\"content\":\"KeyGold\"}],[\"$\",\"meta\",\"6\",{\"name\":\"publisher\",\"content\":\"KeyGold\"}],[\"$\",\"meta\",\"7\",{\"name\":\"robots\",\"content\":\"index, follow\"}],[\"$\",\"meta\",\"8\",{\"name\":\"googlebot\",\"content\":\"index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1\"}],[\"$\",\"meta\",\"9\",{\"name\":\"category\",\"content\":\"finance\"}],[\"$\",\"link\",\"10\",{\"rel\":\"canonical\",\"href\":\"https://keygold.ir\"}],[\"$\",\"meta\",\"11\",{\"name\":\"format-detection\",\"content\":\"telephone=no, address=no, email=no\"}],[\"$\",\"meta\",\"12\",{\"name\":\"google-site-verification\",\"content\":\"your-google-verification-code\"}],[\"$\",\"meta\",\"13\",{\"name\":\"mobile-web-app-capable\",\"content\":\"yes\"}],[\"$\",\"meta\",\"14\",{\"name\":\"apple-mobile-web-app-title\",\"content\":\"کی گلد\"}],[\"$\",\"meta\",\"15\",{\"name\":\"apple-mobile-web-app-status-bar-style\",\"content\":\"default\"}],[\"$\",\"meta\",\"16\",{\"property\":\"og:title\",\"content\":\"کی گلد | قیمت لحظه‌ای ارز، طلا و ارز دیجیتال\"}],[\"$\",\"meta\",\"17\",{\"property\":\"og:description\",\"content\":\"مشاهده قیمت لحظه‌ای و به‌روز ارز، طلا، سکه و ارزهای دیجیتال\"}],[\"$\",\"meta\",\"18\",{\"property\":\"og:url\",\"content\":\"https://keygold.ir\"}],[\"$\",\"meta\",\"19\",{\"property\":\"og:site_name\",\"content\":\"کی گلد\"}],[\"$\",\"meta\",\"20\",{\"property\":\"og:locale\",\"content\":\"fa_IR\"}],[\"$\",\"meta\",\"21\",{\"property\":\"og:image\",\"content\":\"https://keygold.ir/images/og-image.png\"}],[\"$\",\"meta\",\"22\",{\"property\":\"og:image:width\",\"content\":\"1200\"}],[\"$\",\"meta\",\"23\",{\"property\":\"og:image:height\",\"content\":\"630\"}],[\"$\",\"meta\",\"24\",{\"property\":\"og:image:alt\",\"content\":\"کی گلد - قیمت لحظه‌ای ارز و طلا\"}],[\"$\",\"meta\",\"25\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"26\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"27\",{\"name\":\"twitter:title\",\"content\":\"کی گلد | قیمت لحظه‌ای ارز، طلا و ارز دیجیتال\"}],[\"$\",\"meta\",\"28\",{\"name\":\"twitter:description\",\"content\":\"مشاهده قیمت لحظه‌ای و به‌روز ارز، طلا، سکه و ارزهای دیجیتال\"}],[\"$\",\"meta\",\"29\",{\"name\":\"twitter:image\",\"content\":\"https://keygold.ir/images/twitter-image.png\"}],[\"$\",\"link\",\"30\",{\"rel\":\"icon\",\"href\":\"/images/logo.png\",\"sizes\":\"192x192\",\"type\":\"image/png\"}],[\"$\",\"link\",\"31\",{\"rel\":\"icon\",\"href\":\"/images/logo.png\",\"sizes\":\"512x512\",\"type\":\"image/png\"}],[\"$\",\"link\",\"32\",{\"rel\":\"apple-touch-icon\",\"href\":\"/images/logo.png\",\"sizes\":\"180x180\",\"type\":\"image/png\"}],[\"$\",\"$L2b\",\"33\",{}]]\n"])</script>
+
+<script>
+// KeyGold Unified Native Client Controller v34
+(function() {
+  // 1. Capture PWA beforeinstallprompt immediately
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    window.__deferredInstallPrompt = e;
+  });
+
+  // 2. Telegram Mini App Detection
+  function checkTelegram() {
+    try {
+      if (typeof window === 'undefined') return false;
+      if (window.TelegramWebviewProxy !== undefined) return true;
+      if (window.webkit && window.webkit.messageHandlers && (window.webkit.messageHandlers.webApp || window.webkit.messageHandlers.telegram)) return true;
+      if (window.external && ('notify' in window.external)) return true;
+      var loc = window.location.href || '';
+      if (/[#&?]tgWebApp/i.test(loc) || /[#&?]tgWebAppData/i.test(loc)) return true;
+      if (/Telegram/i.test(navigator.userAgent || '')) return true;
+      var tg = window.Telegram && window.Telegram.WebApp;
+      if (tg && (tg.platform !== 'unknown' || (tg.initData && tg.initData.length > 0))) return true;
+      if (window.parent && window.parent !== window && (/telegram/i.test(document.referrer || '') || /web.telegram.org/i.test(document.referrer || ''))) return true;
+      if (window.sessionStorage && window.sessionStorage.getItem('__kg_is_telegram') === '1') return true;
+      if (window.localStorage && window.localStorage.getItem('__kg_is_telegram') === '1') return true;
+    } catch(e) {}
+    return false;
+  }
+
+  function applyTelegramMode() {
+    if (!checkTelegram()) return;
+    window.__isTelegram = true;
+    try {
+      window.sessionStorage.setItem('__kg_is_telegram', '1');
+      window.localStorage.setItem('__kg_is_telegram', '1');
+    } catch(e) {}
+
+    if (!document.documentElement.classList.contains('is-telegram')) {
+      document.documentElement.classList.add('is-telegram');
+    }
+    document.documentElement.setAttribute('data-telegram', 'true');
+
+    if (document.body && !document.body.classList.contains('is-telegram')) {
+      document.body.classList.add('is-telegram');
+      document.body.setAttribute('data-telegram', 'true');
+    }
+
+    var tg = window.Telegram && window.Telegram.WebApp;
+    if (tg) {
+      try { tg.ready(); } catch(e) {}
+      try { tg.expand(); } catch(e) {}
+    }
+
+    var inset = 0;
+    if (tg && tg.contentSafeAreaInset && typeof tg.contentSafeAreaInset.top === 'number' && tg.contentSafeAreaInset.top > 0) {
+      inset = tg.contentSafeAreaInset.top + 8;
+    } else if (tg && tg.safeAreaInset && typeof tg.safeAreaInset.top === 'number' && tg.safeAreaInset.top > 0) {
+      inset = tg.safeAreaInset.top + 56;
+    } else {
+      var comp = getComputedStyle(document.documentElement);
+      var cTop = parseInt(comp.getPropertyValue('--tg-content-safe-area-inset-top') || '0', 10);
+      var sTop = parseInt(comp.getPropertyValue('--tg-safe-area-inset-top') || '0', 10);
+      if (cTop > 0) inset = cTop + 8;
+      else if (sTop > 0) inset = sTop + 56;
+      else inset = 96;
+    }
+    if (inset < 92) inset = 96;
+
+    document.documentElement.style.setProperty('--tg-top-safe-pad', inset + 'px');
+    document.documentElement.style.setProperty('--tg-header-offset', inset + 'px');
+  }
+
+  applyTelegramMode();
+
+  if (typeof MutationObserver !== 'undefined') {
+    var obs = new MutationObserver(function() {
+      if (checkTelegram()) {
+        if (!document.documentElement.classList.contains('is-telegram') || document.documentElement.getAttribute('data-telegram') !== 'true') {
+          applyTelegramMode();
+        }
+      }
+    });
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-telegram'] });
+    if (document.body) {
+      obs.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-telegram'] });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (document.body) obs.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-telegram'] });
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyTelegramMode);
+  }
+  window.addEventListener('load', applyTelegramMode);
+  window.addEventListener('resize', applyTelegramMode);
+
+  var tgObj = window.Telegram && window.Telegram.WebApp;
+  if (tgObj && tgObj.onEvent) {
+    tgObj.onEvent('contentSafeAreaChanged', applyTelegramMode);
+    tgObj.onEvent('safeAreaChanged', applyTelegramMode);
+    tgObj.onEvent('fullscreenChanged', applyTelegramMode);
+    tgObj.onEvent('viewportChanged', applyTelegramMode);
+    tgObj.onEvent('themeChanged', applyTelegramMode);
+  }
+  setInterval(applyTelegramMode, 300);
+
+  // 3. Standalone Installed PWA Detection
+  function isInstalledPWA() {
+    try {
+      if (checkTelegram()) return false;
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+      if (window.navigator && window.navigator.standalone === true) return true;
+    } catch(e) {}
+    return false;
+  }
+
+  function showModal(el) {
+    if (!el) return;
+    el.classList.add('active', 'show');
+    el.setAttribute('data-visible', 'true');
+    el.style.setProperty('display', 'flex', 'important');
+  }
+
+  function hideModal(el) {
+    if (!el) return;
+    el.classList.remove('active', 'show');
+    el.removeAttribute('data-visible');
+    el.style.setProperty('display', 'none', 'important');
+  }
+
+  // 4. Overlays Management (Guaranteed Creation)
+  function ensureOverlays() {
+    var host = document.getElementById('kgold-system-overlays');
+    if (!host) {
+      if (!document.body) return null;
+      host = document.createElement('div');
+      host.id = 'kgold-system-overlays';
+
+      var isPwa = isInstalledPWA();
+      var splashHtml = '';
+      if (isPwa) {
+        splashHtml = `
+        <!-- K-GOLD 6.5s NATIVE APP SPLASH SCREEN (ONLY IN STANDALONE INSTALLED PWA) -->
+        <div id="app-native-splash">
+          <div class="splash-content">
+            <div class="splash-logo-wrap">
+              <img src="/images/logo.png" alt="K·GOLD" class="splash-logo" />
+              <div class="splash-pulse-ring"></div>
+            </div>
+            <div class="splash-brand-title">کی‌گلد | K·GOLD</div>
+            <div class="splash-brand-sub">سامانه لحظه‌ای طلا، ارز و خودرو</div>
+            <div class="splash-progress-container">
+              <div class="splash-progress-track">
+                <div class="splash-progress-bar" id="splash-progress-bar"></div>
+              </div>
+              <div class="splash-status-text" id="splash-status-text">در حال برقراری ارتباط با شبکه...</div>
+            </div>
+          </div>
+        </div>
+        `;
+      }
+
+      host.innerHTML = splashHtml + `
+        <!-- AUTHENTIC IOS OFFLINE MODAL -->
+        <div id="ios-offline-modal-root" class="ios-offline-backdrop" style="display: none !important;">
+          <div class="ios-offline-card">
+            <div class="ios-offline-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF453A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg>
+            </div>
+            <div class="ios-offline-title">اینترنت شما قطع است</div>
+            <div class="ios-offline-desc">لطفاً اتصال اینترنت خود را بررسی نمایید.</div>
+            <button class="ios-offline-btn" id="ios-offline-confirm-btn">تأیید</button>
+          </div>
+        </div>
+
+        <!-- PWA & IOS/DESKTOP INSTALL GUIDE MODAL -->
+        <div id="pwa-install-modal-root" class="ios-offline-backdrop" style="display: none !important;">
+          <div class="ios-offline-card" style="max-width: 390px;" id="pwa-card-inner">
+            <div class="splash-logo-wrap" style="width: 56px; height: 56px; margin-bottom: 12px;">
+              <img src="/images/logo.png" alt="K·GOLD" style="width: 50px; height: 50px; border-radius: 14px;" />
+            </div>
+            <div class="ios-offline-title" style="margin-bottom: 8px;">نصب اپلیکیشن کی‌گلد</div>
+            
+            <div id="pwa-guide-desktop" class="ios-offline-desc" style="text-align: right; font-size: 12.5px; line-height: 1.8; margin-bottom: 16px; display: none;">
+              برای اجرای کی‌گلد در پنجره اختصاصی و مستقل در کامپیوتر (ویندوز / مک):<br/>
+              ۱. در <strong>نوار آدرس مرورگر (بالا سمت چپ یا راست)</strong> روی آیکون نصب (<svg style="display:inline-block;vertical-align:middle;width:15px;height:15px;color:#10b981" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> یا علامت مانیتور) کلیک کنید.<br/>
+              ۲. گزینه <strong>Install (نصب)</strong> را تأیید کنید.<br/>
+              ۳. همچنین می‌توانید از <strong>منوی ۳ نقطه مرورگر</strong> گزینه <em>Install KeyGold</em> را بزنید.
+            </div>
+
+            <div id="pwa-guide-mobile" class="ios-offline-desc" style="text-align: right; font-size: 12.5px; line-height: 1.8; margin-bottom: 16px; display: none;">
+              برای تجربه فول‌اسکرین و استفاده بدون نوار مرورگر در گوشی موبایل:<br/>
+              ۱. روی دکمه <strong>اشتراک‌گذاری (Share)</strong> در آیفون یا <strong>منوی سه‌نقطه</strong> در اندروید ضربه بزنید.<br/>
+              ۲. گزینه <strong>افزودن به صفحه اصلی (Add to Home Screen)</strong> را انتخاب کنید.<br/>
+              ۳. گزینه <strong>Add / Install</strong> را بزنید تا برنامه با آیکون اختصاصی نصب شود.
+            </div>
+
+            <button class="ios-offline-btn" id="pwa-guide-close-btn">متوجه شدم</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(host);
+
+      // Bind modal close buttons
+      var pwaClose = document.getElementById('pwa-guide-close-btn');
+      var pwaModal = document.getElementById('pwa-install-modal-root');
+      var pwaCard = document.getElementById('pwa-card-inner');
+      if (pwaClose && pwaModal) {
+        function closePwa(e) { if (e) { e.preventDefault(); e.stopPropagation(); } hideModal(pwaModal); }
+        pwaClose.addEventListener('click', closePwa);
+        pwaClose.addEventListener('touchend', closePwa);
+        pwaModal.addEventListener('click', function(e) { if (e.target === pwaModal) closePwa(e); });
+        pwaModal.addEventListener('touchend', function(e) { if (e.target === pwaModal) closePwa(e); });
+        if (pwaCard) {
+          pwaCard.addEventListener('click', function(e) { e.stopPropagation(); });
+          pwaCard.addEventListener('touchend', function(e) { e.stopPropagation(); });
+        }
+      }
+
+      // Bind offline buttons
+      var offModal = document.getElementById('ios-offline-modal-root');
+      var offConfirm = document.getElementById('ios-offline-confirm-btn');
+      if (offConfirm && offModal) {
+        function confirmOff(e) {
+          if (e) { e.preventDefault(); e.stopPropagation(); }
+          if (!navigator.onLine) {
+            offConfirm.textContent = 'بررسی اتصال...';
+            setTimeout(function() {
+              if (!navigator.onLine) {
+                offConfirm.textContent = 'تأیید';
+                var card = offModal.querySelector('.ios-offline-card');
+                if (card) {
+                  card.style.transform = 'scale(0.96)';
+                  setTimeout(function() { card.style.transform = 'scale(1)'; }, 150);
+                }
+              } else {
+                hideModal(offModal);
+                location.reload();
+              }
+            }, 500);
+          } else {
+            hideModal(offModal);
+          }
+        }
+        offConfirm.addEventListener('click', confirmOff);
+        offConfirm.addEventListener('touchend', confirmOff);
+      }
+
+      // Standalone PWA 6.5s progress logic
+      if (isPwa) {
+        var bar = document.getElementById('splash-progress-bar');
+        var status = document.getElementById('splash-status-text');
+        var splash = document.getElementById('app-native-splash');
+        var startTime = Date.now();
+        var duration = 6500;
+        var msgs = [
+          { at: 0, text: 'در حال برقراری ارتباط با شبکه...' },
+          { at: 1800, text: 'دریافت نرخ‌های زنده طلا و ارزهای جهانی...' },
+          { at: 3800, text: 'بارگذاری قیمت‌های روز بازار و خودرو...' },
+          { at: 5400, text: 'آماده‌سازی محیط کاربری...' }
+        ];
+        var timer = setInterval(function() {
+          var elapsed = Date.now() - startTime;
+          var pct = Math.min(100, (elapsed / duration) * 100);
+          if (bar) bar.style.width = pct + '%';
+          if (status) {
+            for (var i = msgs.length - 1; i >= 0; i--) {
+              if (elapsed >= msgs[i].at) {
+                status.textContent = msgs[i].text;
+                break;
+              }
+            }
+          }
+          if (elapsed >= duration) {
+            clearInterval(timer);
+            if (splash) {
+              splash.classList.add('splash-fade-out');
+              setTimeout(function() {
+                splash.style.display = 'none';
+                try { splash.remove(); } catch(e){}
+              }, 600);
+            }
+          }
+        }, 35);
+      }
+    }
+    return host;
+  }
+  window.ensureOverlays = ensureOverlays;
+  window.checkTelegram = checkTelegram;
+  window.isInstalledPWA = isInstalledPWA;
+
+  // 5. Explicit PWA Trigger
+  window.__triggerPWAInstall = function() {
+    if (checkTelegram() || isInstalledPWA()) return;
+
+    if (window.__deferredInstallPrompt) {
+      window.__deferredInstallPrompt.prompt();
+      window.__deferredInstallPrompt.userChoice.then(function(choice) {
+        if (choice && choice.outcome === 'accepted') {
+          window.__deferredInstallPrompt = null;
+        }
+      });
+      return;
+    }
+
+    ensureOverlays();
+    var modal = document.getElementById('pwa-install-modal-root');
+    if (modal) {
+      var isDesktop = !(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || ''));
+      var dGuide = document.getElementById('pwa-guide-desktop');
+      var mGuide = document.getElementById('pwa-guide-mobile');
+      if (dGuide && mGuide) {
+        if (isDesktop) {
+          dGuide.style.display = 'block';
+          mGuide.style.display = 'none';
+        } else {
+          dGuide.style.display = 'none';
+          mGuide.style.display = 'block';
+        }
+      }
+      showModal(modal);
+    }
+  };
+
+  // 6. Network status listeners
+  function showOffline() {
+    ensureOverlays();
+    var offModal = document.getElementById('ios-offline-modal-root');
+    if (offModal) showModal(offModal);
+  }
+  function hideOffline() {
+    var offModal = document.getElementById('ios-offline-modal-root');
+    if (offModal) hideModal(offModal);
+  }
+  window.addEventListener('offline', showOffline);
+  window.addEventListener('online', hideOffline);
+  if (!navigator.onLine) showOffline();
+
+  // 7. Initial Mount
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureOverlays);
+  } else {
+    ensureOverlays();
+  }
+  window.addEventListener('load', ensureOverlays);
+})();
+</script>
+</body></html>
