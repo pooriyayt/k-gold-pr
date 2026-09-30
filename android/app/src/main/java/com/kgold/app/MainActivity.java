@@ -2,7 +2,9 @@ package com.kgold.app;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -21,20 +23,25 @@ import androidx.core.content.FileProvider;
 
 import com.getcapacitor.BridgeActivity;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 
 public class MainActivity extends BridgeActivity {
+
+    private static final int STORAGE_PERMISSION_CODE = 101;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Add Javascript Interface to WebView for Native Gallery Saving, Sharing & In-App APK Updating
+        // Add Javascript Interface to WebView for Native Gallery Saving, Sharing, Widgets & In-App APK Updating
         if (this.bridge != null && this.bridge.getWebView() != null) {
             this.bridge.getWebView().addJavascriptInterface(new KGoldNativeBridge(), "AndroidBridge");
         }
@@ -46,71 +53,111 @@ public class MainActivity extends BridgeActivity {
         public String saveImageToGallery(String base64Data, String filename) {
             try {
                 if (base64Data == null || base64Data.isEmpty()) {
-                    return "{\"success\":false,\"error\":\"Empty base64 data\"}";
+                    return "{\"success\":false,\"error\":\"داده تصویر خالی است\"}";
                 }
 
-                // Check permissions on older Android (<= API 28)
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
+                // Check permissions on Android <= 32
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                    boolean writeGranted = ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                    boolean readGranted = ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                    if (!writeGranted && !readGranted) {
                         ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                        return "{\"success\":false,\"error\":\"Permission requested\"}";
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                                STORAGE_PERMISSION_CODE);
                     }
                 }
 
-                // Strip data URL prefix if present
+                // Strip data URL prefix
                 String pureBase64 = base64Data;
                 if (pureBase64.contains(",")) {
                     pureBase64 = pureBase64.substring(pureBase64.indexOf(",") + 1);
                 }
 
                 byte[] decodedBytes = Base64.decode(pureBase64, Base64.DEFAULT);
-                String actualFilename = (filename != null && !filename.isEmpty()) ? filename : "KGold_" + System.currentTimeMillis() + ".png";
+                String actualFilename = (filename != null && !filename.isEmpty())
+                        ? filename
+                        : "KGold_" + System.currentTimeMillis() + ".png";
 
+                boolean savedSuccessfully = false;
+                String savedPath = "";
+
+                // Strategy 1: Android 10+ MediaStore
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    // Android 10+ MediaStore approach (No dangerous storage permission required)
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.DISPLAY_NAME, actualFilename);
-                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-                    values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/KGold");
-                    values.put(MediaStore.Images.Media.IS_PENDING, 1);
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.Images.Media.DISPLAY_NAME, actualFilename);
+                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+                        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/KGold");
+                        values.put(MediaStore.Images.Media.IS_PENDING, 1);
 
-                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    if (uri != null) {
-                        try (OutputStream os = getContentResolver().openOutputStream(uri)) {
-                            if (os != null) {
-                                os.write(decodedBytes);
-                                os.flush();
+                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                        if (uri != null) {
+                            try (OutputStream os = getContentResolver().openOutputStream(uri)) {
+                                if (os != null) {
+                                    os.write(decodedBytes);
+                                    os.flush();
+                                    savedSuccessfully = true;
+                                }
                             }
+                            values.clear();
+                            values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                            getContentResolver().update(uri, values, null, null);
+                            savedPath = uri.toString();
                         }
-                        values.clear();
-                        values.put(MediaStore.Images.Media.IS_PENDING, 0);
-                        getContentResolver().update(uri, values, null, null);
-
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "کارت قیمت با موفقیت در گالری ذخیره شد", Toast.LENGTH_LONG).show());
-                        return "{\"success\":true,\"uri\":\"" + uri.toString() + "\"}";
+                    } catch (Exception e) {
+                        savedSuccessfully = false;
                     }
-                } else {
-                    // Legacy Android (< Android 10)
-                    File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "KGold");
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    File file = new File(dir, actualFilename);
-                    try (FileOutputStream fos = new FileOutputStream(file)) {
-                        fos.write(decodedBytes);
-                        fos.flush();
-                    }
-                    MediaScannerConnection.scanFile(MainActivity.this, new String[]{file.getAbsolutePath()}, new String[]{"image/png"}, null);
-
-                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "کارت قیمت با موفقیت در گالری ذخیره شد", Toast.LENGTH_LONG).show());
-                    return "{\"success\":true,\"path\":\"" + file.getAbsolutePath() + "\"}";
                 }
+
+                // Strategy 2: Direct public directory / Pictures / KGold (fallback or pre-Android 10)
+                if (!savedSuccessfully) {
+                    try {
+                        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "KGold");
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                        File file = new File(dir, actualFilename);
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            fos.write(decodedBytes);
+                            fos.flush();
+                            savedSuccessfully = true;
+                            savedPath = file.getAbsolutePath();
+                        }
+                        MediaScannerConnection.scanFile(MainActivity.this,
+                                new String[]{file.getAbsolutePath()}, new String[]{"image/png"}, null);
+                    } catch (Exception e) {
+                        savedSuccessfully = false;
+                    }
+                }
+
+                // Strategy 3: App external files dir as ultimate safe fallback
+                if (!savedSuccessfully) {
+                    File extDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    if (extDir != null) {
+                        File file = new File(extDir, actualFilename);
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            fos.write(decodedBytes);
+                            fos.flush();
+                            savedSuccessfully = true;
+                            savedPath = file.getAbsolutePath();
+                        }
+                        MediaScannerConnection.scanFile(MainActivity.this,
+                                new String[]{file.getAbsolutePath()}, new String[]{"image/png"}, null);
+                    }
+                }
+
+                if (savedSuccessfully) {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "کارت با موفقیت در گالری ذخیره شد ✓", Toast.LENGTH_SHORT).show());
+                    return "{\"success\":true,\"path\":\"" + savedPath + "\"}";
+                } else {
+                    return "{\"success\":false,\"error\":\"امکان ذخیره فایل در حافظه وجود ندارد\"}";
+                }
+
             } catch (Exception e) {
                 return "{\"success\":false,\"error\":\"" + e.getMessage() + "\"}";
             }
-            return "{\"success\":false,\"error\":\"Unknown error\"}";
         }
 
         @JavascriptInterface
@@ -144,6 +191,52 @@ public class MainActivity extends BridgeActivity {
                 Intent chooser = Intent.createChooser(shareIntent, title != null ? title : "اشتراک‌گذاری کارت قیمت کی‌گلد");
                 chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(chooser);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @JavascriptInterface
+        public void syncWidgetPrices(String pricesJson) {
+            try {
+                if (pricesJson == null || pricesJson.isEmpty()) return;
+                JSONObject obj = new JSONObject(pricesJson);
+                SharedPreferences.Editor editor = getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE).edit();
+
+                Iterator<String> keys = obj.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    JSONObject itemObj = obj.getJSONObject(key);
+                    if (itemObj.has("price")) {
+                        editor.putString("price_" + key, itemObj.getString("price"));
+                    }
+                    if (itemObj.has("prevPrice")) {
+                        editor.putString("prev_price_" + key, itemObj.getString("prevPrice"));
+                    }
+                    if (itemObj.has("isPositive")) {
+                        editor.putBoolean("is_pos_" + key, itemObj.getBoolean("isPositive"));
+                    }
+                }
+                editor.apply();
+
+                // Refresh all home screen widgets
+                runOnUiThread(() -> KGoldWidgetProvider.updateAllWidgets(MainActivity.this));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @JavascriptInterface
+        public void updateDefaultWidgetAsset(String assetKey) {
+            try {
+                SharedPreferences.Editor editor = getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE).edit();
+                // Set default for general widgets
+                editor.putString("default_asset", assetKey);
+                editor.apply();
+                runOnUiThread(() -> {
+                    KGoldWidgetProvider.updateAllWidgets(MainActivity.this);
+                    Toast.makeText(MainActivity.this, "ویجت به‌روزرسانی شد ✓", Toast.LENGTH_SHORT).show();
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

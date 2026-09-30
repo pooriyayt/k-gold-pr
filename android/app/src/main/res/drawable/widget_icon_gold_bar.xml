@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <!-- Gold Ingot -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M3,6h20l-2.5,14h-15z" />
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M3,6l2.5,4h15l2.5,-4z" />
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M5.5,10l-2.5,10h15l2.5,-10z" />
+</vector>

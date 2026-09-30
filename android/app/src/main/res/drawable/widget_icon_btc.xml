@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <!-- BTC Orange Circle -->
+    <path
+        android:fillColor="#F7931A"
+        android:pathData="M13,0A13,13 0 1,0 26,13A13,13 0 0,0 13,0z" />
+    <!-- White B symbol -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M9,5h5a3.5,3.5 0 0,1 2,6.5a3.5,3.5 0 0,1 -2,6.5h-5z M11.5,7.5v3.5h2.5a1.75,1.75 0 0,0 0,-3.5z M11.5,13.5v3.5h3a1.75,1.75 0 0,0 0,-3.5z" />
+</vector>

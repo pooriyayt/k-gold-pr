@@ -21,6 +21,7 @@ import { ChartModal } from './components/Modals/ChartModal';
 import { PriceAlertModal } from './components/Modals/PriceAlertModal';
 import { ShareCardItem } from './services/shareCard';
 import { evaluateAlerts } from './services/alerts';
+import { syncPricesToWidget } from './services/widgetSync';
 import { DownloadCloud, Bell, X } from 'lucide-react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
@@ -185,6 +186,13 @@ export const App: React.FC = () => {
     if (eur) list.push({ name: 'یورو اروپا', price: eur.price, change: eur.change_24h || '+۱.۹٪' });
 
     return list;
+  }, [currencies, cryptoList, goldList]);
+
+  // Sync live prices to Android Home Screen Widgets
+  useEffect(() => {
+    if (currencies.length > 0 || cryptoList.length > 0 || goldList.length > 0) {
+      syncPricesToWidget(currencies, cryptoList, goldList);
+    }
   }, [currencies, cryptoList, goldList]);
 
   const handleOpenChart = (name: string, price: number) => {

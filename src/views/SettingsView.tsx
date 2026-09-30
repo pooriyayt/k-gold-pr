@@ -21,6 +21,7 @@ import { CURRENT_APP_VERSION, checkLatestRelease, ReleaseInfo } from '../service
 import { UpdateModal } from '../components/Modals/UpdateModal';
 import { PriceAlertModal } from '../components/Modals/PriceAlertModal';
 import { PortfolioModal } from '../components/Modals/PortfolioModal';
+import { WIDGET_ASSET_OPTIONS, setNativeWidgetAsset } from '../services/widgetSync';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 interface SettingsViewProps {
@@ -59,6 +60,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   // Modals for Price Alerts & Portfolio
   const [isAlertsModalOpen, setIsAlertsModalOpen] = useState(false);
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
+
+  // Widget Asset Selection State
+  const [selectedWidgetAsset, setSelectedWidgetAsset] = useState<string>(() => {
+    return localStorage.getItem('default_widget_asset') || 'usd';
+  });
+  const [widgetSavedMsg, setWidgetSavedMsg] = useState(false);
+
+  const handleSelectWidgetAsset = async (key: string) => {
+    try {
+      await Haptics.impact({ style: ImpactStyle.Light });
+    } catch {}
+    setSelectedWidgetAsset(key);
+    localStorage.setItem('default_widget_asset', key);
+    setNativeWidgetAsset(key);
+    setWidgetSavedMsg(true);
+    setTimeout(() => setWidgetSavedMsg(false), 3000);
+  };
 
   // Check update on mount
   useEffect(() => {
@@ -229,20 +247,81 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </button>
       </div>
 
-      {/* 3. Android Home Screen Widget Info Card */}
-      <div className="glass-card rounded-2xl p-3.5 border border-amber-500/20 bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/10 flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-          <LayoutGrid className="w-4 h-4" />
+      {/* 3. Android Home Screen Widget Interactive Section */}
+      <div className="glass-card rounded-2xl p-4 border border-amber-500/20 bg-gradient-to-br from-amber-500/5 via-transparent to-amber-500/10 space-y-3.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0">
+              <LayoutGrid className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                <span>ویجت صفحه اصلی گوشی (Widget)</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">طراحی جمع‌وجور</span>
+              </h4>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">نمایش زنده نرخ ارز یا طلا بدون باز کردن اپلیکیشن</p>
+            </div>
+          </div>
+          {widgetSavedMsg && (
+            <span className="text-[10px] text-emerald-400 font-bold px-2 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 animate-fadeIn">
+              اعمال شد ✓
+            </span>
+          )}
         </div>
-        <div className="space-y-1 text-right">
-          <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-            <span>ویجت صفحه اصلی گوشی (Widget)</span>
-            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">جدید</span>
-          </h4>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-            برای مشاهده لحظه‌ای نرخ‌های دلار، تتر، طلا و سکه بدون باز کردن برنامه: انگشتتان را روی صفحه اصلی گوشی نگه دارید، وارد بخش ویجت‌ها (Widgets) شوید و ویجت <strong>کی‌گلد</strong> را به صفحه اضافه کنید.
-          </p>
+
+        {/* Live Widget Preview (Matching user's reference) */}
+        <div className="flex justify-center py-1">
+          {(() => {
+            const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAsset) || WIDGET_ASSET_OPTIONS[0];
+            return (
+              <div className="w-36 h-36 rounded-[24px] bg-white text-slate-900 p-3 shadow-xl border border-slate-200 flex flex-col justify-between select-none">
+                <div className="flex items-start justify-between">
+                  <span className="text-2xl">{currentAsset.icon}</span>
+                  <div className="text-right">
+                    <span className="block text-[11px] font-bold text-slate-500 leading-tight">{currentAsset.name}</span>
+                    <span className="block text-xs font-black text-slate-900">{currentAsset.code}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-between">
+                  <div className="text-left">
+                    <span className="block text-[10px] text-slate-400 font-semibold">{currentAsset.defaultPrice}</span>
+                    <span className="block text-lg font-black text-emerald-600 leading-tight">{currentAsset.defaultPrice}</span>
+                  </div>
+                  <span className="text-[9px] text-slate-400 font-bold mb-0.5">تومان</span>
+                </div>
+              </div>
+            );
+          })()}
         </div>
+
+        {/* Asset Selection Buttons */}
+        <div className="space-y-1.5">
+          <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 text-right">
+            انتخاب ارز یا طلای نمایشی روی ویجت:
+          </label>
+          <div className="grid grid-cols-3 gap-1.5">
+            {WIDGET_ASSET_OPTIONS.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => handleSelectWidgetAsset(item.key)}
+                className={`p-2 rounded-xl text-xs font-bold flex items-center justify-between border transition-all ${
+                  selectedWidgetAsset === item.key
+                    ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md font-black'
+                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/5'
+                }`}
+              >
+                <span>{item.icon}</span>
+                <span className="truncate text-[11px]">{item.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed text-right bg-white/5 p-2.5 rounded-xl border border-white/5">
+          💡 <strong>راهنما:</strong> انگشتتان را روی صفحه اصلی گوشی نگه دارید، به بخش ویجت‌ها رفته و ویجت <strong>کی‌گلد</strong> را به صفحه بکشید. می‌توانید چندین ویجت برای ارزهای مختلف ایجاد کنید.
+        </p>
       </div>
 
       {/* Theme Section */}

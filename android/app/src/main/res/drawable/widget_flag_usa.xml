@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="22dp"
+    android:viewportWidth="32"
+    android:viewportHeight="22">
+    <!-- White background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,0h32v22h-32z" />
+    <!-- Red stripes -->
+    <path
+        android:fillColor="#B22234"
+        android:pathData="M0,0h32v1.69h-32z M0,3.38h32v1.69h-32z M0,6.77h32v1.69h-32z M0,10.15h32v1.69h-32z M0,13.54h32v1.69h-32z M0,16.92h32v1.69h-32z M0,20.31h32v1.69h-32z" />
+    <!-- Blue Canton -->
+    <path
+        android:fillColor="#3C3B6E"
+        android:pathData="M0,0h14v11.85h-14z" />
+    <!-- White star dots inside canton -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M3,3h1v1h-1z M6,3h1v1h-1z M9,3h1v1h-1z M12,3h1v1h-1z M4.5,6h1v1h-1z M7.5,6h1v1h-1z M10.5,6h1v1h-1z M3,9h1v1h-1z M6,9h1v1h-1z M9,9h1v1h-1z M12,9h1v1h-1z" />
+</vector>

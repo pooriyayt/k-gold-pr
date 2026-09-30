@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+    <!-- Coin Outer Circle -->
+    <path
+        android:fillColor="#EAB308"
+        android:pathData="M13,0A13,13 0 1,0 26,13A13,13 0 0,0 13,0z" />
+    <!-- Inner Rim -->
+    <path
+        android:fillColor="#FACC15"
+        android:pathData="M13,2.5A10.5,10.5 0 1,0 23.5,13A10.5,10.5 0 0,0 13,2.5z" />
+    <!-- Coin Center Inset -->
+    <path
+        android:fillColor="#CA8A04"
+        android:pathData="M13,5A8,8 0 1,0 21,13A8,8 0 0,0 13,5z" />
+</vector>
