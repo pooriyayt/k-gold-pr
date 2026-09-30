@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -119,7 +119,7 @@ public class WidgetConfigureActivity extends Activity {
         final TextView previewChange = findViewById(R.id.preview_change);
         final TextView previewPrice = findViewById(R.id.preview_price);
         final Button btnAddWidget = findViewById(R.id.btn_add_widget);
-        final ListView listView = findViewById(R.id.assets_list);
+        final android.widget.GridView gridView = findViewById(R.id.assets_grid);
 
         // Update preview helper
         Runnable updatePreview = () -> {
@@ -137,43 +137,34 @@ public class WidgetConfigureActivity extends Activity {
         // Initial preview
         updatePreview.run();
 
-        final ArrayAdapter<AssetItem> adapter = new ArrayAdapter<AssetItem>(this, R.layout.item_widget_asset, assets) {
+        final ArrayAdapter<AssetItem> adapter = new ArrayAdapter<AssetItem>(this, R.layout.item_widget_chip, assets) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_widget_asset, parent, false);
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_widget_chip, parent, false);
                 }
                 AssetItem item = getItem(position);
                 if (item != null) {
-                    View itemRoot = convertView.findViewById(R.id.item_root);
-                    ImageView icon = convertView.findViewById(R.id.item_icon);
-                    TextView name = convertView.findViewById(R.id.item_name);
-                    TextView code = convertView.findViewById(R.id.item_code);
-                    TextView price = convertView.findViewById(R.id.item_price);
-                    TextView change = convertView.findViewById(R.id.item_change);
+                    View chipRoot = convertView.findViewById(R.id.chip_root);
+                    ImageView icon = convertView.findViewById(R.id.chip_icon);
+                    TextView name = convertView.findViewById(R.id.chip_name);
 
                     icon.setImageResource(item.iconRes);
                     name.setText(item.name);
-                    code.setText(item.code);
-                    price.setText(item.defaultPrice + " تومان");
-                    if (change != null) {
-                        change.setText(item.defaultChange);
-                        change.setTextColor(item.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                    }
 
                     if (position == mSelectedIndex) {
-                        itemRoot.setBackgroundResource(R.drawable.widget_item_selected_bg);
+                        chipRoot.setBackgroundResource(R.drawable.widget_item_selected_bg);
                     } else {
-                        itemRoot.setBackgroundResource(R.drawable.widget_item_light_bg);
+                        chipRoot.setBackgroundResource(R.drawable.widget_item_light_bg);
                     }
                 }
                 return convertView;
             }
         };
 
-        listView.setAdapter(adapter);
+        gridView.setAdapter(adapter);
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
             mSelectedIndex = position;
             adapter.notifyDataSetChanged();
             updatePreview.run();

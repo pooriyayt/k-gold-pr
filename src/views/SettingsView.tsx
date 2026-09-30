@@ -156,38 +156,38 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       )}
 
       {/* 1. In-App Auto-Update Card (ویژه) */}
-      <div className="glass-card rounded-2xl p-4 border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent space-y-3 shadow-md">
+      <div className="bg-white dark:bg-slate-900/60 rounded-2xl p-4 border border-amber-500/30 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0">
               <DownloadCloud className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-xs font-bold text-slate-900 dark:text-white">
                 بروزرسانی خودکار برنامه
               </h3>
-              <span className="text-[10px] text-amber-500 dark:text-amber-400 font-semibold block">
+              <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold block">
                 دریافت مستقیم آخرین قابلیت‌ها و رفع اشکالات رسمی
               </span>
             </div>
           </div>
 
-          <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-black/40 text-amber-300 border border-amber-500/20 tabular-nums">
+          <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-black/40 text-amber-800 dark:text-amber-300 border border-amber-500/30 tabular-nums">
             {CURRENT_APP_VERSION}
           </span>
         </div>
 
         {/* Update Status Display */}
-        <div className="bg-black/30 p-2.5 rounded-xl border border-white/5 flex items-center justify-between text-xs">
+        <div className="bg-slate-100 dark:bg-black/30 p-2.5 rounded-xl border border-slate-200 dark:border-white/5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 min-w-0">
             {isCheckingUpdate ? (
-              <RefreshCw className="w-3.5 h-3.5 text-amber-400 animate-spin shrink-0" />
+              <RefreshCw className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 animate-spin shrink-0" />
             ) : updateStatus.hasUpdate ? (
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-bounce" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0 animate-bounce" />
             ) : (
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
             )}
-            <span className="truncate text-slate-300 text-[11px]">
+            <span className="truncate text-slate-800 dark:text-slate-200 text-[11px] font-semibold">
               {isCheckingUpdate
                 ? 'در حال بررسی وضعیت بروزرسانی...'
                 : updateStatus.message || 'برنامه شما به‌روز است.'}
@@ -198,7 +198,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <button
               type="button"
               onClick={() => setIsUpdateModalOpen(true)}
-              className="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[10px] shrink-0 active:scale-95 transition-all shadow-sm"
+              className="px-2.5 py-1 rounded-lg bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-[10px] shrink-0 active:scale-95 transition-all shadow-sm"
             >
               مشاهده و دانلود
             </button>
@@ -210,9 +210,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           type="button"
           onClick={() => handleCheckUpdate(true)}
           disabled={isCheckingUpdate}
-          className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-98"
+          className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-98"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isCheckingUpdate ? 'animate-spin text-amber-400' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isCheckingUpdate ? 'animate-spin text-amber-500' : 'text-slate-600 dark:text-slate-300'}`} />
           <span>بررسی انتشار نسخه جدید</span>
         </button>
       </div>
@@ -222,9 +222,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <button
           type="button"
           onClick={() => setIsPortfolioModalOpen(true)}
-          className="glass-card p-3 rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
             <Briefcase className="w-4 h-4" />
           </div>
           <div>
@@ -236,9 +236,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <button
           type="button"
           onClick={() => setIsAlertsModalOpen(true)}
-          className="glass-card p-3 rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
             <Bell className="w-4 h-4" />
           </div>
           <div>
@@ -248,8 +248,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </button>
       </div>
 
-      {/* 3. Android Home Screen Widget Interactive Section (Matching Reference media_1790790676445.png) */}
-      <div className="bg-slate-100 dark:bg-[#111827] border border-slate-200 dark:border-white/10 rounded-[32px] p-5 shadow-xl space-y-4">
+      {/* 3. Android Home Screen Widget Interactive Section */}
+      <div className="bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-white/10 rounded-[32px] p-5 shadow-sm space-y-4">
         {/* Grabber handle matching iOS/Android sheet */}
         <div className="w-10 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto" />
 
@@ -263,18 +263,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </p>
         </div>
 
-        {/* Central Floating Live Preview Card */}
+        {/* Central Floating Live Preview Card with Soft Stage */}
         {(() => {
           const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAsset) || WIDGET_ASSET_OPTIONS[0];
           return (
-            <div className="py-2 flex flex-col items-center">
+            <div className="py-3 px-4 bg-slate-100/70 dark:bg-black/30 rounded-2xl flex flex-col items-center border border-slate-200/60 dark:border-white/5">
               <div
                 dir="ltr"
-                className="w-48 h-48 rounded-[28px] bg-white text-slate-900 p-4 shadow-2xl shadow-slate-950/15 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
+                className="w-44 h-44 rounded-[26px] bg-white text-slate-900 p-4 shadow-xl shadow-slate-300/50 dark:shadow-black/60 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
               >
                 {/* Top row: Circular Flag on Left, Title & Code on Right */}
                 <div className="flex items-center justify-between">
-                  <CircularFlag assetKey={currentAsset.key} size={38} />
+                  <CircularFlag assetKey={currentAsset.key} size={36} />
                   <div className="text-right">
                     <span className="block text-[13px] font-bold text-slate-800 leading-tight">
                       {currentAsset.englishName || currentAsset.name}
@@ -295,7 +295,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     {currentAsset.defaultChange}
                   </span>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-[25px] font-black text-slate-950 tracking-tight leading-none">
+                    <span className="text-[23px] font-black text-slate-950 tracking-tight leading-none">
                       {currentAsset.defaultPrice}
                     </span>
                     <span className="text-[10px] text-slate-400 font-semibold">تومان</span>
@@ -304,7 +304,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               </div>
 
               {/* Dots Pager Indicator (synced to selected asset) */}
-              <div className="flex items-center gap-1.5 mt-4">
+              <div className="flex items-center gap-1.5 mt-3.5">
                 {WIDGET_ASSET_OPTIONS.slice(0, 6).map((item, idx) => {
                   const isCurrent = selectedWidgetAsset === item.key || (idx === 0 && !WIDGET_ASSET_OPTIONS.slice(0, 6).some(a => a.key === selectedWidgetAsset));
                   return (
@@ -340,8 +340,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 onClick={() => handleSelectWidgetAsset(item.key)}
                 className={`p-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 border transition-all ${
                   selectedWidgetAsset === item.key
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-black scale-[1.02]'
-                    : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-white/5'
+                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-sm font-black scale-[1.02]'
+                    : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-white/5 shadow-xs'
                 }`}
               >
                 <CircularFlag assetKey={item.key} size={22} />
@@ -352,12 +352,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {widgetSavedMsg && (
-          <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold text-center animate-fadeIn">
+          <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold text-center animate-fadeIn">
             ✓ ارز ویجت با موفقیت انتخاب و اعمال شد.
           </div>
         )}
 
-        <p className="text-[10.5px] text-slate-500 dark:text-slate-400 leading-relaxed text-right bg-white/50 dark:bg-white/5 p-3 rounded-2xl border border-slate-200/50 dark:border-white/5">
+        <p className="text-[10.5px] text-slate-600 dark:text-slate-400 leading-relaxed text-right bg-slate-50 dark:bg-white/5 p-3 rounded-2xl border border-slate-200 dark:border-white/5">
           💡 <strong>نحوه فعال‌سازی روی هوم‌اسکرین:</strong> انگشت خود را روی یک بخش خالی از صفحه اصلی گوشی نگه دارید، وارد بخش <strong>ویجت‌ها (Widgets)</strong> شوید و ویجت <strong>کی‌گلد</strong> را به صفحه بکشید.
         </p>
       </div>

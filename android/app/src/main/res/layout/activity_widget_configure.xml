@@ -3,15 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F9FA"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp">
 
     <!-- Top Grabber Handle -->
     <LinearLayout
-        android:layout_width="40dp"
+        android:layout_width="36dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/widget_btn_black"
         android:backgroundTint="#CBD5E1" />
 
@@ -22,34 +26,34 @@
         android:layout_gravity="center_horizontal"
         android:text="ویجت کی‌گلد"
         android:textColor="#0F172A"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="16dp"
-        android:text="انتخاب ارز برای نمایش لحظه‌ای روی صفحه اصلی"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="12dp"
+        android:text="انتخاب ارز برای نمایش لحظه‌ای روی هوم‌اسکرین"
         android:textColor="#64748B"
-        android:textSize="12.5sp" />
+        android:textSize="12sp" />
 
-    <!-- Floating Live Preview Card in Center (Matching Reference Image) -->
+    <!-- Live Preview Card in Center -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="12dp">
 
         <LinearLayout
             android:id="@+id/card_preview"
-            android:layout_width="155dp"
-            android:layout_height="155dp"
+            android:layout_width="145dp"
+            android:layout_height="145dp"
             android:background="@drawable/widget_bg_white"
-            android:elevation="8dp"
+            android:elevation="6dp"
             android:orientation="vertical"
-            android:padding="14dp">
+            android:padding="13dp">
 
             <!-- Top Row: Icon Left, Name & Code Right -->
             <LinearLayout
@@ -60,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/preview_icon"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/widget_icon_usd" />
 
@@ -79,9 +83,9 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="US Dollar"
+                        android:text="دلار آمریکا"
                         android:textColor="#1E293B"
-                        android:textSize="12.5sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -91,7 +95,7 @@
                         android:layout_marginTop="1dp"
                         android:text="USD"
                         android:textColor="#94A3B8"
-                        android:textSize="11sp"
+                        android:textSize="10.5sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -114,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:text="↓5,625"
+                    android:text="+۲.۱۱٪ ↗"
                     android:textColor="#16A34A"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -130,9 +134,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="100,115"
+                        android:text="۶۱,۳۰۰"
                         android:textColor="#0F172A"
-                        android:textSize="22sp"
+                        android:textSize="21sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -149,27 +153,41 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Asset Selection List -->
-    <ListView
-        android:id="@+id/assets_list"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="انتخاب ارز مورد نظر:"
+        android:textColor="#475569"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Compact 3-Column Asset Chips Grid (Replaces bulky ListView) -->
+    <GridView
+        android:id="@+id/assets_grid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="12dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp" />
+        android:numColumns="3"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="6dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:listSelector="@android:color/transparent" />
 
-    <!-- Bottom Add Widget Button (Matching Reference Image) -->
+    <!-- Bottom Add Widget Button (Positioned safely above system navigation bar) -->
     <Button
         android:id="@+id/btn_add_widget"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/widget_btn_black"
         android:stateListAnimator="@null"
-        android:text="✚ Add Widget (افزودن ویجت)"
+        android:text="✚ Add Widget (تأیید و افزودن ویجت)"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="14.5sp"
         android:textStyle="bold" />
 
 </LinearLayout>

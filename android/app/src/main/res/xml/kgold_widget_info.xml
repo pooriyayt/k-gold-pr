@@ -11,5 +11,5 @@
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_kgold"
     android:configure="com.kgold.app.WidgetConfigureActivity"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="none"
     android:widgetCategory="home_screen" />
