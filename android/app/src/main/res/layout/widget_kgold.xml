@@ -3,14 +3,14 @@
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:padding="5dp">
 
-    <!-- 1. SINGLE ASSET LAYOUT (155dp x 155dp Square Card) -->
+    <!-- 1. SINGLE ASSET LAYOUT (Fills widget bounds naturally) -->
     <LinearLayout
         android:id="@+id/widget_single_layout"
-        android:layout_width="155dp"
-        android:layout_height="155dp"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/widget_bg_white"
         android:orientation="vertical"
         android:padding="13dp"
@@ -46,7 +46,7 @@
                     android:maxLines="1"
                     android:text="US Dollar"
                     android:textColor="#1E293B"
-                    android:textSize="12.5sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -114,13 +114,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 2. MULTI ASSET LAYOUT (2 to 4 Square Cards in 2x2 Grid) -->
+    <!-- 2. MULTI ASSET LAYOUT (2 to 4 Cards filling widget bounds side-by-side / 2x2) -->
     <LinearLayout
         android:id="@+id/widget_multi_layout"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:baselineAligned="false"
         android:visibility="visible">
 
         <!-- Top Row (Card 1 & Card 2) -->
@@ -128,8 +128,9 @@
             android:id="@+id/multi_row_1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="6dp"
             android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <!-- Card 1 -->
@@ -137,11 +138,11 @@
                 android:id="@+id/slot_card_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/widget_card_mini_bg"
                 android:orientation="vertical"
-                android:padding="7dp">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -151,8 +152,8 @@
 
                     <ImageView
                         android:id="@+id/slot_icon_1"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/widget_icon_usd" />
 
@@ -172,7 +173,7 @@
                             android:maxLines="1"
                             android:text="US Dollar"
                             android:textColor="#1E293B"
-                            android:textSize="9.5sp"
+                            android:textSize="10.5sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -181,7 +182,7 @@
                             android:layout_height="wrap_content"
                             android:text="USD"
                             android:textColor="#94A3B8"
-                            android:textSize="8sp"
+                            android:textSize="8.5sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -200,7 +201,7 @@
                     android:maxLines="1"
                     android:text="+۲.۱۱٪ ↗"
                     android:textColor="#16A34A"
-                    android:textSize="9sp"
+                    android:textSize="9.5sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -212,7 +213,7 @@
                     android:maxLines="1"
                     android:text="۶۱,۳۰۰"
                     android:textColor="#0F172A"
-                    android:textSize="12.5sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -224,7 +225,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/widget_card_mini_bg"
                 android:orientation="vertical"
-                android:padding="7dp">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -234,8 +235,8 @@
 
                     <ImageView
                         android:id="@+id/slot_icon_2"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/widget_icon_eur" />
 
@@ -255,7 +256,7 @@
                             android:maxLines="1"
                             android:text="Euro"
                             android:textColor="#1E293B"
-                            android:textSize="9.5sp"
+                            android:textSize="10.5sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -264,7 +265,7 @@
                             android:layout_height="wrap_content"
                             android:text="EUR"
                             android:textColor="#94A3B8"
-                            android:textSize="8sp"
+                            android:textSize="8.5sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -283,7 +284,7 @@
                     android:maxLines="1"
                     android:text="+۲.۰۳٪ ↗"
                     android:textColor="#16A34A"
-                    android:textSize="9sp"
+                    android:textSize="9.5sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -295,7 +296,7 @@
                     android:maxLines="1"
                     android:text="۶۶,۴۰۰"
                     android:textColor="#0F172A"
-                    android:textSize="12.5sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -306,6 +307,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <!-- Card 3 -->
@@ -313,11 +315,11 @@
                 android:id="@+id/slot_card_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:background="@drawable/widget_card_mini_bg"
                 android:orientation="vertical"
-                android:padding="7dp">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -327,8 +329,8 @@
 
                     <ImageView
                         android:id="@+id/slot_icon_3"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/widget_icon_aed" />
 
@@ -348,7 +350,7 @@
                             android:maxLines="1"
                             android:text="UAE Dirham"
                             android:textColor="#1E293B"
-                            android:textSize="9.5sp"
+                            android:textSize="10.5sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -357,7 +359,7 @@
                             android:layout_height="wrap_content"
                             android:text="AED"
                             android:textColor="#94A3B8"
-                            android:textSize="8sp"
+                            android:textSize="8.5sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -376,7 +378,7 @@
                     android:maxLines="1"
                     android:text="+۲.۱۰٪ ↗"
                     android:textColor="#16A34A"
-                    android:textSize="9sp"
+                    android:textSize="9.5sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -388,7 +390,7 @@
                     android:maxLines="1"
                     android:text="۱۶,۶۸۰"
                     android:textColor="#0F172A"
-                    android:textSize="12.5sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -400,7 +402,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/widget_card_mini_bg"
                 android:orientation="vertical"
-                android:padding="7dp">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -410,8 +412,8 @@
 
                     <ImageView
                         android:id="@+id/slot_icon_4"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/widget_icon_gbp" />
 
@@ -431,7 +433,7 @@
                             android:maxLines="1"
                             android:text="British Pound"
                             android:textColor="#1E293B"
-                            android:textSize="9.5sp"
+                            android:textSize="10.5sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -440,7 +442,7 @@
                             android:layout_height="wrap_content"
                             android:text="GBP"
                             android:textColor="#94A3B8"
-                            android:textSize="8sp"
+                            android:textSize="8.5sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -459,7 +461,7 @@
                     android:maxLines="1"
                     android:text="+۱.۹۵٪ ↗"
                     android:textColor="#16A34A"
-                    android:textSize="9sp"
+                    android:textSize="9.5sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -471,7 +473,7 @@
                     android:maxLines="1"
                     android:text="۷۸,۲۰۰"
                     android:textColor="#0F172A"
-                    android:textSize="12.5sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
