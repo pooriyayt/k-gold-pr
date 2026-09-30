@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { GoldItem } from '../types';
 import { AppleSparkline } from '../components/AppleSparkline';
 import { GoldCalculatorModal } from '../components/Modals/GoldCalculatorModal';
+import { CoinBubbleModal } from '../components/Modals/CoinBubbleModal';
 import { formatPrice, formatNumber } from '../services/format';
-import { Search, Calculator, Coins, CircleDollarSign, Star } from 'lucide-react';
+import { Search, Receipt, Coins, CircleDollarSign, Star, TrendingUp } from 'lucide-react';
 import { isItemFavorite } from '../services/storage';
 
 interface GoldViewProps {
@@ -24,6 +25,7 @@ export const GoldView: React.FC<GoldViewProps> = ({
   const [timeframe, setTimeframe] = useState<'1d' | '7d' | '30d' | '3m'>('3m');
   const [category, setCategory] = useState<'all' | 'coins' | 'gold' | 'bubble' | 'favorites'>('all');
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [isBubbleModalOpen, setIsBubbleModalOpen] = useState(false);
 
   // Fallback 18k price for calculator
   const gold18k = goldList.find(
@@ -68,13 +70,23 @@ export const GoldView: React.FC<GoldViewProps> = ({
     <div className="space-y-3.5 pb-20 animate-fadeIn">
       {/* Top Header */}
       <div className="flex items-center justify-between">
-        <button
-          onClick={() => setIsCalculatorOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold hover:bg-amber-500/20 active:scale-95 transition-all"
-        >
-          <Calculator className="w-3.5 h-3.5" />
-          <span>محاسبه طلا</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setIsBubbleModalOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/35 text-amber-400 text-xs font-bold hover:bg-amber-500/25 active:scale-95 transition-all shadow-sm"
+          >
+            <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+            <span>حباب‌سنج سکه</span>
+          </button>
+
+          <button
+            onClick={() => setIsCalculatorOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-slate-200 text-xs font-bold hover:bg-white/15 active:scale-95 transition-all"
+          >
+            <Receipt className="w-3.5 h-3.5 text-slate-300" />
+            <span>فاکتور طلا</span>
+          </button>
+        </div>
 
         <div className="flex items-center gap-2">
           <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">طلا و سکه</h2>
@@ -238,11 +250,20 @@ export const GoldView: React.FC<GoldViewProps> = ({
         })}
       </div>
 
-      {/* Gold Calculator Modal */}
+      {/* Gold Purchase & Invoice Calculator Modal */}
       <GoldCalculatorModal
         isOpen={isCalculatorOpen}
         onClose={() => setIsCalculatorOpen(false)}
         goldPrice18k={raw18kPrice}
+        numberFormat={numberFormat}
+      />
+
+      {/* Coin & Gold Bubble Analyzer Modal */}
+      <CoinBubbleModal
+        isOpen={isBubbleModalOpen}
+        onClose={() => setIsBubbleModalOpen(false)}
+        goldList={goldList}
+        numberFormat={numberFormat}
       />
     </div>
   );

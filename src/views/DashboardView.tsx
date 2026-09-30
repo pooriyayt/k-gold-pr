@@ -3,9 +3,11 @@ import { CurrencyItem, GoldItem, CryptoItem, TabType } from '../types';
 import { AppleSparkline } from '../components/AppleSparkline';
 import { getFlagUrl } from '../services/api';
 import { formatPrice, formatNumber } from '../services/format';
-import { Coins, CircleDollarSign, Star } from 'lucide-react';
+import { Coins, CircleDollarSign, Star, TrendingUp, Receipt } from 'lucide-react';
 import { GoldBarsHero } from '../components/GoldBarsHero';
 import { isItemFavorite } from '../services/storage';
+import { CoinBubbleModal } from '../components/Modals/CoinBubbleModal';
+import { GoldCalculatorModal } from '../components/Modals/GoldCalculatorModal';
 
 interface DashboardViewProps {
   cryptoList: CryptoItem[];
@@ -28,6 +30,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onToggleFavorite,
 }) => {
   const [marketFilter, setMarketFilter] = useState<'all' | 'gold' | 'currency' | 'crypto' | 'favorites'>('all');
+  const [isBubbleOpen, setIsBubbleOpen] = useState(false);
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+
+  // Fallback 18k price for calculator
+  const gold18k = goldList.find(
+    (g) =>
+      (g.name.includes('۱۸') || g.name.includes('18')) &&
+      !g.name.includes('حباب') &&
+      !g.name.includes('دست دوم')
+  );
+  const raw18kPrice = gold18k
+    ? parseFloat(gold18k.price.replace(/,/g, ''))
+    : 23874800;
 
   // Find exact items or sensible fallbacks (never match حباب for hero cards)
   const dollarItem = currencies.find((c) => c.code === 'USD') || {
@@ -104,9 +119,38 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     };
 
   return (
-    <div className="space-y-4 pb-12 animate-fadeIn">
+    <div className="space-y-3.5 pb-12 animate-fadeIn">
       {/* 1. 3D Gold Bars Hero Section matching media_1790080449509.png */}
       <GoldBarsHero />
+
+      {/* Quick Financial Tools: حباب‌سنج سکه و فاکتور طلا */}
+      <div className="grid grid-cols-2 gap-2.5">
+        <button
+          onClick={() => setIsBubbleOpen(true)}
+          className="glass-card p-3 rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+        >
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+            <TrendingUp className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="block text-xs font-black text-slate-900 dark:text-white">حباب‌سنج سکه</span>
+            <span className="block text-[10px] text-amber-500 dark:text-amber-400 font-semibold">ارزش واقعی و ریسک</span>
+          </div>
+        </button>
+
+        <button
+          onClick={() => setIsInvoiceOpen(true)}
+          className="glass-card p-3 rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+        >
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+            <Receipt className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="block text-xs font-black text-slate-900 dark:text-white">فاکتور طلافروشی</span>
+            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold">محاسبه اجرت و سود</span>
+          </div>
+        </button>
+      </div>
 
       {/* 2. 2x2 Grid Cards matching website media_1790078411599.png */}
       <div className="cards-grid">
@@ -752,6 +796,22 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           )}
         </div>
       </div>
+
+      {/* Gold Purchase & Invoice Calculator Modal */}
+      <GoldCalculatorModal
+        isOpen={isInvoiceOpen}
+        onClose={() => setIsInvoiceOpen(false)}
+        goldPrice18k={raw18kPrice}
+        numberFormat={numberFormat}
+      />
+
+      {/* Coin & Gold Bubble Analyzer Modal */}
+      <CoinBubbleModal
+        isOpen={isBubbleOpen}
+        onClose={() => setIsBubbleOpen(false)}
+        goldList={goldList}
+        numberFormat={numberFormat}
+      />
     </div>
   );
 };
