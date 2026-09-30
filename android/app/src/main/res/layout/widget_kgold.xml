@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <!-- Widget Header: Live Badge on Left, Brand on Right -->
+    <!-- Header: Live Pulse on Left, Golden Brand on Right -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,9 +24,9 @@
             android:paddingTop="3dp"
             android:paddingEnd="8dp"
             android:paddingBottom="3dp"
-            android:text="● زنده"
+            android:text="● نرخ زنده"
             android:textColor="#34D399"
-            android:textSize="10sp"
+            android:textSize="9.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,13 +35,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right|end"
-            android:text="KGold | کی‌گلد"
+            android:text="⚡ KGold | کی‌گلد"
             android:textColor="#F59E0B"
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- 2x2 Rates Grid -->
+    <!-- 2x2 Financial Cards Grid -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -49,7 +49,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <!-- Dollar -->
+        <!-- Dollar Card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -58,29 +58,61 @@
             android:background="@drawable/widget_card_bg"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="8dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right|end"
-                android:text="دلار آمریکا"
-                android:textColor="#94A3B8"
-                android:textSize="10sp" />
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/widget_usd_price"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="دلار آمریکا"
+                    android:textColor="#CBD5E1"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/widget_icon_usd"
+                    android:gravity="center"
+                    android:text="$"
+                    android:textColor="#10B981"
+                    android:textSize="9sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="right|end"
-                android:text="۲۵۵,۹۰۰ ت"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="تومان"
+                    android:textColor="#64748B"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/widget_usd_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۲۵۶,۵۰۰"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Gold 18k -->
+        <!-- Gold 18k Card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -89,26 +121,58 @@
             android:background="@drawable/widget_card_bg"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="8dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right|end"
-                android:text="طلای ۱۸ عیار"
-                android:textColor="#94A3B8"
-                android:textSize="10sp" />
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/widget_gold_price"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="طلای ۱۸ عیار"
+                    android:textColor="#CBD5E1"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/widget_icon_gold"
+                    android:gravity="center"
+                    android:text="18"
+                    android:textColor="#F59E0B"
+                    android:textSize="8.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="right|end"
-                android:text="۲۵,۳۳۰,۱۰۰ ت"
-                android:textColor="#FBBF24"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="تومان"
+                    android:textColor="#D97706"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/widget_gold_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۲۵,۳۵۸,۰۰۰"
+                    android:textColor="#FBBF24"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -119,7 +183,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <!-- Tether USDT -->
+        <!-- Tether USDT Card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -128,29 +192,61 @@
             android:background="@drawable/widget_card_bg"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="8dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right|end"
-                android:text="تتر (USDT)"
-                android:textColor="#94A3B8"
-                android:textSize="10sp" />
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/widget_usdt_price"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="تتر (USDT)"
+                    android:textColor="#CBD5E1"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/widget_icon_usdt"
+                    android:gravity="center"
+                    android:text="₮"
+                    android:textColor="#14B8A6"
+                    android:textSize="9sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="right|end"
-                android:text="۲۵۴,۹۰۱ ت"
-                android:textColor="#34D399"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="تومان"
+                    android:textColor="#64748B"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/widget_usdt_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۲۵۴,۱۱۶"
+                    android:textColor="#34D399"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Emami Coin -->
+        <!-- Emami Coin Card -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -159,26 +255,57 @@
             android:background="@drawable/widget_card_bg"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="8dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right|end"
-                android:text="سکه امامی"
-                android:textColor="#94A3B8"
-                android:textSize="10sp" />
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/widget_coin_price"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="سکه امامی"
+                    android:textColor="#CBD5E1"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/widget_icon_coin"
+                    android:gravity="center"
+                    android:text="🪙"
+                    android:textColor="#EAB308"
+                    android:textSize="8sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="right|end"
-                android:text="۲۵۸,۹۸۰,۰۰۰ ت"
-                android:textColor="#F59E0B"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="تومان"
+                    android:textColor="#D97706"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/widget_coin_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="۲۵۹,۰۰۵,۰۰۰"
+                    android:textColor="#F59E0B"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
