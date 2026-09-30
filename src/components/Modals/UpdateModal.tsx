@@ -112,24 +112,13 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, relea
             <span>دانلود و نصب مستقیم فایل APK</span>
           </button>
 
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={handleOpenGitHub}
-              className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>مشاهده در گیت‌هاب</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white font-bold text-xs transition-all"
-            >
-              بعداً یادآوری کن
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white font-bold text-xs transition-all text-center"
+          >
+            بعداً یادآوری کن
+          </button>
         </div>
       </div>
     </div>

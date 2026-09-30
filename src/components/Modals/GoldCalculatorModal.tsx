@@ -123,9 +123,9 @@ ${stoneW > 0 ? `کسر وزن نگین/سنگ: ${stoneW} گرم\nوزن خالص
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg mx-auto bg-[#0B0F19] border-t border-white/10 rounded-t-[32px] p-4 sm:p-5 pb-8 shadow-2xl animate-slideUp text-right flex flex-col max-h-[92vh] overflow-y-auto no-scrollbar relative"
+        className="w-full max-w-lg mx-auto bg-[#0B0F19] border-t border-white/10 rounded-t-[32px] p-4 sm:p-5 pb-12 shadow-2xl animate-slideUp text-right max-h-[92vh] overflow-y-auto no-scrollbar relative space-y-3"
         onClick={(e) => e.stopPropagation()}
-        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 24px)' }}
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 36px)' }}
       >
         {/* Top Drag Handle */}
         <div className="w-12 h-1.5 rounded-full bg-white/20 mx-auto mb-3 cursor-pointer shrink-0" />
@@ -390,9 +390,9 @@ ${stoneW > 0 ? `کسر وزن نگین/سنگ: ${stoneW} گرم\nوزن خالص
         )}
 
         {/* Official Invoice Receipt Preview Card */}
-        <div className="bg-gradient-to-br from-[#0E1524] to-[#162035] border border-amber-500/30 rounded-2xl p-4 space-y-2 mb-3 shadow-xl relative overflow-hidden">
-          <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-1">
-            <span className="text-[10px] text-amber-400 font-black bg-amber-400/10 px-2 py-0.5 rounded-md">
+        <div className="bg-gradient-to-br from-[#0E1524] to-[#162035] border border-amber-500/40 rounded-2xl p-4 space-y-3 mb-3 shadow-xl relative shrink-0">
+          <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+            <span className="text-[10px] text-amber-400 font-black bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-lg">
               پیش‌فاکتور رسمی خرید
             </span>
             <span className="text-xs font-bold text-white">{itemTitle}</span>

@@ -146,9 +146,9 @@ export const CoinBubbleModal: React.FC<CoinBubbleModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg mx-auto bg-[#0B0F19] border-t border-white/10 rounded-t-[32px] p-4 sm:p-5 pb-8 shadow-2xl animate-slideUp text-right flex flex-col max-h-[92vh] overflow-y-auto no-scrollbar relative"
+        className="w-full max-w-lg mx-auto bg-[#0B0F19] border-t border-white/10 rounded-t-[32px] p-4 sm:p-5 pb-12 shadow-2xl animate-slideUp text-right max-h-[92vh] overflow-y-auto no-scrollbar relative space-y-3"
         onClick={(e) => e.stopPropagation()}
-        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 24px)' }}
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 36px)' }}
       >
         {/* Top Drag Handle */}
         <div className="w-12 h-1.5 rounded-full bg-white/20 mx-auto mb-3 cursor-pointer shrink-0" />
@@ -185,35 +185,41 @@ export const CoinBubbleModal: React.FC<CoinBubbleModalProps> = ({
           </span>
         </div>
 
-        {/* Coin Selector Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2">
-          {coinAnalysis.map((coin) => (
-            <button
-              key={coin.id}
-              onClick={() => {
-                setSelectedCoinId(coin.id);
-                try {
-                  Haptics.impact({ style: ImpactStyle.Light });
-                } catch {}
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 shrink-0 ${
-                selectedCoinId === coin.id
-                  ? 'bg-amber-400 text-slate-950 shadow-md font-black'
-                  : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
-              }`}
-            >
-              <span>{coin.name}</span>
-              <span className={`text-[9px] px-1 py-0.2 rounded ${
-                selectedCoinId === coin.id ? 'bg-black/20 text-slate-900' : 'text-slate-500'
-              }`}>
-                {coin.bubblePercent.toFixed(0)}٪
-              </span>
-            </button>
-          ))}
+        {/* Coin Selector Responsive Grid (5 coins, perfectly fitted without horizontal cut-off) */}
+        <div className="grid grid-cols-5 gap-1.5 mb-3">
+          {coinAnalysis.map((coin) => {
+            const shortName = coin.name.replace('سکه ', '');
+            const isSelected = selectedCoinId === coin.id;
+            return (
+              <button
+                key={coin.id}
+                onClick={() => {
+                  setSelectedCoinId(coin.id);
+                  try {
+                    Haptics.impact({ style: ImpactStyle.Light });
+                  } catch {}
+                }}
+                className={`py-2 px-1 rounded-xl text-center flex flex-col items-center justify-center transition-all ${
+                  isSelected
+                    ? 'bg-gradient-to-b from-amber-400 to-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/20'
+                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5'
+                }`}
+              >
+                <span className="text-[11px] leading-tight font-bold">{shortName}</span>
+                <span
+                  className={`text-[10px] mt-0.5 font-extrabold ${
+                    isSelected ? 'text-slate-900 bg-black/15 px-1 rounded' : 'text-amber-400'
+                  }`}
+                >
+                  {coin.bubblePercent.toFixed(0)}٪
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Detailed Focus Card for Selected Coin */}
-        <div className="bg-gradient-to-br from-[#121827] to-[#1A2338] border border-white/10 rounded-2xl p-4 space-y-3 mb-3 shadow-lg relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#121827] to-[#1A2338] border border-white/10 rounded-2xl p-4 space-y-3 mb-3 shadow-lg relative shrink-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="text-right">
               <span className="text-sm font-black text-white">{activeCoin.name}</span>
@@ -275,7 +281,7 @@ export const CoinBubbleModal: React.FC<CoinBubbleModalProps> = ({
         </div>
 
         {/* Basket Calculator for Selected Coin */}
-        <div className="bg-[#141B2A]/90 border border-white/10 rounded-2xl p-3.5 space-y-2.5 mb-3">
+        <div className="bg-[#141B2A]/90 border border-white/10 rounded-2xl p-3.5 space-y-2.5 mb-3 shrink-0">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
@@ -336,7 +342,7 @@ export const CoinBubbleModal: React.FC<CoinBubbleModalProps> = ({
         </div>
 
         {/* All Coins Summary Table */}
-        <div className="bg-[#141B2A]/90 border border-white/10 rounded-2xl p-3 mb-3 space-y-2">
+        <div className="bg-[#141B2A]/90 border border-white/10 rounded-2xl p-3 mb-3 space-y-2 shrink-0">
           <div className="text-xs font-bold text-slate-300 mb-1 flex items-center justify-between">
             <span>مقایسه حباب تمامی مسکوکات</span>
             <span className="text-[10px] text-slate-500">مرتب‌سازی بر اساس ریسک</span>

@@ -10,7 +10,7 @@ export interface ReleaseInfo {
   releaseUrl: string;
 }
 
-export const CURRENT_APP_VERSION = 'v1.3.0';
+export const CURRENT_APP_VERSION = 'v1.3.1';
 const GITHUB_REPO = 'pooriyayt/k-gold-pr';
 const GITHUB_TOKEN = '';
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
@@ -57,9 +57,9 @@ export async function checkLatestRelease(): Promise<{
 
     if (!res.ok) {
       if (res.status === 404) {
-        return { hasUpdate: false, release: null, error: 'هیچ ریلیزی در مخزن یافت نشد.' };
+        return { hasUpdate: false, release: null, error: 'برنامه شما آخرین نسخه است.' };
       }
-      return { hasUpdate: false, release: null, error: `خطای سرور گیت‌هاب (${res.status})` };
+      return { hasUpdate: false, release: null, error: `خطا در دریافت وضعیت بروزرسانی (${res.status})` };
     }
 
     const data = await res.json();

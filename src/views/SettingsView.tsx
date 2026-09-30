@@ -148,7 +148,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 بروزرسانی خودکار برنامه
               </h3>
               <span className="text-[10px] text-amber-500 dark:text-amber-400 font-semibold block">
-                اتصال مستقیم به مخزن گیت‌هاب (GitHub Releases)
+                دریافت مستقیم آخرین قابلیت‌ها و رفع اشکالات رسمی
               </span>
             </div>
           </div>
@@ -170,7 +170,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             )}
             <span className="truncate text-slate-300 text-[11px]">
               {isCheckingUpdate
-                ? 'در حال استعلام از مخزن گیت‌هاب...'
+                ? 'در حال بررسی وضعیت بروزرسانی...'
                 : updateStatus.message || 'برنامه شما به‌روز است.'}
             </span>
           </div>

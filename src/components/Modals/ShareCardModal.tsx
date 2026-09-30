@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { X, Share2, Download, Check, Sparkles, Smartphone, Square } from 'lucide-react';
+import { X, Share2, Download, Check, Sparkles, Smartphone, Square, CheckCircle2 } from 'lucide-react';
 import { drawPriceCard, downloadCanvas, shareCanvas, ShareCardItem } from '../../services/shareCard';
 import { formatPersianDate, formatTimeOnly } from '../../services/format';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
@@ -21,6 +21,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [format, setFormat] = useState<'story' | 'post'>('story');
   const [isCopied, setIsCopied] = useState(false);
+  const [downloadMsg, setDownloadMsg] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
           items,
         });
       }
-    }, 50);
+    }, 60);
 
     return () => clearTimeout(timer);
   }, [isOpen, format, spotlightItem, items]);
@@ -53,9 +54,13 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
     } catch {}
 
     if (canvasRef.current) {
-      downloadCanvas(canvasRef.current, `kgold-${format}-${Date.now()}.png`);
+      const res = await downloadCanvas(canvasRef.current, `kgold-${format}-${Date.now()}.png`);
+      setDownloadMsg(res.message);
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2500);
+      setTimeout(() => {
+        setIsCopied(false);
+        setDownloadMsg(null);
+      }, 3500);
     }
   };
 
@@ -94,7 +99,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
                 <span>تولید کارت اشتراک‌گذاری</span>
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               </h2>
-              <p className="text-[11px] text-slate-400">مناسب استوری اینستاگرام و کانال‌های تلگرام</p>
+              <p className="text-[11px] text-slate-400">طراحی لوکس مخصوص استوری اینستاگرام و کانال‌ها</p>
             </div>
           </div>
           <button
@@ -106,14 +111,21 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
         </div>
 
         {/* Content Body with Scroll */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+          {downloadMsg && (
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold animate-fadeIn">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>{downloadMsg}</span>
+            </div>
+          )}
+
           {/* Format Selector Pills */}
           <div className="grid grid-cols-2 gap-2 p-1 bg-white/5 rounded-2xl border border-white/10">
             <button
               onClick={() => setFormat('story')}
               className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
                 format === 'story'
-                  ? 'bg-amber-400 text-slate-950 shadow-md'
+                  ? 'bg-amber-400 text-slate-950 shadow-md font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -124,7 +136,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
               onClick={() => setFormat('post')}
               className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
                 format === 'post'
-                  ? 'bg-amber-400 text-slate-950 shadow-md'
+                  ? 'bg-amber-400 text-slate-950 shadow-md font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -144,9 +156,8 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
             />
           </div>
 
-          {/* Tips */}
           <p className="text-[11px] text-center text-slate-400">
-            عکس با بالاترین رزولوشن و استانداردهای گرافیکی کی‌گلد تولید می‌شود.
+            عکس با بالاترین رزولوشن و به صورت مستقیم در گالری ذخیره می‌شود.
           </p>
         </div>
 
@@ -157,7 +168,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
             className="py-3 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-[0.98] text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-lg transition-all"
           >
             {isCopied ? <Check className="w-4 h-4 text-slate-950" /> : <Download className="w-4 h-4" />}
-            <span>{isCopied ? 'دانلود شد!' : 'ذخیره عکس (PNG)'}</span>
+            <span>{isCopied ? 'ذخیره شد ✓' : 'ذخیره در گالری'}</span>
           </button>
 
           <button
