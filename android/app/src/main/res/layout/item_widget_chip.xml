@@ -32,4 +32,17 @@
         android:textSize="11.5sp"
         android:textStyle="bold" />
 
+    <!-- Selection Order Badge (1, 2, 3, 4) -->
+    <TextView
+        android:id="@+id/chip_badge"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/widget_btn_black"
+        android:backgroundTint="#0F172A"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="9.5sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 </LinearLayout>

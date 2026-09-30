@@ -21,7 +21,7 @@ import { CURRENT_APP_VERSION, checkLatestRelease, ReleaseInfo } from '../service
 import { UpdateModal } from '../components/Modals/UpdateModal';
 import { PriceAlertModal } from '../components/Modals/PriceAlertModal';
 import { PortfolioModal } from '../components/Modals/PortfolioModal';
-import { WIDGET_ASSET_OPTIONS, setNativeWidgetAsset } from '../services/widgetSync';
+import { WIDGET_ASSET_OPTIONS, setNativeWidgetAssets, setNativeWidgetAsset } from '../services/widgetSync';
 import { CircularFlag } from '../components/Common/CircularFlag';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
@@ -62,19 +62,47 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [isAlertsModalOpen, setIsAlertsModalOpen] = useState(false);
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
-  // Widget Asset Selection State
-  const [selectedWidgetAsset, setSelectedWidgetAsset] = useState<string>(() => {
-    return localStorage.getItem('default_widget_asset') || 'usd';
+  // Widget Asset Selection State (1 to 4 assets)
+  const [selectedWidgetAssets, setSelectedWidgetAssets] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('widget_selected_assets');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    const oldSingle = localStorage.getItem('default_widget_asset');
+    if (oldSingle) return [oldSingle, 'eur', 'aed', 'gbp'].slice(0, 4);
+    return ['usd', 'eur', 'aed', 'gbp'];
   });
   const [widgetSavedMsg, setWidgetSavedMsg] = useState(false);
+  const [widgetErrorMsg, setWidgetErrorMsg] = useState<string | null>(null);
 
-  const handleSelectWidgetAsset = async (key: string) => {
+  const handleToggleWidgetAsset = async (key: string) => {
     try {
       await Haptics.impact({ style: ImpactStyle.Light });
     } catch {}
-    setSelectedWidgetAsset(key);
-    localStorage.setItem('default_widget_asset', key);
-    setNativeWidgetAsset(key);
+
+    let updated: string[];
+    if (selectedWidgetAssets.includes(key)) {
+      if (selectedWidgetAssets.length <= 1) {
+        setWidgetErrorMsg('حداقل ۱ ارز باید انتخاب شده باشد.');
+        setTimeout(() => setWidgetErrorMsg(null), 3000);
+        return;
+      }
+      updated = selectedWidgetAssets.filter((k) => k !== key);
+    } else {
+      if (selectedWidgetAssets.length >= 4) {
+        setWidgetErrorMsg('حداکثر ۴ ارز می‌توانید برای ویجت انتخاب کنید.');
+        setTimeout(() => setWidgetErrorMsg(null), 3000);
+        return;
+      }
+      updated = [...selectedWidgetAssets, key];
+    }
+
+    setSelectedWidgetAssets(updated);
+    localStorage.setItem('widget_selected_assets', JSON.stringify(updated));
+    setNativeWidgetAssets(updated);
     setWidgetSavedMsg(true);
     setTimeout(() => setWidgetSavedMsg(false), 3000);
   };
@@ -259,101 +287,142 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             ویجت صفحه اصلی گوشی (Widget)
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            انتخاب ارز یا طلا برای نمایش نرخ زنده روی هوم‌اسکرین
+            انتخاب ۱ تا ۴ ارز برای نمایش مربعی روی هوم‌اسکرین
           </p>
         </div>
 
-        {/* Central Floating Live Preview Card with Soft Stage */}
-        {(() => {
-          const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAsset) || WIDGET_ASSET_OPTIONS[0];
-          return (
-            <div className="py-3 px-4 bg-slate-100/70 dark:bg-black/30 rounded-2xl flex flex-col items-center border border-slate-200/60 dark:border-white/5">
-              <div
-                dir="ltr"
-                className="w-44 h-44 rounded-[26px] bg-white text-slate-900 p-4 shadow-xl shadow-slate-300/50 dark:shadow-black/60 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
-              >
-                {/* Top row: Circular Flag on Left, Title & Code on Right */}
-                <div className="flex items-center justify-between">
-                  <CircularFlag assetKey={currentAsset.key} size={36} />
-                  <div className="text-right">
-                    <span className="block text-[13px] font-bold text-slate-800 leading-tight">
-                      {currentAsset.englishName || currentAsset.name}
-                    </span>
-                    <span className="block text-[11px] font-bold text-slate-400 tracking-wide mt-0.5">
-                      {currentAsset.code}
-                    </span>
+        {/* Central Floating Live Preview with Soft Stage */}
+        <div className="py-3 px-4 bg-slate-100/70 dark:bg-black/30 rounded-2xl flex flex-col items-center border border-slate-200/60 dark:border-white/5">
+          {selectedWidgetAssets.length === 1 ? (
+            /* Single Large Card Preview */
+            (() => {
+              const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAssets[0]) || WIDGET_ASSET_OPTIONS[0];
+              return (
+                <div
+                  dir="ltr"
+                  className="w-44 h-44 rounded-[26px] bg-white text-slate-900 p-4 shadow-xl shadow-slate-300/50 dark:shadow-black/60 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
+                >
+                  <div className="flex items-center justify-between">
+                    <CircularFlag assetKey={currentAsset.key} size={36} />
+                    <div className="text-right">
+                      <span className="block text-[13px] font-bold text-slate-800 leading-tight">
+                        {currentAsset.englishName || currentAsset.name}
+                      </span>
+                      <span className="block text-[11px] font-bold text-slate-400 tracking-wide mt-0.5">
+                        {currentAsset.code}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Bottom area: Change above, Big Price below */}
-                <div className="text-left space-y-0.5">
-                  <span
-                    className={`block text-[12.5px] font-bold leading-tight ${
-                      currentAsset.isPos ? 'text-emerald-600' : 'text-rose-600'
-                    }`}
-                  >
-                    {currentAsset.defaultChange}
-                  </span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-[23px] font-black text-slate-950 tracking-tight leading-none">
-                      {currentAsset.defaultPrice}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-semibold">تومان</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Dots Pager Indicator (synced to selected asset) */}
-              <div className="flex items-center gap-1.5 mt-3.5">
-                {WIDGET_ASSET_OPTIONS.slice(0, 6).map((item, idx) => {
-                  const isCurrent = selectedWidgetAsset === item.key || (idx === 0 && !WIDGET_ASSET_OPTIONS.slice(0, 6).some(a => a.key === selectedWidgetAsset));
-                  return (
-                    <button
-                      key={item.key}
-                      type="button"
-                      onClick={() => handleSelectWidgetAsset(item.key)}
-                      className={`h-2 rounded-full transition-all ${
-                        isCurrent
-                          ? 'w-6 bg-slate-900 dark:bg-white'
-                          : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                  <div className="text-left space-y-0.5">
+                    <span
+                      className={`block text-[12.5px] font-bold leading-tight ${
+                        currentAsset.isPos ? 'text-emerald-600' : 'text-rose-600'
                       }`}
-                      aria-label={item.name}
-                    />
-                  );
-                })}
-              </div>
+                    >
+                      {currentAsset.defaultChange}
+                    </span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-[23px] font-black text-slate-950 tracking-tight leading-none">
+                        {currentAsset.defaultPrice}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-semibold">تومان</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()
+          ) : (
+            /* Multi 2x2 Square Cards Grid Preview (Matching media_1790792863004.png) */
+            <div className="w-full max-w-[270px] grid grid-cols-2 gap-2.5">
+              {selectedWidgetAssets.map((key) => {
+                const item = WIDGET_ASSET_OPTIONS.find((a) => a.key === key) || WIDGET_ASSET_OPTIONS[0];
+                return (
+                  <div
+                    key={key}
+                    dir="ltr"
+                    className="bg-white rounded-[22px] p-3 shadow-md border border-slate-200/90 flex flex-col justify-between aspect-square select-none transform transition-all hover:scale-105"
+                  >
+                    {/* Top: Icon Left, Name & Code Right */}
+                    <div className="flex items-center justify-between">
+                      <CircularFlag assetKey={item.key} size={24} />
+                      <div className="text-right">
+                        <span className="block text-[10.5px] font-bold text-slate-800 leading-tight">
+                          {item.englishName || item.name}
+                        </span>
+                        <span className="block text-[8.5px] font-semibold text-slate-400">
+                          {item.code}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom: Change & Price */}
+                    <div>
+                      <span className={`block text-[9.5px] font-bold ${item.isPos ? 'text-emerald-600' : 'text-rose-600'}`}>
+                        {item.defaultChange}
+                      </span>
+                      <span className="block text-[14px] font-black text-slate-950 tracking-tight leading-tight">
+                        {item.defaultPrice}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })()}
+          )}
+        </div>
 
         {/* Asset Selection Grid */}
         <div className="space-y-2 pt-1">
-          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 text-right">
-            انتخاب ارز مورد نظر برای نمایش روی ویجت:
-          </label>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-amber-600 dark:text-amber-400 font-black">
+              {selectedWidgetAssets.length} از ۴ ارز
+            </span>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 text-right">
+              انتخاب ارزها برای نمایش روی ویجت (۱ تا ۴ ارز):
+            </label>
+          </div>
+
           <div className="grid grid-cols-3 gap-2">
-            {WIDGET_ASSET_OPTIONS.map((item) => (
-              <button
-                dir="rtl"
-                key={item.key}
-                type="button"
-                onClick={() => handleSelectWidgetAsset(item.key)}
-                className={`p-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 border transition-all ${
-                  selectedWidgetAsset === item.key
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-sm font-black scale-[1.02]'
-                    : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-white/5 shadow-xs'
-                }`}
-              >
-                <CircularFlag assetKey={item.key} size={22} />
-                <span className="truncate text-[11px] font-bold">{item.name}</span>
-              </button>
-            ))}
+            {WIDGET_ASSET_OPTIONS.map((item) => {
+              const isSelected = selectedWidgetAssets.includes(item.key);
+              const orderIndex = selectedWidgetAssets.indexOf(item.key);
+              return (
+                <button
+                  dir="rtl"
+                  key={item.key}
+                  type="button"
+                  onClick={() => handleToggleWidgetAsset(item.key)}
+                  className={`p-2.5 rounded-2xl text-xs font-bold flex items-center justify-between border transition-all ${
+                    isSelected
+                      ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-sm font-black scale-[1.02]'
+                      : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-white/5 shadow-xs'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <CircularFlag assetKey={item.key} size={22} />
+                    <span className="truncate text-[11px] font-bold">{item.name}</span>
+                  </div>
+                  {isSelected && (
+                    <span className="w-4 h-4 rounded-full bg-slate-950 text-amber-400 text-[9px] font-black flex items-center justify-center shrink-0">
+                      {orderIndex + 1}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
+        {widgetErrorMsg && (
+          <div className="p-3 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-xs font-bold text-center animate-fadeIn">
+            ⚠️ {widgetErrorMsg}
+          </div>
+        )}
+
         {widgetSavedMsg && (
           <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold text-center animate-fadeIn">
-            ✓ ارز ویجت با موفقیت انتخاب و اعمال شد.
+            ✓ ویجت صفحه اصلی با موفقیت به‌روزرسانی شد.
           </div>
         )}
 

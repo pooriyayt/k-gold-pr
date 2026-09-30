@@ -1,6 +1,8 @@
 package com.kgold.app;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +47,10 @@ public class MainActivity extends BridgeActivity {
         if (this.bridge != null && this.bridge.getWebView() != null) {
             this.bridge.getWebView().addJavascriptInterface(new KGoldNativeBridge(), "AndroidBridge");
         }
+
+        // Initialize widget auto-refresh background alarm and fetch latest prices
+        KGoldWidgetProvider.scheduleAutoUpdate(this);
+        KGoldWidgetProvider.fetchAndSyncLatestPrices(this);
     }
 
     public class KGoldNativeBridge {
@@ -227,19 +233,37 @@ public class MainActivity extends BridgeActivity {
         }
 
         @JavascriptInterface
-        public void updateDefaultWidgetAsset(String assetKey) {
+        public void updateDefaultWidgetAssets(String assetsCsv) {
             try {
-                SharedPreferences.Editor editor = getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE).edit();
-                // Set default for general widgets
-                editor.putString("default_asset", assetKey);
+                if (assetsCsv == null || assetsCsv.isEmpty()) return;
+                SharedPreferences prefs = getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("selected_assets", assetsCsv);
+
+                // CRITICAL FIX: Overwrite all existing widget instances with this selection
+                // so the user's home screen widget immediately updates to the new selection!
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(MainActivity.this);
+                ComponentName thisWidget = new ComponentName(MainActivity.this, KGoldWidgetProvider.class);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+                if (appWidgetIds != null && appWidgetIds.length > 0) {
+                    for (int id : appWidgetIds) {
+                        editor.putString(WidgetConfigureActivity.PREF_PREFIX_KEY + id, assetsCsv);
+                    }
+                }
                 editor.apply();
+
                 runOnUiThread(() -> {
                     KGoldWidgetProvider.updateAllWidgets(MainActivity.this);
-                    Toast.makeText(MainActivity.this, "ویجت به‌روزرسانی شد ✓", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "ویجت با موفقیت به‌روزرسانی شد ✓", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        @JavascriptInterface
+        public void updateDefaultWidgetAsset(String assetKey) {
+            updateDefaultWidgetAssets(assetKey);
         }
 
         @JavascriptInterface

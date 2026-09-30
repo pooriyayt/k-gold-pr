@@ -142,12 +142,24 @@ export function syncPricesToWidget(
   }
 }
 
-export function setNativeWidgetAsset(assetKey: string): boolean {
-  if (typeof (window as any).AndroidBridge !== 'undefined' && (window as any).AndroidBridge.updateDefaultWidgetAsset) {
-    try {
-      (window as any).AndroidBridge.updateDefaultWidgetAsset(assetKey);
-      return true;
-    } catch {}
+export function setNativeWidgetAssets(assetKeys: string[]): boolean {
+  if (typeof (window as any).AndroidBridge !== 'undefined') {
+    if ((window as any).AndroidBridge.updateDefaultWidgetAssets) {
+      try {
+        (window as any).AndroidBridge.updateDefaultWidgetAssets(assetKeys.join(','));
+        return true;
+      } catch {}
+    } else if ((window as any).AndroidBridge.updateDefaultWidgetAsset) {
+      try {
+        (window as any).AndroidBridge.updateDefaultWidgetAsset(assetKeys[0] || 'usd');
+        return true;
+      } catch {}
+    }
   }
   return false;
 }
+
+export function setNativeWidgetAsset(assetKey: string): boolean {
+  return setNativeWidgetAssets([assetKey]);
+}
+

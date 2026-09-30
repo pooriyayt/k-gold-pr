@@ -30,32 +30,34 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/txt_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="12dp"
-        android:text="انتخاب ارز برای نمایش لحظه‌ای روی هوم‌اسکرین"
+        android:layout_marginBottom="10dp"
+        android:text="انتخاب ۱ تا ۴ ارز برای نمایش مربعی روی هوم‌اسکرین"
         android:textColor="#64748B"
         android:textSize="12sp" />
 
-    <!-- Live Preview Card in Center -->
+    <!-- PREVIEWS CONTAINER -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="10dp">
 
+        <!-- 1. Single Card Preview -->
         <LinearLayout
-            android:id="@+id/card_preview"
+            android:id="@+id/preview_single_container"
             android:layout_width="145dp"
             android:layout_height="145dp"
             android:background="@drawable/widget_bg_white"
             android:elevation="6dp"
             android:orientation="vertical"
-            android:padding="13dp">
+            android:padding="12dp"
+            android:visibility="gone">
 
-            <!-- Top Row: Icon Left, Name & Code Right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,8 +66,8 @@
 
                 <ImageView
                     android:id="@+id/preview_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/widget_icon_usd" />
 
@@ -83,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="دلار آمریکا"
+                        android:text="US Dollar"
                         android:textColor="#1E293B"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -95,7 +97,7 @@
                         android:layout_marginTop="1dp"
                         android:text="USD"
                         android:textColor="#94A3B8"
-                        android:textSize="10.5sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -106,7 +108,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical" />
 
-            <!-- Bottom: Change & Price -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +121,7 @@
                     android:layout_marginBottom="2dp"
                     android:text="+۲.۱۱٪ ↗"
                     android:textColor="#16A34A"
-                    android:textSize="12sp"
+                    android:textSize="11.5sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -136,7 +137,7 @@
                         android:includeFontPadding="false"
                         android:text="۶۱,۳۰۰"
                         android:textColor="#0F172A"
-                        android:textSize="21sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -149,20 +150,339 @@
                         android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
+        <!-- 2. Multi-Card 2x2 Grid Preview -->
+        <LinearLayout
+            android:id="@+id/preview_multi_container"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <!-- Row 1 -->
+            <LinearLayout
+                android:id="@+id/preview_row_1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <!-- Slot 1 -->
+                <LinearLayout
+                    android:id="@+id/prev_slot_1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/widget_card_mini_bg"
+                    android:elevation="3dp"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/prev_icon_1"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/widget_icon_usd" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_weight="1"
+                            android:gravity="end|right"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/prev_name_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="US Dollar"
+                                android:textColor="#1E293B"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/prev_code_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="USD"
+                                android:textColor="#94A3B8"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/prev_change_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+۲.۱۱٪ ↗"
+                        android:textColor="#16A34A"
+                        android:textSize="8.5sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/prev_price_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="۶۱,۳۰۰"
+                        android:textColor="#0F172A"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Slot 2 -->
+                <LinearLayout
+                    android:id="@+id/prev_slot_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/widget_card_mini_bg"
+                    android:elevation="3dp"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/prev_icon_2"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/widget_icon_eur" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_weight="1"
+                            android:gravity="end|right"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/prev_name_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Euro"
+                                android:textColor="#1E293B"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/prev_code_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="EUR"
+                                android:textColor="#94A3B8"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/prev_change_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+۲.۰۳٪ ↗"
+                        android:textColor="#16A34A"
+                        android:textSize="8.5sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/prev_price_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="۶۶,۴۰۰"
+                        android:textColor="#0F172A"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Row 2 -->
+            <LinearLayout
+                android:id="@+id/preview_row_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <!-- Slot 3 -->
+                <LinearLayout
+                    android:id="@+id/prev_slot_3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/widget_card_mini_bg"
+                    android:elevation="3dp"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/prev_icon_3"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/widget_icon_aed" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_weight="1"
+                            android:gravity="end|right"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/prev_name_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="UAE Dirham"
+                                android:textColor="#1E293B"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/prev_code_3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AED"
+                                android:textColor="#94A3B8"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/prev_change_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+۲.۱۰٪ ↗"
+                        android:textColor="#16A34A"
+                        android:textSize="8.5sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/prev_price_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="۱۶,۶۸۰"
+                        android:textColor="#0F172A"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Slot 4 -->
+                <LinearLayout
+                    android:id="@+id/prev_slot_4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/widget_card_mini_bg"
+                    android:elevation="3dp"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/prev_icon_4"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/widget_icon_gbp" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_weight="1"
+                            android:gravity="end|right"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/prev_name_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="British Pound"
+                                android:textColor="#1E293B"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/prev_code_4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GBP"
+                                android:textColor="#94A3B8"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/prev_change_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+۱.۹۵٪ ↗"
+                        android:textColor="#16A34A"
+                        android:textSize="8.5sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/prev_price_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="۷۸,۲۰۰"
+                        android:textColor="#0F172A"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Selection Instructions & Counter -->
     <TextView
+        android:id="@+id/txt_selection_counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
-        android:text="انتخاب ارز مورد نظر:"
+        android:text="انتخاب ارزها (حداقل ۱ و حداکثر ۴):"
         android:textColor="#475569"
         android:textSize="12sp"
         android:textStyle="bold" />
 
-    <!-- Compact 3-Column Asset Chips Grid (Replaces bulky ListView) -->
+    <!-- Compact 3-Column Asset Chips Grid -->
     <GridView
         android:id="@+id/assets_grid"
         android:layout_width="match_parent"
@@ -175,7 +495,7 @@
         android:gravity="center"
         android:listSelector="@android:color/transparent" />
 
-    <!-- Bottom Add Widget Button (Positioned safely above system navigation bar) -->
+    <!-- Bottom Add Widget Button -->
     <Button
         android:id="@+id/btn_add_widget"
         android:layout_width="match_parent"
