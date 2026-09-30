@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { AppSettings, CurrencyItem, GoldItem, CryptoItem } from './types';
 import { getStoredSettings, saveSettings, getFavorites, toggleFavorite } from './services/storage';
 import { fetchAllData } from './services/api';
-import { formatTimeOnly } from './services/format';
+import { formatTimeOnly, formatPrice } from './services/format';
 import { Header } from './components/Header';
 import { BottomNav, MainNavSection } from './components/BottomNav';
 import { SettingsModal } from './components/Modals/SettingsModal';
@@ -14,6 +14,11 @@ import { CarsView } from './views/CarsView';
 import { SettingsView } from './views/SettingsView';
 import { mockCurrencies, mockGold, mockCars, mockCrypto } from './services/mockData';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { checkLatestRelease, ReleaseInfo } from './services/updater';
+import { UpdateModal } from './components/Modals/UpdateModal';
+import { evaluateAlerts } from './services/alerts';
+import { DownloadCloud, Bell, X } from 'lucide-react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 export const App: React.FC = () => {
   const [mainSection, setMainSection] = useState<MainNavSection>('home');
@@ -22,6 +27,12 @@ export const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // In-App Update States
+  const [updateRelease, setUpdateRelease] = useState<ReleaseInfo | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  // Price Alert Notification Toast
+  const [triggeredAlertToast, setTriggeredAlertToast] = useState<string | null>(null);
 
   // Market Data
   const [currencies, setCurrencies] = useState<CurrencyItem[]>(mockCurrencies);
@@ -29,6 +40,25 @@ export const App: React.FC = () => {
   const [carsData, setCarsData] = useState<Record<string, { name: string; price: string }[]>>(mockCars);
   const [cryptoList, setCryptoList] = useState<CryptoItem[]>(mockCrypto);
   const [lastUpdate, setLastUpdate] = useState<string>(() => new Date().toISOString());
+
+  // Unified Price Map for Alerts & Portfolio
+  const priceMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    currencies.forEach((c) => {
+      const p = parseFloat(c.price.replace(/,/g, '')) || 0;
+      map[c.name] = p;
+      map[c.code] = p;
+    });
+    goldList.forEach((g) => {
+      const p = parseFloat(g.price.replace(/,/g, '')) || 0;
+      map[g.name] = p;
+    });
+    cryptoList.forEach((cr) => {
+      map[cr.nameFa] = cr.priceToman;
+      map[cr.ticker] = cr.priceToman;
+    });
+    return map;
+  }, [currencies, goldList, cryptoList]);
 
   // Load Data
   const loadData = useCallback(async () => {
@@ -70,7 +100,31 @@ export const App: React.FC = () => {
   // Initial load on mount
   useEffect(() => {
     loadDataRef.current();
+
+    // Quietly check for app updates from GitHub
+    checkLatestRelease().then((res) => {
+      if (res.hasUpdate && res.release) {
+        setUpdateRelease(res.release);
+      }
+    }).catch(() => {});
   }, []);
+
+  // Monitor price alerts
+  useEffect(() => {
+    if (Object.keys(priceMap).length > 0) {
+      const triggered = evaluateAlerts(priceMap);
+      if (triggered.length > 0) {
+        const first = triggered[0];
+        setTriggeredAlertToast(
+          `🔔 هشدار قیمت: ${first.name} به قیمت هدف ${formatPrice(first.targetPrice, settings.numberFormat || 'persian')} تومان رسید!`
+        );
+        try {
+          Haptics.impact({ style: ImpactStyle.Heavy });
+        } catch {}
+        setTimeout(() => setTriggeredAlertToast(null), 7000);
+      }
+    }
+  }, [priceMap, settings.numberFormat]);
 
   const handleToggleTheme = () => {
     const newTheme = settings.theme === 'dark' ? 'light' : 'dark';
@@ -95,12 +149,59 @@ export const App: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col transition-colors duration-200"
+      className="min-h-screen flex flex-col transition-colors duration-200 relative"
       style={{
         backgroundColor: 'var(--bg-screen)',
         color: 'var(--text-primary)',
       }}
     >
+      {/* Price Alert Triggered Floating Notification */}
+      {triggeredAlertToast && (
+        <div className="fixed top-14 left-3 right-3 z-[9999] max-w-lg mx-auto animate-slideDown">
+          <div className="p-3.5 rounded-2xl bg-amber-400 text-slate-950 font-black text-xs shadow-2xl flex items-center justify-between border border-amber-300">
+            <div className="flex items-center gap-2">
+              <Bell className="w-4 h-4 shrink-0 text-slate-950 animate-bounce" />
+              <span>{triggeredAlertToast}</span>
+            </div>
+            <button
+              onClick={() => setTriggeredAlertToast(null)}
+              className="p-1 hover:bg-black/10 rounded-lg"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* In-App Update Available Floating Banner */}
+      {updateRelease && (
+        <div className="fixed top-20 left-3 right-3 z-[9998] max-w-lg mx-auto animate-slideDown">
+          <div
+            onClick={() => setIsUpdateModalOpen(true)}
+            className="cursor-pointer p-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs shadow-xl flex items-center justify-between border border-emerald-400/40 active:scale-[0.98] transition-all"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="p-1.5 bg-white/20 rounded-xl">
+                <DownloadCloud className="w-4 h-4 text-white animate-bounce" />
+              </span>
+              <div>
+                <p className="font-black text-[13px]">نسخه جدید کی‌گلد ({updateRelease.version}) آماده است!</p>
+                <p className="text-[11px] text-emerald-100 opacity-90 font-medium">برای مشاهده ویژگی‌ها و دانلود لمس کنید</p>
+              </div>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setUpdateRelease(null);
+              }}
+              className="p-1.5 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header with Brand, Settings, Theme, Refresh & Guaranteed Countdown Ticker */}
       <Header
         isRefreshing={isRefreshing}
@@ -174,6 +275,7 @@ export const App: React.FC = () => {
             settings={settings}
             onUpdateSettings={handleSaveSettings}
             onTriggerRefresh={loadData}
+            priceMap={priceMap}
           />
         )}
       </main>
@@ -190,6 +292,13 @@ export const App: React.FC = () => {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onSave={handleSaveSettings}
+      />
+
+      {/* In-App Update Modal from Banner */}
+      <UpdateModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        release={updateRelease}
       />
     </div>
   );
