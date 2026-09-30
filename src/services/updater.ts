@@ -10,9 +10,9 @@ export interface ReleaseInfo {
   releaseUrl: string;
 }
 
-export const CURRENT_APP_VERSION = 'v1.2.0';
+export const CURRENT_APP_VERSION = 'v1.3.0';
 const GITHUB_REPO = 'pooriyayt/k-gold-pr';
-const GITHUB_TOKEN = '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';
+const GITHUB_TOKEN = '';
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 
 /**

@@ -13,6 +13,7 @@ interface GoldViewProps {
   numberFormat?: 'persian' | 'english';
   favorites?: string[];
   onToggleFavorite?: (id: string) => void;
+  onOpenChart?: (assetName: string, currentPrice: number) => void;
 }
 
 export const GoldView: React.FC<GoldViewProps> = ({
@@ -20,6 +21,7 @@ export const GoldView: React.FC<GoldViewProps> = ({
   numberFormat = 'persian',
   favorites = [],
   onToggleFavorite,
+  onOpenChart,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [timeframe, setTimeframe] = useState<'1d' | '7d' | '30d' | '3m'>('3m');
@@ -177,7 +179,15 @@ export const GoldView: React.FC<GoldViewProps> = ({
           return (
             <div
               key={item.name}
-              className="squircle-card p-3 flex flex-col justify-between"
+              onClick={() => {
+                if (!isBubble && onOpenChart) {
+                  const p = parseFloat(item.price.replace(/,/g, '')) || 0;
+                  onOpenChart(item.name, p);
+                }
+              }}
+              className={`squircle-card p-3 flex flex-col justify-between ${
+                !isBubble ? 'cursor-pointer hover:border-amber-400/40 active:scale-[0.98] transition-all' : ''
+              }`}
             >
               {/* Row 1: Identity */}
               <div className="card-top-row flex items-center justify-between">

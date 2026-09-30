@@ -13,6 +13,7 @@ interface CurrencyViewProps {
   numberFormat?: 'persian' | 'english';
   favorites?: string[];
   onToggleFavorite?: (id: string) => void;
+  onOpenChart?: (assetName: string, currentPrice: number) => void;
 }
 
 export const CurrencyView: React.FC<CurrencyViewProps> = ({
@@ -20,6 +21,7 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
   numberFormat = 'persian',
   favorites = [],
   onToggleFavorite,
+  onOpenChart,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [timeframe, setTimeframe] = useState<'1d' | '7d' | '30d' | '3m'>('3m');
@@ -143,7 +145,13 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
           return (
             <div
               key={c.code}
-              className="squircle-card p-3 flex flex-col justify-between"
+              onClick={() => {
+                if (onOpenChart) {
+                  const p = parseFloat(c.price.replace(/,/g, '')) || 0;
+                  onOpenChart(c.name, p);
+                }
+              }}
+              className="squircle-card p-3 flex flex-col justify-between cursor-pointer hover:border-emerald-400/40 active:scale-[0.98] transition-all"
             >
               {/* Row 1: Identity */}
               <div className="card-top-row flex items-center justify-between">

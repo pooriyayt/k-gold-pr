@@ -13,6 +13,7 @@ interface CryptoViewProps {
   numberFormat?: 'persian' | 'english';
   favorites?: string[];
   onToggleFavorite?: (id: string) => void;
+  onOpenChart?: (assetName: string, currentPrice: number) => void;
 }
 
 export const CryptoView: React.FC<CryptoViewProps> = ({
@@ -20,6 +21,7 @@ export const CryptoView: React.FC<CryptoViewProps> = ({
   numberFormat = 'persian',
   favorites = [],
   onToggleFavorite,
+  onOpenChart,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [unit, setUnit] = useState<'toman' | 'dollar'>('toman');
@@ -192,7 +194,12 @@ export const CryptoView: React.FC<CryptoViewProps> = ({
           return (
             <div
               key={coin.ticker}
-              className="squircle-card p-3 flex flex-col justify-between"
+              onClick={() => {
+                if (onOpenChart) {
+                  onOpenChart(`${coin.nameFa} (${coin.ticker})`, coin.priceToman);
+                }
+              }}
+              className="squircle-card p-3 flex flex-col justify-between cursor-pointer hover:border-purple-400/40 active:scale-[0.98] transition-all"
             >
               {/* Row 1: Identity */}
               <div className="card-top-row flex items-center justify-between">

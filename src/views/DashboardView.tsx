@@ -3,11 +3,12 @@ import { CurrencyItem, GoldItem, CryptoItem, TabType } from '../types';
 import { AppleSparkline } from '../components/AppleSparkline';
 import { getFlagUrl } from '../services/api';
 import { formatPrice, formatNumber } from '../services/format';
-import { Coins, CircleDollarSign, Star, TrendingUp, Receipt } from 'lucide-react';
+import { Coins, CircleDollarSign, Star, TrendingUp, Receipt, Share2, LineChart, Sparkles } from 'lucide-react';
 import { GoldBarsHero } from '../components/GoldBarsHero';
 import { isItemFavorite } from '../services/storage';
 import { CoinBubbleModal } from '../components/Modals/CoinBubbleModal';
 import { GoldCalculatorModal } from '../components/Modals/GoldCalculatorModal';
+import { ShareCardItem } from '../services/shareCard';
 
 interface DashboardViewProps {
   cryptoList: CryptoItem[];
@@ -18,6 +19,8 @@ interface DashboardViewProps {
   numberFormat?: 'persian' | 'english';
   favorites: string[];
   onToggleFavorite: (id: string) => void;
+  onOpenChart?: (assetName: string, currentPrice: number) => void;
+  onOpenShareCard?: (spotlight?: ShareCardItem) => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -28,6 +31,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   numberFormat = 'persian',
   favorites,
   onToggleFavorite,
+  onOpenChart,
+  onOpenShareCard,
 }) => {
   const [marketFilter, setMarketFilter] = useState<'all' | 'gold' | 'currency' | 'crypto' | 'favorites'>('all');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
@@ -123,32 +128,39 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* 1. 3D Gold Bars Hero Section matching media_1790080449509.png */}
       <GoldBarsHero />
 
-      {/* Quick Financial Tools: حباب‌سنج سکه و فاکتور طلا */}
-      <div className="grid grid-cols-2 gap-2.5">
+      {/* Quick Financial Tools: حباب‌سنج سکه، فاکتور طلا و کارت استوری */}
+      <div className="grid grid-cols-3 gap-2">
         <button
           onClick={() => setIsBubbleOpen(true)}
-          className="glass-card p-3 rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="glass-card p-2.5 rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent flex flex-col items-center justify-center text-center hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
             <TrendingUp className="w-4 h-4" />
           </div>
-          <div>
-            <span className="block text-xs font-black text-slate-900 dark:text-white">حباب‌سنج سکه</span>
-            <span className="block text-[10px] text-amber-500 dark:text-amber-400 font-semibold">ارزش واقعی و ریسک</span>
-          </div>
+          <span className="block text-[11px] font-black text-slate-900 dark:text-white">حباب‌سنج سکه</span>
+          <span className="block text-[9px] text-amber-500 dark:text-amber-400 font-semibold">ارزش واقعی</span>
         </button>
 
         <button
           onClick={() => setIsInvoiceOpen(true)}
-          className="glass-card p-3 rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="glass-card p-2.5 rounded-2xl border border-white/10 dark:border-white/10 bg-gradient-to-br from-white/5 to-transparent flex flex-col items-center justify-center text-center hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
             <Receipt className="w-4 h-4" />
           </div>
-          <div>
-            <span className="block text-xs font-black text-slate-900 dark:text-white">فاکتور طلافروشی</span>
-            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold">محاسبه اجرت و سود</span>
+          <span className="block text-[11px] font-black text-slate-900 dark:text-white">فاکتور طلا</span>
+          <span className="block text-[9px] text-slate-500 dark:text-slate-400 font-semibold">محاسبه اجرت</span>
+        </button>
+
+        <button
+          onClick={() => onOpenShareCard && onOpenShareCard()}
+          className="glass-card p-2.5 rounded-2xl border border-blue-500/25 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-transparent flex flex-col items-center justify-center text-center hover:border-blue-400/50 active:scale-[0.98] transition-all group"
+        >
+          <div className="w-8 h-8 rounded-xl bg-blue-400/20 text-blue-400 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+            <Share2 className="w-4 h-4" />
           </div>
+          <span className="block text-[11px] font-black text-slate-900 dark:text-white">کارت تصویر</span>
+          <span className="block text-[9px] text-blue-500 dark:text-blue-400 font-semibold">استوری و اشتراک</span>
         </button>
       </div>
 
@@ -177,23 +189,36 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite('USDT');
-              }}
-              className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
-              title="افزودن به علاقه‌مندی‌ها"
-            >
-              <Star
-                className={`w-4 h-4 transition-colors ${
-                  isItemFavorite('USDT', favorites)
-                    ? 'text-amber-400 fill-amber-400'
-                    : 'text-slate-400/40 hover:text-amber-400'
-                }`}
-              />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenChart && onOpenChart('تتر (USDT)', usdtItem.priceToman || 230880);
+                }}
+                className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="نمودار تحلیلی"
+              >
+                <LineChart className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite('USDT');
+                }}
+                className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="افزودن به علاقه‌مندی‌ها"
+              >
+                <Star
+                  className={`w-4 h-4 transition-colors ${
+                    isItemFavorite('USDT', favorites)
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-400/40 hover:text-amber-400'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Row 2: Price + Unit */}
@@ -236,23 +261,36 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite('USD');
-              }}
-              className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
-              title="افزودن به علاقه‌مندی‌ها"
-            >
-              <Star
-                className={`w-4 h-4 transition-colors ${
-                  isItemFavorite('USD', favorites)
-                    ? 'text-amber-400 fill-amber-400'
-                    : 'text-slate-400/40 hover:text-amber-400'
-                }`}
-              />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenChart && onOpenChart('دلار آمریکا', parseFloat(dollarItem.price.replace(/,/g, '')) || 233300);
+                }}
+                className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="نمودار تحلیلی"
+              >
+                <LineChart className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite('USD');
+                }}
+                className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="افزودن به علاقه‌مندی‌ها"
+              >
+                <Star
+                  className={`w-4 h-4 transition-colors ${
+                    isItemFavorite('USD', favorites)
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-400/40 hover:text-amber-400'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Row 2: Price + Unit */}
@@ -291,23 +329,36 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite('سکه امامی');
-              }}
-              className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
-              title="افزودن به علاقه‌مندی‌ها"
-            >
-              <Star
-                className={`w-4 h-4 transition-colors ${
-                  isItemFavorite('سکه امامی', favorites)
-                    ? 'text-amber-400 fill-amber-400'
-                    : 'text-slate-400/40 hover:text-amber-400'
-                }`}
-              />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenChart && onOpenChart('سکه امامی', parseFloat(coinEmamiItem.price.replace(/,/g, '')) || 237480000);
+                }}
+                className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="نمودار تحلیلی"
+              >
+                <LineChart className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite('سکه امامی');
+                }}
+                className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="افزودن به علاقه‌مندی‌ها"
+              >
+                <Star
+                  className={`w-4 h-4 transition-colors ${
+                    isItemFavorite('سکه امامی', favorites)
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-400/40 hover:text-amber-400'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Row 2: Price + Unit */}
@@ -346,23 +397,36 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite('طلای ۱۸ عیار');
-              }}
-              className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
-              title="افزودن به علاقه‌مندی‌ها"
-            >
-              <Star
-                className={`w-4 h-4 transition-colors ${
-                  isItemFavorite('طلای ۱۸ عیار', favorites)
-                    ? 'text-amber-400 fill-amber-400'
-                    : 'text-slate-400/40 hover:text-amber-400'
-                }`}
-              />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenChart && onOpenChart('طلای ۱۸ عیار', parseFloat(gold18Item.price.replace(/,/g, '')) || 23874800);
+                }}
+                className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="نمودار تحلیلی"
+              >
+                <LineChart className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite('طلای ۱۸ عیار');
+                }}
+                className="p-1 -ml-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
+                title="افزودن به علاقه‌مندی‌ها"
+              >
+                <Star
+                  className={`w-4 h-4 transition-colors ${
+                    isItemFavorite('طلای ۱۸ عیار', favorites)
+                      ? 'text-amber-400 fill-amber-400'
+                      : 'text-slate-400/40 hover:text-amber-400'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Row 2: Price + Unit */}
@@ -376,9 +440,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Row 3: Sparkline + Badge */}
           <div className="card-bottom-row">
             <div className="chart-container">
-              <AppleSparkline id="gold18" color="#FBBF24" isUp={true} width={68} height={24} />
+              <AppleSparkline id="gold18" color="#30D158" isUp={true} width={68} height={24} />
             </div>
-            <span className="badge-pill badge-gold">
+            <span className="badge-pill badge-green">
               {formatNumber(gold18Item.change_24h || '+1.85%', numberFormat)} ▲
             </span>
           </div>

@@ -16,6 +16,10 @@ import { mockCurrencies, mockGold, mockCars, mockCrypto } from './services/mockD
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { checkLatestRelease, ReleaseInfo } from './services/updater';
 import { UpdateModal } from './components/Modals/UpdateModal';
+import { ShareCardModal } from './components/Modals/ShareCardModal';
+import { ChartModal } from './components/Modals/ChartModal';
+import { PriceAlertModal } from './components/Modals/PriceAlertModal';
+import { ShareCardItem } from './services/shareCard';
 import { evaluateAlerts } from './services/alerts';
 import { DownloadCloud, Bell, X } from 'lucide-react';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
@@ -30,6 +34,18 @@ export const App: React.FC = () => {
   // In-App Update States
   const [updateRelease, setUpdateRelease] = useState<ReleaseInfo | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  // Share Card Modal State
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [shareSpotlightItem, setShareSpotlightItem] = useState<ShareCardItem | null>(null);
+
+  // Chart Modal State
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
+  const [selectedChartAsset, setSelectedChartAsset] = useState<{ name: string; price: number } | null>(null);
+
+  // Quick Direct Price Alert Modal from Chart
+  const [isDirectAlertOpen, setIsDirectAlertOpen] = useState(false);
+  const [alertTargetAsset, setAlertTargetAsset] = useState<string | undefined>(undefined);
 
   // Price Alert Notification Toast
   const [triggeredAlertToast, setTriggeredAlertToast] = useState<string | null>(null);
@@ -147,6 +163,45 @@ export const App: React.FC = () => {
     setMainSection(sec);
   };
 
+  // Social Share Card Items
+  const shareCardItems = useMemo<ShareCardItem[]>(() => {
+    const list: ShareCardItem[] = [];
+    const usd = currencies.find((c) => c.code === 'USD');
+    if (usd) list.push({ name: 'دلار آمریکا', price: usd.price, change: usd.change_24h || '+۰.۸٪' });
+
+    const usdt = cryptoList.find((c) => c.ticker === 'USDT');
+    if (usdt) list.push({ name: 'تتر (USDT)', price: formatPrice(usdt.priceToman, 'persian'), change: `+${usdt.change24h}%` });
+
+    const gold18 = goldList.find((g) => g.name.includes('۱۸') && !g.name.includes('حباب') && !g.name.includes('دست دوم'));
+    if (gold18) list.push({ name: 'طلای ۱۸ عیار', price: gold18.price, change: gold18.change_24h || '+۱.۸٪' });
+
+    const coin = goldList.find((g) => g.name === 'سکه امامی' || (g.name.includes('امامی') && !g.name.includes('حباب')));
+    if (coin) list.push({ name: 'سکه امامی', price: coin.price, change: coin.change_24h || '+۲.۱٪' });
+
+    const btc = cryptoList.find((c) => c.ticker === 'BTC');
+    if (btc) list.push({ name: 'بیت‌کوین', price: formatPrice(btc.priceToman, 'persian'), change: `${btc.change24h}%` });
+
+    const eur = currencies.find((c) => c.code === 'EUR');
+    if (eur) list.push({ name: 'یورو اروپا', price: eur.price, change: eur.change_24h || '+۱.۹٪' });
+
+    return list;
+  }, [currencies, cryptoList, goldList]);
+
+  const handleOpenChart = (name: string, price: number) => {
+    setSelectedChartAsset({ name, price });
+    setIsChartModalOpen(true);
+  };
+
+  const handleOpenShareCard = (spotlight?: ShareCardItem) => {
+    setShareSpotlightItem(spotlight || null);
+    setIsShareModalOpen(true);
+  };
+
+  const handleOpenAlertForAsset = (name: string) => {
+    setAlertTargetAsset(name);
+    setIsDirectAlertOpen(true);
+  };
+
   return (
     <div
       className="min-h-screen flex flex-col transition-colors duration-200 relative"
@@ -227,6 +282,8 @@ export const App: React.FC = () => {
             numberFormat={settings.numberFormat || 'persian'}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
+            onOpenChart={handleOpenChart}
+            onOpenShareCard={handleOpenShareCard}
           />
         )}
 
@@ -237,6 +294,7 @@ export const App: React.FC = () => {
             numberFormat={settings.numberFormat || 'persian'}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
+            onOpenChart={handleOpenChart}
           />
         )}
 
@@ -247,6 +305,7 @@ export const App: React.FC = () => {
             numberFormat={settings.numberFormat || 'persian'}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
+            onOpenChart={handleOpenChart}
           />
         )}
 
@@ -257,6 +316,7 @@ export const App: React.FC = () => {
             numberFormat={settings.numberFormat || 'persian'}
             favorites={favorites}
             onToggleFavorite={handleToggleFavorite}
+            onOpenChart={handleOpenChart}
           />
         )}
 
@@ -299,6 +359,33 @@ export const App: React.FC = () => {
         isOpen={isUpdateModalOpen}
         onClose={() => setIsUpdateModalOpen(false)}
         release={updateRelease}
+      />
+
+      {/* Social Media Share Card Modal */}
+      <ShareCardModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        spotlightItem={shareSpotlightItem}
+        items={shareCardItems}
+        numberFormat={settings.numberFormat || 'persian'}
+      />
+
+      {/* Historical Trend Chart Modal */}
+      <ChartModal
+        isOpen={isChartModalOpen}
+        onClose={() => setIsChartModalOpen(false)}
+        assetName={selectedChartAsset?.name || ''}
+        currentPrice={selectedChartAsset?.price || 0}
+        numberFormat={settings.numberFormat || 'persian'}
+        onOpenAlertForAsset={handleOpenAlertForAsset}
+      />
+
+      {/* Direct Price Alert Modal from Chart */}
+      <PriceAlertModal
+        isOpen={isDirectAlertOpen}
+        onClose={() => setIsDirectAlertOpen(false)}
+        priceMap={priceMap}
+        defaultAssetName={alertTargetAsset}
       />
     </div>
   );

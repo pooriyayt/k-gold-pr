@@ -122,3 +122,21 @@ export function formatCountdown(
   const str = `${mm}:${ss.toString().padStart(2, '0')}`;
   return format === 'english' ? toEnglishDigits(str) : toPersianDigits(str);
 }
+
+export function formatPercent(
+  num: number,
+  format: 'persian' | 'english' = 'persian'
+): string {
+  const prefix = num > 0 ? '+' : '';
+  const str = `${prefix}${num.toFixed(2)}%`;
+  return format === 'english' ? toEnglishDigits(str) : toPersianDigits(str);
+}
+
+export function formatPersianDate(
+  input?: string | Date | null,
+  format: 'persian' | 'english' = 'persian'
+): string {
+  const full = formatToShamsi(input, format);
+  return full.split('|')[0]?.trim() || full;
+}
+

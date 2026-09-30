@@ -15,6 +15,7 @@ import {
   Briefcase,
   AlertCircle,
   ExternalLink,
+  LayoutGrid,
 } from 'lucide-react';
 import { CURRENT_APP_VERSION, checkLatestRelease, ReleaseInfo } from '../services/updater';
 import { UpdateModal } from '../components/Modals/UpdateModal';
@@ -226,6 +227,22 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold">تنظیم آلارم تارگت</span>
           </div>
         </button>
+      </div>
+
+      {/* 3. Android Home Screen Widget Info Card */}
+      <div className="glass-card rounded-2xl p-3.5 border border-amber-500/20 bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/10 flex items-start gap-3">
+        <div className="w-9 h-9 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+          <LayoutGrid className="w-4 h-4" />
+        </div>
+        <div className="space-y-1 text-right">
+          <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+            <span>ویجت صفحه اصلی گوشی (Widget)</span>
+            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">جدید</span>
+          </h4>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+            برای مشاهده لحظه‌ای نرخ‌های دلار، تتر، طلا و سکه بدون باز کردن برنامه: انگشتتان را روی صفحه اصلی گوشی نگه دارید، وارد بخش ویجت‌ها (Widgets) شوید و ویجت <strong>کی‌گلد</strong> را به صفحه اضافه کنید.
+          </p>
+        </div>
       </div>
 
       {/* Theme Section */}
