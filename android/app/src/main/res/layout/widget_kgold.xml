@@ -5,28 +5,28 @@
     android:layout_height="match_parent"
     android:background="@drawable/widget_bg_white"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="14dp">
 
-    <!-- Top Row: Flag/Asset Icon on Left, Name & Code on Right -->
+    <!-- Top Row: Currency Circular Badge on Left, Name & Code on Right -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- Flag / Asset Icon on Left -->
+        <!-- Circular Currency Icon Badge on Left -->
         <ImageView
             android:id="@+id/widget_icon"
-            android:layout_width="32dp"
-            android:layout_height="22dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/widget_flag_usa" />
+            android:src="@drawable/widget_icon_usd" />
 
         <!-- Title & Code on Right -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="end|right"
             android:orientation="vertical">
@@ -38,8 +38,9 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="دلار آمریکا"
-                android:textColor="#64748B"
-                android:textSize="11.5sp" />
+                android:textColor="#1E293B"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/widget_code"
@@ -47,63 +48,64 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:text="USD"
-                android:textColor="#0F172A"
-                android:textSize="12sp"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Spacer to push prices to the bottom -->
-    <View
+    <!-- Spacer to push prices to the bottom (100% RemoteViews compatible) -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="vertical" />
 
-    <!-- Bottom Area: Previous Price & Large Live Price -->
+    <!-- Bottom Area: Percentage Change on Top, Live Price Below -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <!-- 24h Percentage Change Badge (Above the price) -->
+        <TextView
+            android:id="@+id/widget_change"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start|left"
-            android:orientation="vertical">
+            android:layout_marginBottom="2dp"
+            android:text="+۲.۱۱٪ ↗"
+            android:textColor="#16A34A"
+            android:textSize="12.5sp"
+            android:textStyle="bold" />
 
-            <!-- Previous Price (Small Gray) -->
-            <TextView
-                android:id="@+id/widget_prev_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="۶۱,۲۰۰"
-                android:textColor="#94A3B8"
-                android:textSize="11.5sp" />
+        <!-- Main Price & Unit Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
-            <!-- Main Price (Large Bold Green) -->
             <TextView
                 android:id="@+id/widget_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="۶۱,۳۰۰"
-                android:textColor="#16A34A"
-                android:textSize="22sp"
+                android:textColor="#0F172A"
+                android:textSize="24sp"
                 android:textStyle="bold" />
-        </LinearLayout>
 
-        <!-- Currency Unit on Right -->
-        <TextView
-            android:id="@+id/widget_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="3dp"
-            android:text="تومان"
-            android:textColor="#94A3B8"
-            android:textSize="10.5sp" />
+            <TextView
+                android:id="@+id/widget_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="2dp"
+                android:text="تومان"
+                android:textColor="#94A3B8"
+                android:textSize="11sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

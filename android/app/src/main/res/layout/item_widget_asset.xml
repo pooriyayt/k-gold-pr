@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/widget_asset_item_bg"
+    android:background="@drawable/widget_item_light_bg"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="12dp">
 
-    <!-- Flag / Asset Icon -->
+    <!-- Currency Circular Flag Badge -->
     <ImageView
         android:id="@+id/item_icon"
         android:layout_width="32dp"
-        android:layout_height="22dp"
+        android:layout_height="32dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/widget_flag_usa" />
+        android:src="@drawable/widget_icon_usd" />
 
     <!-- Name & Code -->
     <LinearLayout
@@ -29,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="دلار آمریکا"
-            android:textColor="#FFFFFF"
+            android:textColor="#0F172A"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -37,13 +38,14 @@
             android:id="@+id/item_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="1dp"
             android:text="USD"
-            android:textColor="#94A3B8"
-            android:textSize="12sp" />
+            android:textColor="#64748B"
+            android:textSize="11sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Price -->
+    <!-- Change & Price -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,18 +56,20 @@
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="۶۱,۳۰۰"
-            android:textColor="#FBBF24"
-            android:textSize="14sp"
+            android:text="۶۱,۳۰۰ تومان"
+            android:textColor="#0F172A"
+            android:textSize="13.5sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/item_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="تومان"
-            android:textColor="#64748B"
-            android:textSize="10.5sp" />
+            android:layout_marginTop="1dp"
+            android:text="+۲.۱۱٪"
+            android:textColor="#16A34A"
+            android:textSize="11sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

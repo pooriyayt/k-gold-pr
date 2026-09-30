@@ -210,8 +210,8 @@ public class MainActivity extends BridgeActivity {
                     if (itemObj.has("price")) {
                         editor.putString("price_" + key, itemObj.getString("price"));
                     }
-                    if (itemObj.has("prevPrice")) {
-                        editor.putString("prev_price_" + key, itemObj.getString("prevPrice"));
+                    if (itemObj.has("change")) {
+                        editor.putString("change_" + key, itemObj.getString("change"));
                     }
                     if (itemObj.has("isPositive")) {
                         editor.putBoolean("is_pos_" + key, itemObj.getBoolean("isPositive"));

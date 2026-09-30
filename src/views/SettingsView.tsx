@@ -22,6 +22,7 @@ import { UpdateModal } from '../components/Modals/UpdateModal';
 import { PriceAlertModal } from '../components/Modals/PriceAlertModal';
 import { PortfolioModal } from '../components/Modals/PortfolioModal';
 import { WIDGET_ASSET_OPTIONS, setNativeWidgetAsset } from '../services/widgetSync';
+import { CircularFlag } from '../components/Common/CircularFlag';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 interface SettingsViewProps {
@@ -247,80 +248,128 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </button>
       </div>
 
-      {/* 3. Android Home Screen Widget Interactive Section */}
-      <div className="glass-card rounded-2xl p-4 border border-amber-500/20 bg-gradient-to-br from-amber-500/5 via-transparent to-amber-500/10 space-y-3.5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 flex items-center justify-center shrink-0">
-              <LayoutGrid className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-                <span>ویجت صفحه اصلی گوشی (Widget)</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">طراحی جمع‌وجور</span>
-              </h4>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400">نمایش زنده نرخ ارز یا طلا بدون باز کردن اپلیکیشن</p>
-            </div>
-          </div>
-          {widgetSavedMsg && (
-            <span className="text-[10px] text-emerald-400 font-bold px-2 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 animate-fadeIn">
-              اعمال شد ✓
-            </span>
-          )}
+      {/* 3. Android Home Screen Widget Interactive Section (Matching Reference media_1790790676445.png) */}
+      <div className="bg-slate-100 dark:bg-[#111827] border border-slate-200 dark:border-white/10 rounded-[32px] p-5 shadow-xl space-y-4">
+        {/* Grabber handle matching iOS/Android sheet */}
+        <div className="w-10 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto" />
+
+        {/* Sheet Title & Subtitle */}
+        <div className="text-center space-y-1">
+          <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">
+            Symbol - V2
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+            Focus on a single item • نمایش نرخ زنده روی صفحه اصلی
+          </p>
         </div>
 
-        {/* Live Widget Preview (Matching user's reference) */}
-        <div className="flex justify-center py-1">
-          {(() => {
-            const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAsset) || WIDGET_ASSET_OPTIONS[0];
-            return (
-              <div className="w-36 h-36 rounded-[24px] bg-white text-slate-900 p-3 shadow-xl border border-slate-200 flex flex-col justify-between select-none">
-                <div className="flex items-start justify-between">
-                  <span className="text-2xl">{currentAsset.icon}</span>
+        {/* Central Floating Live Preview Card */}
+        {(() => {
+          const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAsset) || WIDGET_ASSET_OPTIONS[0];
+          return (
+            <div className="py-2 flex flex-col items-center">
+              <div
+                dir="ltr"
+                className="w-48 h-48 rounded-[28px] bg-white text-slate-900 p-4 shadow-2xl shadow-slate-950/15 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
+              >
+                {/* Top row: Circular Flag on Left, Title & Code on Right */}
+                <div className="flex items-center justify-between">
+                  <CircularFlag assetKey={currentAsset.key} size={38} />
                   <div className="text-right">
-                    <span className="block text-[11px] font-bold text-slate-500 leading-tight">{currentAsset.name}</span>
-                    <span className="block text-xs font-black text-slate-900">{currentAsset.code}</span>
+                    <span className="block text-[13px] font-bold text-slate-800 leading-tight">
+                      {currentAsset.englishName || currentAsset.name}
+                    </span>
+                    <span className="block text-[11px] font-bold text-slate-400 tracking-wide mt-0.5">
+                      {currentAsset.code}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex items-end justify-between">
-                  <div className="text-left">
-                    <span className="block text-[10px] text-slate-400 font-semibold">{currentAsset.defaultPrice}</span>
-                    <span className="block text-lg font-black text-emerald-600 leading-tight">{currentAsset.defaultPrice}</span>
+                {/* Bottom area: Change above, Big Price below */}
+                <div className="text-left space-y-0.5">
+                  <span
+                    className={`block text-[12.5px] font-bold leading-tight ${
+                      currentAsset.isPos ? 'text-emerald-600' : 'text-rose-600'
+                    }`}
+                  >
+                    {currentAsset.defaultChange}
+                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[25px] font-black text-slate-950 tracking-tight leading-none">
+                      {currentAsset.defaultPrice}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-semibold">تومان</span>
                   </div>
-                  <span className="text-[9px] text-slate-400 font-bold mb-0.5">تومان</span>
                 </div>
               </div>
-            );
-          })()}
-        </div>
 
-        {/* Asset Selection Buttons */}
-        <div className="space-y-1.5">
-          <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 text-right">
-            انتخاب ارز یا طلای نمایشی روی ویجت:
+              {/* Dots Pager Indicator (synced to selected asset) */}
+              <div className="flex items-center gap-1.5 mt-4">
+                {WIDGET_ASSET_OPTIONS.slice(0, 6).map((item, idx) => {
+                  const isCurrent = selectedWidgetAsset === item.key || (idx === 0 && !WIDGET_ASSET_OPTIONS.slice(0, 6).some(a => a.key === selectedWidgetAsset));
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => handleSelectWidgetAsset(item.key)}
+                      className={`h-2 rounded-full transition-all ${
+                        isCurrent
+                          ? 'w-6 bg-slate-900 dark:bg-white'
+                          : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                      }`}
+                      aria-label={item.name}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Asset Selection Grid */}
+        <div className="space-y-2 pt-1">
+          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 text-right">
+            انتخاب ارز مورد نظر برای نمایش روی ویجت:
           </label>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-3 gap-2">
             {WIDGET_ASSET_OPTIONS.map((item) => (
               <button
+                dir="rtl"
                 key={item.key}
                 type="button"
                 onClick={() => handleSelectWidgetAsset(item.key)}
-                className={`p-2 rounded-xl text-xs font-bold flex items-center justify-between border transition-all ${
+                className={`p-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 border transition-all ${
                   selectedWidgetAsset === item.key
-                    ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md font-black'
-                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/5'
+                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-black scale-[1.02]'
+                    : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-white/5'
                 }`}
               >
-                <span>{item.icon}</span>
-                <span className="truncate text-[11px]">{item.name}</span>
+                <CircularFlag assetKey={item.key} size={22} />
+                <span className="truncate text-[11px] font-bold">{item.name}</span>
               </button>
             ))}
           </div>
         </div>
 
-        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed text-right bg-white/5 p-2.5 rounded-xl border border-white/5">
-          💡 <strong>راهنما:</strong> انگشتتان را روی صفحه اصلی گوشی نگه دارید، به بخش ویجت‌ها رفته و ویجت <strong>کی‌گلد</strong> را به صفحه بکشید. می‌توانید چندین ویجت برای ارزهای مختلف ایجاد کنید.
+        {/* Add Widget Button (Matching Reference media_1790790676445.png) */}
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => handleSelectWidgetAsset(selectedWidgetAsset)}
+            className="w-full py-4 px-6 rounded-full bg-black hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-2xl active:scale-98 transition-all"
+          >
+            <span>+ Add Widget (انتخاب و فعال‌سازی ویجت)</span>
+          </button>
+        </div>
+
+        {widgetSavedMsg && (
+          <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold text-center animate-fadeIn">
+            ✓ ویجت صفحه اصلی با موفقیت روی ارز انتخاب شده تنظیم شد.
+          </div>
+        )}
+
+        <p className="text-[10.5px] text-slate-500 dark:text-slate-400 leading-relaxed text-right bg-white/50 dark:bg-white/5 p-3 rounded-2xl border border-slate-200/50 dark:border-white/5">
+          💡 <strong>راهنما:</strong> دست خود را روی صفحه خالی هوم‌اسکرین گوشی نگه دارید، وارد بخش ویجت‌ها شده و ویجت <strong>کی‌گلد</strong> را اضافه کنید.
         </p>
       </div>
 

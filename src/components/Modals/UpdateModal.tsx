@@ -199,15 +199,28 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ isOpen, onClose, relea
             </button>
           )}
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white font-bold text-xs transition-all text-center"
-          >
-            {downloadState === 'downloading' ? 'بستن پنجره (ادامه دانلود در پس‌زمینه)' : 'بعداً یادآوری کن'}
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                window.open(release.apkDownloadUrl, '_system');
+              }}
+              className="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white font-bold text-xs transition-all text-center"
+            >
+              دانلود از مرورگر
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white font-bold text-xs transition-all text-center"
+            >
+              {downloadState === 'downloading' ? 'بستن پنجره' : 'بعداً'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };

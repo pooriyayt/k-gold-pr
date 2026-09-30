@@ -31,13 +31,13 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_name, asset.name);
         views.setTextViewText(R.id.widget_code, asset.code);
 
-        // Prices
-        views.setTextViewText(R.id.widget_prev_price, asset.defaultPrevPrice);
-        views.setTextViewText(R.id.widget_price, asset.defaultPrice);
+        // Percentage Change (e.g. +۲.۱۱٪ ↗) above the price
+        views.setTextViewText(R.id.widget_change, asset.defaultChange);
+        views.setTextColor(R.id.widget_change, asset.isPositive ? 0xFF16A34A : 0xFFDC2626);
 
-        // Check if positive or negative to set color
-        boolean isPositive = prefs.getBoolean("is_pos_" + assetKey, true);
-        views.setTextColor(R.id.widget_price, isPositive ? 0xFF16A34A : 0xFFDC2626);
+        // Main Live Price & Unit
+        views.setTextViewText(R.id.widget_price, asset.defaultPrice);
+        views.setTextViewText(R.id.widget_unit, "تومان");
 
         // Intent to launch MainActivity on tap
         Intent intent = new Intent(context, MainActivity.class);
@@ -58,8 +58,10 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName thisWidget = new ComponentName(context, KGoldWidgetProvider.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+        if (appWidgetIds != null) {
+            for (int appWidgetId : appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId);
+            }
         }
     }
 }

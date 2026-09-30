@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +23,8 @@ public class WidgetConfigureActivity extends Activity {
     public static final String PREFS_NAME = "com.kgold.app.widget_prefs";
     public static final String PREF_PREFIX_KEY = "widget_asset_";
 
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mSelectedIndex = 0;
 
     public static class AssetItem {
         public String key;
@@ -30,32 +32,34 @@ public class WidgetConfigureActivity extends Activity {
         public String code;
         public int iconRes;
         public String defaultPrice;
-        public String defaultPrevPrice;
+        public String defaultChange;
+        public boolean isPositive;
 
-        public AssetItem(String key, String name, String code, int iconRes, String defaultPrice, String defaultPrevPrice) {
+        public AssetItem(String key, String name, String code, int iconRes, String defaultPrice, String defaultChange, boolean isPositive) {
             this.key = key;
             this.name = name;
             this.code = code;
             this.iconRes = iconRes;
             this.defaultPrice = defaultPrice;
-            this.defaultPrevPrice = defaultPrevPrice;
+            this.defaultChange = defaultChange;
+            this.isPositive = isPositive;
         }
     }
 
     public static List<AssetItem> getAllAssets() {
         List<AssetItem> list = new ArrayList<>();
-        list.add(new AssetItem("usd", "دلار آمریکا", "USD", R.drawable.widget_flag_usa, "۶۱,۳۰۰", "۶۱,۲۰۰"));
-        list.add(new AssetItem("usdt", "تتر دیجیتال", "USDT", R.drawable.widget_icon_tether, "۶۱,۲۵۰", "۶۱,۱۸۰"));
-        list.add(new AssetItem("gold18k", "طلای ۱۸ عیار", "18K", R.drawable.widget_icon_gold_bar, "۳,۷۵۰,۰۰۰", "۳,۷۲۰,۰۰۰"));
-        list.add(new AssetItem("emami", "سکه امامی", "EMAMI", R.drawable.widget_icon_coin_gold, "۴۳,۸۰۰,۰۰۰", "۴۳,۵۰۰,۰۰۰"));
-        list.add(new AssetItem("bahar", "سکه بهار آزادی", "BAHAR", R.drawable.widget_icon_coin_gold, "۳۸,۹۰۰,۰۰۰", "۳۸,۷۰۰,۰۰۰"));
-        list.add(new AssetItem("half", "نیم سکه بهار آزادی", "HALF", R.drawable.widget_icon_coin_gold, "۲۳,۵۰۰,۰۰۰", "۲۳,۴۰۰,۰۰۰"));
-        list.add(new AssetItem("quarter", "ربع سکه بهار آزادی", "QUARTER", R.drawable.widget_icon_coin_gold, "۱۵,۵۰۰,۰۰۰", "۱۵,۴۰۰,۰۰۰"));
-        list.add(new AssetItem("gerami", "سکه یک گرمی", "GERAMI", R.drawable.widget_icon_coin_gold, "۷,۲۰۰,۰۰۰", "۷,۱۵۰,۰۰۰"));
-        list.add(new AssetItem("eur", "یورو اروپا", "EUR", R.drawable.widget_flag_eur, "۶۶,۴۰۰", "۶۶,۱۰۰"));
-        list.add(new AssetItem("aed", "درهم امارات", "AED", R.drawable.widget_flag_aed, "۱۶,۶۸۰", "۱۶,۶۲۰"));
-        list.add(new AssetItem("gbp", "پوند انگلیس", "GBP", R.drawable.widget_flag_gbp, "۷۸,۲۰۰", "۷۷,۹۰۰"));
-        list.add(new AssetItem("btc", "بیت‌کوین", "BTC", R.drawable.widget_icon_btc, "۴,۱۲۰,۰۰۰,۰۰۰", "۴,۰۹۰,۰۰۰,۰۰۰"));
+        list.add(new AssetItem("usd", "دلار آمریکا", "USD", R.drawable.widget_icon_usd, "۶۱,۳۰۰", "+۲.۱۱٪ ↗", true));
+        list.add(new AssetItem("eur", "یورو اروپا", "EUR", R.drawable.widget_icon_eur, "۶۶,۴۰۰", "+۲.۰۳٪ ↗", true));
+        list.add(new AssetItem("aed", "درهم امارات", "AED", R.drawable.widget_icon_aed, "۱۶,۶۸۰", "+۲.۱۰٪ ↗", true));
+        list.add(new AssetItem("gbp", "پوند انگلیس", "GBP", R.drawable.widget_icon_gbp, "۷۸,۲۰۰", "+۱.۹۵٪ ↗", true));
+        list.add(new AssetItem("gold18k", "طلای ۱۸ عیار", "18K", R.drawable.widget_icon_gold, "۳,۷۵۰,۰۰۰", "+۱.۸۲٪ ↗", true));
+        list.add(new AssetItem("emami", "سکه تمام امامی", "EMAMI", R.drawable.widget_icon_coin, "۴۳,۸۰۰,۰۰۰", "+۲.۷۳٪ ↗", true));
+        list.add(new AssetItem("bahar", "سکه بهار آزادی", "BAHAR", R.drawable.widget_icon_coin, "۳۸,۹۰۰,۰۰۰", "+۱.۵۱٪ ↗", true));
+        list.add(new AssetItem("half", "نیم سکه بهار آزادی", "HALF", R.drawable.widget_icon_coin, "۲۳,۵۰۰,۰۰۰", "+۱.۱۰٪ ↗", true));
+        list.add(new AssetItem("quarter", "ربع سکه بهار آزادی", "QUARTER", R.drawable.widget_icon_coin, "۱۵,۵۰۰,۰۰۰", "+۰.۸۸٪ ↗", true));
+        list.add(new AssetItem("gerami", "سکه گرمی", "GERAMI", R.drawable.widget_icon_coin, "۷,۲۰۰,۰۰۰", "+۰.۵۰٪ ↗", true));
+        list.add(new AssetItem("usdt", "تتر دیجیتال", "USDT", R.drawable.widget_icon_tether, "۶۱,۲۵۰", "+۰.۲۵٪ ↗", true));
+        list.add(new AssetItem("btc", "بیت‌کوین", "BTC", R.drawable.widget_icon_btc, "۴,۱۲۰,۰۰۰,۰۰۰", "+۲.۱۲٪ ↗", true));
         return list;
     }
 
@@ -63,11 +67,11 @@ public class WidgetConfigureActivity extends Activity {
         List<AssetItem> assets = getAllAssets();
         for (AssetItem item : assets) {
             if (item.key.equalsIgnoreCase(key)) {
-                // Check if SharedPreferences has newer synced prices
                 SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 String price = prefs.getString("price_" + key, item.defaultPrice);
-                String prevPrice = prefs.getString("prev_price_" + key, item.defaultPrevPrice);
-                return new AssetItem(item.key, item.name, item.code, item.iconRes, price, prevPrice);
+                String change = prefs.getString("change_" + key, item.defaultChange);
+                boolean isPos = prefs.getBoolean("is_pos_" + key, item.isPositive);
+                return new AssetItem(item.key, item.name, item.code, item.iconRes, price, change, isPos);
             }
         }
         return assets.get(0);
@@ -93,19 +97,47 @@ public class WidgetConfigureActivity extends Activity {
             return;
         }
 
-        ListView listView = findViewById(R.id.assets_list);
-        List<AssetItem> assets = getAllAssets();
+        final List<AssetItem> assets = getAllAssets();
 
-        // Read updated prices from preferences if available
+        // Read dynamically synced prices from preferences
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         for (AssetItem item : assets) {
             String savedPrice = prefs.getString("price_" + item.key, null);
             if (savedPrice != null) {
                 item.defaultPrice = savedPrice;
             }
+            String savedChange = prefs.getString("change_" + item.key, null);
+            if (savedChange != null) {
+                item.defaultChange = savedChange;
+            }
         }
 
-        ArrayAdapter<AssetItem> adapter = new ArrayAdapter<AssetItem>(this, R.layout.item_widget_asset, assets) {
+        // Preview views
+        final ImageView previewIcon = findViewById(R.id.preview_icon);
+        final TextView previewName = findViewById(R.id.preview_name);
+        final TextView previewCode = findViewById(R.id.preview_code);
+        final TextView previewChange = findViewById(R.id.preview_change);
+        final TextView previewPrice = findViewById(R.id.preview_price);
+        final Button btnAddWidget = findViewById(R.id.btn_add_widget);
+        final ListView listView = findViewById(R.id.assets_list);
+
+        // Update preview helper
+        Runnable updatePreview = () -> {
+            if (mSelectedIndex >= 0 && mSelectedIndex < assets.size()) {
+                AssetItem selected = assets.get(mSelectedIndex);
+                previewIcon.setImageResource(selected.iconRes);
+                previewName.setText(selected.name);
+                previewCode.setText(selected.code);
+                previewChange.setText(selected.defaultChange);
+                previewChange.setTextColor(selected.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                previewPrice.setText(selected.defaultPrice);
+            }
+        };
+
+        // Initial preview
+        updatePreview.run();
+
+        final ArrayAdapter<AssetItem> adapter = new ArrayAdapter<AssetItem>(this, R.layout.item_widget_asset, assets) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
@@ -113,23 +145,42 @@ public class WidgetConfigureActivity extends Activity {
                 }
                 AssetItem item = getItem(position);
                 if (item != null) {
+                    View itemRoot = convertView.findViewById(R.id.item_root);
                     ImageView icon = convertView.findViewById(R.id.item_icon);
                     TextView name = convertView.findViewById(R.id.item_name);
                     TextView code = convertView.findViewById(R.id.item_code);
                     TextView price = convertView.findViewById(R.id.item_price);
+                    TextView change = convertView.findViewById(R.id.item_change);
 
                     icon.setImageResource(item.iconRes);
                     name.setText(item.name);
                     code.setText(item.code);
-                    price.setText(item.defaultPrice);
+                    price.setText(item.defaultPrice + " تومان");
+                    if (change != null) {
+                        change.setText(item.defaultChange);
+                        change.setTextColor(item.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                    }
+
+                    if (position == mSelectedIndex) {
+                        itemRoot.setBackgroundResource(R.drawable.widget_item_selected_bg);
+                    } else {
+                        itemRoot.setBackgroundResource(R.drawable.widget_item_light_bg);
+                    }
                 }
                 return convertView;
             }
         };
 
         listView.setAdapter(adapter);
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            AssetItem selected = assets.get(position);
+            mSelectedIndex = position;
+            adapter.notifyDataSetChanged();
+            updatePreview.run();
+        });
+
+        btnAddWidget.setOnClickListener(v -> {
+            AssetItem selected = assets.get(mSelectedIndex);
 
             // Save selected asset for this appWidgetId
             SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
@@ -140,7 +191,7 @@ public class WidgetConfigureActivity extends Activity {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigureActivity.this);
             KGoldWidgetProvider.updateAppWidget(WidgetConfigureActivity.this, appWidgetManager, mAppWidgetId);
 
-            // Return success to Android launcher
+            // Return success
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             setResult(RESULT_OK, resultValue);

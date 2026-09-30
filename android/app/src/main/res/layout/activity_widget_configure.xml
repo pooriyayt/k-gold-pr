@@ -2,42 +2,174 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0B0F19"
+    android:background="#F8F9FA"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Header -->
+    <!-- Top Grabber Handle -->
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/widget_btn_black"
+        android:backgroundTint="#CBD5E1" />
+
+    <!-- Title & Subtitle -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Symbol - V2"
+        android:textColor="#0F172A"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="16dp"
+        android:text="Focus on a single item • نمایش لحظه‌ای یک ارز"
+        android:textColor="#64748B"
+        android:textSize="12.5sp" />
+
+    <!-- Floating Live Preview Card in Center (Matching Reference Image) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⚡ انتخاب ارز برای ویجت کی‌گلد"
-            android:textColor="#F59E0B"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:id="@+id/card_preview"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:background="@drawable/widget_bg_white"
+            android:elevation="8dp"
+            android:orientation="vertical"
+            android:padding="14dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="کدام دارایی مایلید روی این ویجت نمایش داده شود؟"
-            android:textColor="#94A3B8"
-            android:textSize="13sp" />
+            <!-- Top Row: Icon Left, Name & Code Right -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/preview_icon"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/widget_icon_usd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:gravity="end|right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/preview_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="US Dollar"
+                        android:textColor="#1E293B"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/preview_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="USD"
+                        android:textColor="#94A3B8"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical" />
+
+            <!-- Bottom: Change & Price -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/preview_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="↓5,625"
+                    android:textColor="#16A34A"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/preview_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="100,115"
+                        android:textColor="#0F172A"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="2dp"
+                        android:text="تومان"
+                        android:textColor="#94A3B8"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Asset List Container -->
+    <!-- Asset Selection List -->
     <ListView
         android:id="@+id/assets_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="#1E293B"
+        android:layout_marginBottom="12dp"
+        android:divider="@android:color/transparent"
         android:dividerHeight="8dp" />
+
+    <!-- Bottom Add Widget Button (Matching Reference Image) -->
+    <Button
+        android:id="@+id/btn_add_widget"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/widget_btn_black"
+        android:stateListAnimator="@null"
+        android:text="✚ Add Widget (افزودن ویجت)"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

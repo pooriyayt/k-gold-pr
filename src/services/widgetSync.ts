@@ -2,18 +2,18 @@ import { CurrencyItem, CryptoItem, GoldItem } from '../types';
 import { formatPrice } from './format';
 
 export const WIDGET_ASSET_OPTIONS = [
-  { key: 'usd', name: 'دلار آمریکا', code: 'USD', icon: '🇺🇸', defaultPrice: '۶۱,۳۰۰' },
-  { key: 'usdt', name: 'تتر دیجیتال', code: 'USDT', icon: '₮', defaultPrice: '۶۱,۲۵۰' },
-  { key: 'gold18k', name: 'طلای ۱۸ عیار', code: '18K', icon: '🪙', defaultPrice: '۳,۷۵۰,۰۰۰' },
-  { key: 'emami', name: 'سکه تمام امامی', code: 'EMAMI', icon: '🟡', defaultPrice: '۴۳,۸۰۰,۰۰۰' },
-  { key: 'bahar', name: 'سکه بهار آزادی', code: 'BAHAR', icon: '🟡', defaultPrice: '۳۸,۹۰۰,۰۰۰' },
-  { key: 'half', name: 'نیم سکه', code: 'HALF', icon: '🟡', defaultPrice: '۲۳,۵۰۰,۰۰۰' },
-  { key: 'quarter', name: 'ربع سکه', code: 'QUARTER', icon: '🟡', defaultPrice: '۱۵,۵۰۰,۰۰۰' },
-  { key: 'gerami', name: 'سکه گرمی', code: 'GERAMI', icon: '🟡', defaultPrice: '۷,۲۰۰,۰۰۰' },
-  { key: 'eur', name: 'یورو اروپا', code: 'EUR', icon: '🇪🇺', defaultPrice: '۶۶,۴۰۰' },
-  { key: 'aed', name: 'درهم امارات', code: 'AED', icon: '🇦🇪', defaultPrice: '۱۶,۶۸۰' },
-  { key: 'gbp', name: 'پوند انگلیس', code: 'GBP', icon: '🇬🇧', defaultPrice: '۷۸,۲۰۰' },
-  { key: 'btc', name: 'بیت‌کوین', code: 'BTC', icon: '₿', defaultPrice: '۴,۱۲۰,۰۰۰,۰۰۰' },
+  { key: 'usd', name: 'دلار آمریکا', englishName: 'US Dollar', code: 'USD', icon: '$', defaultPrice: '۶۱,۳۰۰', defaultChange: '+۲.۱۱٪ ↗', isPos: true },
+  { key: 'eur', name: 'یورو اروپا', englishName: 'Euro', code: 'EUR', icon: '€', defaultPrice: '۶۶,۴۰۰', defaultChange: '+۲.۰۳٪ ↗', isPos: true },
+  { key: 'aed', name: 'درهم امارات', englishName: 'UAE Dirham', code: 'AED', icon: 'د.إ', defaultPrice: '۱۶,۶۸۰', defaultChange: '+۲.۱۰٪ ↗', isPos: true },
+  { key: 'gbp', name: 'پوند انگلیس', englishName: 'British Pound', code: 'GBP', icon: '£', defaultPrice: '۷۸,۲۰۰', defaultChange: '+۱.۹۵٪ ↗', isPos: true },
+  { key: 'gold18k', name: 'طلای ۱۸ عیار', englishName: 'Gold 18K', code: '18K', icon: '18K', defaultPrice: '۳,۷۵۰,۰۰۰', defaultChange: '+۱.۸۲٪ ↗', isPos: true },
+  { key: 'emami', name: 'سکه تمام امامی', englishName: 'Emami Coin', code: 'EMAMI', icon: '🪙', defaultPrice: '۴۳,۸۰۰,۰۰۰', defaultChange: '+۲.۷۳٪ ↗', isPos: true },
+  { key: 'bahar', name: 'سکه بهار آزادی', englishName: 'Bahar Azadi', code: 'BAHAR', icon: '🪙', defaultPrice: '۳۸,۹۰۰,۰۰۰', defaultChange: '+۱.۵۱٪ ↗', isPos: true },
+  { key: 'half', name: 'نیم سکه', englishName: 'Half Coin', code: 'HALF', icon: '🪙', defaultPrice: '۲۳,۵۰۰,۰۰۰', defaultChange: '+۱.۱۰٪ ↗', isPos: true },
+  { key: 'quarter', name: 'ربع سکه', englishName: 'Quarter Coin', code: 'QUARTER', icon: '🪙', defaultPrice: '۱۵,۵۰۰,۰۰۰', defaultChange: '+۰.۸۸٪ ↗', isPos: true },
+  { key: 'gerami', name: 'سکه گرمی', englishName: 'Gerami Coin', code: 'GERAMI', icon: '🪙', defaultPrice: '۷,۲۰۰,۰۰۰', defaultChange: '+۰.۵۰٪ ↗', isPos: true },
+  { key: 'usdt', name: 'تتر دیجیتال', englishName: 'Tether USD', code: 'USDT', icon: '₮', defaultPrice: '۶۱,۲۵۰', defaultChange: '+۰.۲۵٪ ↗', isPos: true },
+  { key: 'btc', name: 'بیت‌کوین', englishName: 'Bitcoin', code: 'BTC', icon: '₿', defaultPrice: '۴,۱۲۰,۰۰۰,۰۰۰', defaultChange: '+۲.۱۲٪ ↗', isPos: true },
 ];
 
 export function syncPricesToWidget(
@@ -25,13 +25,13 @@ export function syncPricesToWidget(
     return;
   }
 
-  const payload: Record<string, { price: string; prevPrice: string; isPositive: boolean }> = {};
+  const payload: Record<string, { price: string; change: string; isPositive: boolean }> = {};
 
   const usd = currencies.find((c) => c.code === 'USD');
   if (usd) {
     payload['usd'] = {
       price: usd.price,
-      prevPrice: usd.price,
+      change: usd.change_24h || '+۲.۱۱٪ ↗',
       isPositive: !usd.change_24h?.includes('-'),
     };
   }
@@ -40,7 +40,7 @@ export function syncPricesToWidget(
   if (usdt) {
     payload['usdt'] = {
       price: formatPrice(usdt.priceToman, 'persian'),
-      prevPrice: formatPrice(usdt.priceToman, 'persian'),
+      change: `+${usdt.change24h}% ↗`,
       isPositive: (usdt.change24h || 0) >= 0,
     };
   }
@@ -49,7 +49,7 @@ export function syncPricesToWidget(
   if (eur) {
     payload['eur'] = {
       price: eur.price,
-      prevPrice: eur.price,
+      change: eur.change_24h || '+۲.۰۳٪ ↗',
       isPositive: !eur.change_24h?.includes('-'),
     };
   }
@@ -58,7 +58,7 @@ export function syncPricesToWidget(
   if (aed) {
     payload['aed'] = {
       price: aed.price,
-      prevPrice: aed.price,
+      change: aed.change_24h || '+۲.۱۰٪ ↗',
       isPositive: !aed.change_24h?.includes('-'),
     };
   }
@@ -67,7 +67,7 @@ export function syncPricesToWidget(
   if (gbp) {
     payload['gbp'] = {
       price: gbp.price,
-      prevPrice: gbp.price,
+      change: gbp.change_24h || '+۱.۹۵٪ ↗',
       isPositive: !gbp.change_24h?.includes('-'),
     };
   }
@@ -76,7 +76,7 @@ export function syncPricesToWidget(
   if (btc) {
     payload['btc'] = {
       price: formatPrice(btc.priceToman, 'persian'),
-      prevPrice: formatPrice(btc.priceToman, 'persian'),
+      change: `${btc.change24h}% ↗`,
       isPositive: (btc.change24h || 0) >= 0,
     };
   }
@@ -85,7 +85,7 @@ export function syncPricesToWidget(
   if (gold18) {
     payload['gold18k'] = {
       price: gold18.price,
-      prevPrice: gold18.price,
+      change: gold18.change_24h || '+۱.۸۲٪ ↗',
       isPositive: !gold18.change_24h?.includes('-'),
     };
   }
@@ -94,7 +94,7 @@ export function syncPricesToWidget(
   if (emami) {
     payload['emami'] = {
       price: emami.price,
-      prevPrice: emami.price,
+      change: emami.change_24h || '+۲.۷۳٪ ↗',
       isPositive: !emami.change_24h?.includes('-'),
     };
   }
@@ -103,7 +103,7 @@ export function syncPricesToWidget(
   if (bahar) {
     payload['bahar'] = {
       price: bahar.price,
-      prevPrice: bahar.price,
+      change: bahar.change_24h || '+۱.۵۱٪ ↗',
       isPositive: !bahar.change_24h?.includes('-'),
     };
   }
@@ -112,7 +112,7 @@ export function syncPricesToWidget(
   if (half) {
     payload['half'] = {
       price: half.price,
-      prevPrice: half.price,
+      change: half.change_24h || '+۱.۱۰٪ ↗',
       isPositive: !half.change_24h?.includes('-'),
     };
   }
@@ -121,7 +121,7 @@ export function syncPricesToWidget(
   if (quarter) {
     payload['quarter'] = {
       price: quarter.price,
-      prevPrice: quarter.price,
+      change: quarter.change_24h || '+۰.۸۸٪ ↗',
       isPositive: !quarter.change_24h?.includes('-'),
     };
   }
@@ -130,7 +130,7 @@ export function syncPricesToWidget(
   if (gerami) {
     payload['gerami'] = {
       price: gerami.price,
-      prevPrice: gerami.price,
+      change: gerami.change_24h || '+۰.۵۰٪ ↗',
       isPositive: !gerami.change_24h?.includes('-'),
     };
   }
