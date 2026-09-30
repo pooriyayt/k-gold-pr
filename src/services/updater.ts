@@ -12,6 +12,7 @@ export interface ReleaseInfo {
 
 export const CURRENT_APP_VERSION = 'v1.2.0';
 const GITHUB_REPO = 'pooriyayt/k-gold-pr';
+const GITHUB_TOKEN = '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';
 const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
 
 /**
@@ -44,12 +45,15 @@ export async function checkLatestRelease(): Promise<{
   error?: string;
 }> {
   try {
-    const res = await fetch(GITHUB_API_URL, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-        'User-Agent': 'KGold-Android-App',
-      },
-    });
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github.v3+json',
+      'User-Agent': 'KGold-Android-App',
+    };
+    if (GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+    }
+
+    const res = await fetch(GITHUB_API_URL, { headers });
 
     if (!res.ok) {
       if (res.status === 404) {
@@ -66,7 +70,25 @@ export async function checkLatestRelease(): Promise<{
       ? data.assets.find((a: any) => a.name && a.name.toLowerCase().endsWith('.apk'))
       : null;
 
-    const apkDownloadUrl = apkAsset ? apkAsset.browser_download_url : data.html_url;
+    let apkDownloadUrl = apkAsset ? apkAsset.browser_download_url : data.html_url;
+
+    // If private repo, resolve pre-signed direct download link via HEAD request
+    if (apkAsset?.url && GITHUB_TOKEN) {
+      try {
+        const headRes = await fetch(apkAsset.url, {
+          method: 'HEAD',
+          headers: {
+            Authorization: `Bearer ${GITHUB_TOKEN}`,
+            Accept: 'application/octet-stream',
+            'User-Agent': 'KGold-Android-App',
+          },
+        });
+        if (headRes.ok && headRes.url && headRes.url.includes('release-assets.githubusercontent.com')) {
+          apkDownloadUrl = headRes.url;
+        }
+      } catch {}
+    }
+
     const apkSizeMb = apkAsset ? Number((apkAsset.size / (1024 * 1024)).toFixed(2)) : 0;
 
     const release: ReleaseInfo = {
