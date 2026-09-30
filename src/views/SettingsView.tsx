@@ -250,28 +250,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <button
           type="button"
           onClick={() => setIsPortfolioModalOpen(true)}
-          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-3 text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
             <Briefcase className="w-4 h-4" />
           </div>
-          <div>
-            <span className="block text-xs font-black text-slate-900 dark:text-white">سبد دارایی من</span>
-            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold">سود و زیان سرمایه</span>
+          <div className="text-right min-w-0">
+            <span className="block text-xs font-black text-slate-900 dark:text-white truncate">سبد دارایی من</span>
+            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold truncate">سود و زیان سرمایه</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setIsAlertsModalOpen(true)}
-          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-between text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
+          className="bg-white dark:bg-slate-900/60 p-3 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-3 text-right hover:border-amber-400/50 active:scale-[0.98] transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
             <Bell className="w-4 h-4" />
           </div>
-          <div>
-            <span className="block text-xs font-black text-slate-900 dark:text-white">هشدارهای قیمت</span>
-            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold">تنظیم آلارم تارگت</span>
+          <div className="text-right min-w-0">
+            <span className="block text-xs font-black text-slate-900 dark:text-white truncate">هشدارهای قیمت</span>
+            <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold truncate">تنظیم آلارم تارگت</span>
           </div>
         </button>
       </div>
