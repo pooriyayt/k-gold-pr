@@ -105,11 +105,7 @@ export const ChartModal: React.FC<ChartModalProps> = ({
 
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-sm max-h-[92vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl border border-amber-500/30"
-        style={{
-          backgroundColor: 'var(--card-bg, #0F131C)',
-          color: 'var(--text-primary, #F8FAFC)',
-        }}
+        className="relative w-full max-w-sm max-h-[92vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl border border-amber-500/30 bg-[#0E131F] text-slate-100"
       >
         {/* Header */}
         <div className="p-4 border-b border-white/10 flex items-center justify-between shrink-0 bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/5">
