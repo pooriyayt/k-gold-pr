@@ -67,6 +67,33 @@ public class WidgetConfigureActivity extends Activity {
         return list;
     }
 
+    public static String toPersianDigits(String str) {
+        if (str == null || str.isEmpty()) return "";
+        return str.replace('0', '۰')
+                  .replace('1', '۱')
+                  .replace('2', '۲')
+                  .replace('3', '۳')
+                  .replace('4', '۴')
+                  .replace('5', '۵')
+                  .replace('6', '۶')
+                  .replace('7', '۷')
+                  .replace('8', '۸')
+                  .replace('9', '۹')
+                  .replace('%', '٪');
+    }
+
+    public static String formatChangeText(String change, boolean isPositive) {
+        if (change == null || change.trim().isEmpty()) {
+            return isPositive ? "+۰.۰۰٪ ↗" : "-۰.۰۰٪ ↘";
+        }
+        boolean isNeg = change.contains("-") || !isPositive;
+        String clean = change.replaceAll("[+\\-\\s%٪↗↘]", "").trim();
+        if (clean.isEmpty()) clean = "0.00";
+        String arrow = isNeg ? " ↘" : " ↗";
+        String sign = isNeg ? "-" : "+";
+        return toPersianDigits(sign + clean + "٪" + arrow);
+    }
+
     public static AssetItem getAssetByKey(Context context, String key) {
         List<AssetItem> assets = getAllAssets();
         for (AssetItem item : assets) {
@@ -75,7 +102,10 @@ public class WidgetConfigureActivity extends Activity {
                 String price = prefs.getString("price_" + key, item.defaultPrice);
                 String change = prefs.getString("change_" + key, item.defaultChange);
                 boolean isPos = prefs.getBoolean("is_pos_" + key, item.isPositive);
-                return new AssetItem(item.key, item.name, item.englishName, item.code, item.iconRes, price, change, isPos);
+                return new AssetItem(item.key, item.name, item.englishName, item.code, item.iconRes, 
+                        toPersianDigits(price), 
+                        formatChangeText(change, isPos), 
+                        isPos);
             }
         }
         return assets.get(0);
@@ -107,9 +137,11 @@ public class WidgetConfigureActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         for (AssetItem item : allAssets) {
             String savedPrice = prefs.getString("price_" + item.key, null);
-            if (savedPrice != null) item.defaultPrice = savedPrice;
+            if (savedPrice != null) item.defaultPrice = toPersianDigits(savedPrice);
             String savedChange = prefs.getString("change_" + item.key, null);
-            if (savedChange != null) item.defaultChange = savedChange;
+            boolean isPos = prefs.getBoolean("is_pos_" + item.key, item.isPositive);
+            if (savedChange != null) item.defaultChange = formatChangeText(savedChange, isPos);
+            item.isPositive = isPos;
         }
 
         // Initialize Selected Assets (Default 4: USD, EUR, AED, GBP)
@@ -192,9 +224,9 @@ public class WidgetConfigureActivity extends Activity {
                 previewIcon.setImageResource(single.iconRes);
                 previewName.setText(single.englishName);
                 previewCode.setText(single.code);
-                previewChange.setText(single.defaultChange);
+                previewChange.setText(formatChangeText(single.defaultChange, single.isPositive));
                 previewChange.setTextColor(single.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                previewPrice.setText(single.defaultPrice);
+                previewPrice.setText(toPersianDigits(single.defaultPrice));
             } else {
                 previewSingleContainer.setVisibility(View.GONE);
                 previewMultiContainer.setVisibility(View.VISIBLE);
@@ -204,18 +236,18 @@ public class WidgetConfigureActivity extends Activity {
                 prevIcon1.setImageResource(a1.iconRes);
                 prevName1.setText(a1.englishName);
                 prevCode1.setText(a1.code);
-                prevChange1.setText(a1.defaultChange);
+                prevChange1.setText(formatChangeText(a1.defaultChange, a1.isPositive));
                 prevChange1.setTextColor(a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                prevPrice1.setText(a1.defaultPrice);
+                prevPrice1.setText(toPersianDigits(a1.defaultPrice));
 
                 // Slot 2
                 AssetItem a2 = getAssetByKey(this, mSelectedKeys.get(1));
                 prevIcon2.setImageResource(a2.iconRes);
                 prevName2.setText(a2.englishName);
                 prevCode2.setText(a2.code);
-                prevChange2.setText(a2.defaultChange);
+                prevChange2.setText(formatChangeText(a2.defaultChange, a2.isPositive));
                 prevChange2.setTextColor(a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                prevPrice2.setText(a2.defaultPrice);
+                prevPrice2.setText(toPersianDigits(a2.defaultPrice));
 
                 if (mSelectedKeys.size() == 2) {
                     previewRow2.setVisibility(View.GONE);
@@ -227,9 +259,9 @@ public class WidgetConfigureActivity extends Activity {
                     prevIcon3.setImageResource(a3.iconRes);
                     prevName3.setText(a3.englishName);
                     prevCode3.setText(a3.code);
-                    prevChange3.setText(a3.defaultChange);
+                    prevChange3.setText(formatChangeText(a3.defaultChange, a3.isPositive));
                     prevChange3.setTextColor(a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                    prevPrice3.setText(a3.defaultPrice);
+                    prevPrice3.setText(toPersianDigits(a3.defaultPrice));
 
                     // Slot 4
                     if (mSelectedKeys.size() >= 4) {
@@ -238,9 +270,9 @@ public class WidgetConfigureActivity extends Activity {
                         prevIcon4.setImageResource(a4.iconRes);
                         prevName4.setText(a4.englishName);
                         prevCode4.setText(a4.code);
-                        prevChange4.setText(a4.defaultChange);
+                        prevChange4.setText(formatChangeText(a4.defaultChange, a4.isPositive));
                         prevChange4.setTextColor(a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                        prevPrice4.setText(a4.defaultPrice);
+                        prevPrice4.setText(toPersianDigits(a4.defaultPrice));
                     } else {
                         prevSlot4.setVisibility(View.INVISIBLE);
                     }

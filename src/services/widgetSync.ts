@@ -16,6 +16,37 @@ export const WIDGET_ASSET_OPTIONS = [
   { key: 'btc', name: 'بیت‌کوین', englishName: 'Bitcoin', code: 'BTC', icon: '₿', defaultPrice: '۴,۱۲۰,۰۰۰,۰۰۰', defaultChange: '+۲.۱۲٪ ↗', isPos: true },
 ];
 
+export function toPersianDigits(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/0/g, '۰')
+    .replace(/1/g, '۱')
+    .replace(/2/g, '۲')
+    .replace(/3/g, '۳')
+    .replace(/4/g, '۴')
+    .replace(/5/g, '۵')
+    .replace(/6/g, '۶')
+    .replace(/7/g, '۷')
+    .replace(/8/g, '۸')
+    .replace(/9/g, '۹')
+    .replace(/%/g, '٪');
+}
+
+export function formatWidgetChange(val: number | string | undefined, isPositive?: boolean): string {
+  if (val === undefined || val === null) return '+۰.۰۰٪ ↗';
+  if (typeof val === 'number') {
+    const isNeg = val < 0;
+    const sign = isNeg ? '-' : '+';
+    const arrow = isNeg ? ' ↘' : ' ↗';
+    return toPersianDigits(`${sign}${Math.abs(val).toFixed(2)}٪${arrow}`);
+  }
+  const isNeg = val.includes('-') || isPositive === false;
+  const clean = val.replace(/[+-\s%٪↗↘]/g, '').trim();
+  const sign = isNeg ? '-' : '+';
+  const arrow = isNeg ? ' ↘' : ' ↗';
+  return toPersianDigits(`${sign}${clean}٪${arrow}`);
+}
+
 export function syncPricesToWidget(
   currencies: CurrencyItem[],
   cryptoList: CryptoItem[],
@@ -29,109 +60,121 @@ export function syncPricesToWidget(
 
   const usd = currencies.find((c) => c.code === 'USD');
   if (usd) {
+    const isPos = !usd.change_24h?.includes('-');
     payload['usd'] = {
-      price: usd.price,
-      change: usd.change_24h || '+۲.۱۱٪ ↗',
-      isPositive: !usd.change_24h?.includes('-'),
+      price: toPersianDigits(usd.price),
+      change: formatWidgetChange(usd.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const usdt = cryptoList.find((c) => c.ticker === 'USDT');
   if (usdt) {
+    const isPos = (usdt.change24h || 0) >= 0;
     payload['usdt'] = {
-      price: formatPrice(usdt.priceToman, 'persian'),
-      change: `+${usdt.change24h}% ↗`,
-      isPositive: (usdt.change24h || 0) >= 0,
+      price: toPersianDigits(formatPrice(usdt.priceToman, 'english')),
+      change: formatWidgetChange(usdt.change24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const eur = currencies.find((c) => c.code === 'EUR');
   if (eur) {
+    const isPos = !eur.change_24h?.includes('-');
     payload['eur'] = {
-      price: eur.price,
-      change: eur.change_24h || '+۲.۰۳٪ ↗',
-      isPositive: !eur.change_24h?.includes('-'),
+      price: toPersianDigits(eur.price),
+      change: formatWidgetChange(eur.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const aed = currencies.find((c) => c.code === 'AED');
   if (aed) {
+    const isPos = !aed.change_24h?.includes('-');
     payload['aed'] = {
-      price: aed.price,
-      change: aed.change_24h || '+۲.۱۰٪ ↗',
-      isPositive: !aed.change_24h?.includes('-'),
+      price: toPersianDigits(aed.price),
+      change: formatWidgetChange(aed.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const gbp = currencies.find((c) => c.code === 'GBP');
   if (gbp) {
+    const isPos = !gbp.change_24h?.includes('-');
     payload['gbp'] = {
-      price: gbp.price,
-      change: gbp.change_24h || '+۱.۹۵٪ ↗',
-      isPositive: !gbp.change_24h?.includes('-'),
+      price: toPersianDigits(gbp.price),
+      change: formatWidgetChange(gbp.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const btc = cryptoList.find((c) => c.ticker === 'BTC');
   if (btc) {
+    const isPos = (btc.change24h || 0) >= 0;
     payload['btc'] = {
-      price: formatPrice(btc.priceToman, 'persian'),
-      change: `${btc.change24h}% ↗`,
-      isPositive: (btc.change24h || 0) >= 0,
+      price: toPersianDigits(formatPrice(btc.priceToman, 'english')),
+      change: formatWidgetChange(btc.change24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const gold18 = goldList.find((g) => g.name.includes('۱۸') && !g.name.includes('حباب') && !g.name.includes('دست دوم'));
   if (gold18) {
+    const isPos = !gold18.change_24h?.includes('-');
     payload['gold18k'] = {
-      price: gold18.price,
-      change: gold18.change_24h || '+۱.۸۲٪ ↗',
-      isPositive: !gold18.change_24h?.includes('-'),
+      price: toPersianDigits(gold18.price),
+      change: formatWidgetChange(gold18.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const emami = goldList.find((g) => g.name.includes('امامی') && !g.name.includes('حباب'));
   if (emami) {
+    const isPos = !emami.change_24h?.includes('-');
     payload['emami'] = {
-      price: emami.price,
-      change: emami.change_24h || '+۲.۷۳٪ ↗',
-      isPositive: !emami.change_24h?.includes('-'),
+      price: toPersianDigits(emami.price),
+      change: formatWidgetChange(emami.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const bahar = goldList.find((g) => g.name.includes('بهار') && !g.name.includes('حباب'));
   if (bahar) {
+    const isPos = !bahar.change_24h?.includes('-');
     payload['bahar'] = {
-      price: bahar.price,
-      change: bahar.change_24h || '+۱.۵۱٪ ↗',
-      isPositive: !bahar.change_24h?.includes('-'),
+      price: toPersianDigits(bahar.price),
+      change: formatWidgetChange(bahar.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const half = goldList.find((g) => g.name.includes('نیم') && !g.name.includes('حباب'));
   if (half) {
+    const isPos = !half.change_24h?.includes('-');
     payload['half'] = {
-      price: half.price,
-      change: half.change_24h || '+۱.۱۰٪ ↗',
-      isPositive: !half.change_24h?.includes('-'),
+      price: toPersianDigits(half.price),
+      change: formatWidgetChange(half.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const quarter = goldList.find((g) => g.name.includes('ربع') && !g.name.includes('حباب'));
   if (quarter) {
+    const isPos = !quarter.change_24h?.includes('-');
     payload['quarter'] = {
-      price: quarter.price,
-      change: quarter.change_24h || '+۰.۸۸٪ ↗',
-      isPositive: !quarter.change_24h?.includes('-'),
+      price: toPersianDigits(quarter.price),
+      change: formatWidgetChange(quarter.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 
   const gerami = goldList.find((g) => g.name.includes('گرمی') && !g.name.includes('حباب'));
   if (gerami) {
+    const isPos = !gerami.change_24h?.includes('-');
     payload['gerami'] = {
-      price: gerami.price,
-      change: gerami.change_24h || '+۰.۵۰٪ ↗',
-      isPositive: !gerami.change_24h?.includes('-'),
+      price: toPersianDigits(gerami.price),
+      change: formatWidgetChange(gerami.change_24h, isPos),
+      isPositive: isPos,
     };
   }
 

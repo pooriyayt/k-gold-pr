@@ -53,6 +53,33 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    public static String toPersianDigits(String str) {
+        if (str == null || str.isEmpty()) return "";
+        return str.replace('0', '۰')
+                  .replace('1', '۱')
+                  .replace('2', '۲')
+                  .replace('3', '۳')
+                  .replace('4', '۴')
+                  .replace('5', '۵')
+                  .replace('6', '۶')
+                  .replace('7', '۷')
+                  .replace('8', '۸')
+                  .replace('9', '۹')
+                  .replace('%', '٪');
+    }
+
+    public static String formatChangeText(String change, boolean isPositive) {
+        if (change == null || change.trim().isEmpty()) {
+            return isPositive ? "+۰.۰۰٪ ↗" : "-۰.۰۰٪ ↘";
+        }
+        boolean isNeg = change.contains("-") || !isPositive;
+        String clean = change.replaceAll("[+\\-\\s%٪↗↘]", "").trim();
+        if (clean.isEmpty()) clean = "0.00";
+        String arrow = isNeg ? " ↘" : " ↗";
+        String sign = isNeg ? "-" : "+";
+        return toPersianDigits(sign + clean + "٪" + arrow);
+    }
+
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE);
         
@@ -86,9 +113,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
             views.setImageViewResource(R.id.widget_icon, asset.iconRes);
             views.setTextViewText(R.id.widget_name, asset.englishName);
             views.setTextViewText(R.id.widget_code, asset.code);
-            views.setTextViewText(R.id.widget_change, asset.defaultChange);
+            views.setTextViewText(R.id.widget_change, formatChangeText(asset.defaultChange, asset.isPositive));
             views.setTextColor(R.id.widget_change, asset.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.widget_price, asset.defaultPrice);
+            views.setTextViewText(R.id.widget_price, toPersianDigits(asset.defaultPrice));
             views.setTextViewText(R.id.widget_unit, "تومان");
 
         } else {
@@ -101,9 +128,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
             views.setImageViewResource(R.id.slot_icon_1, a1.iconRes);
             views.setTextViewText(R.id.slot_name_1, a1.englishName);
             views.setTextViewText(R.id.slot_code_1, a1.code);
-            views.setTextViewText(R.id.slot_change_1, a1.defaultChange);
+            views.setTextViewText(R.id.slot_change_1, formatChangeText(a1.defaultChange, a1.isPositive));
             views.setTextColor(R.id.slot_change_1, a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.slot_price_1, a1.defaultPrice);
+            views.setTextViewText(R.id.slot_price_1, toPersianDigits(a1.defaultPrice));
             views.setViewVisibility(R.id.slot_card_1, View.VISIBLE);
 
             // Slot 2
@@ -111,9 +138,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
             views.setImageViewResource(R.id.slot_icon_2, a2.iconRes);
             views.setTextViewText(R.id.slot_name_2, a2.englishName);
             views.setTextViewText(R.id.slot_code_2, a2.code);
-            views.setTextViewText(R.id.slot_change_2, a2.defaultChange);
+            views.setTextViewText(R.id.slot_change_2, formatChangeText(a2.defaultChange, a2.isPositive));
             views.setTextColor(R.id.slot_change_2, a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.slot_price_2, a2.defaultPrice);
+            views.setTextViewText(R.id.slot_price_2, toPersianDigits(a2.defaultPrice));
             views.setViewVisibility(R.id.slot_card_2, View.VISIBLE);
 
             if (assetKeys.size() == 2) {
@@ -127,9 +154,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                 views.setImageViewResource(R.id.slot_icon_3, a3.iconRes);
                 views.setTextViewText(R.id.slot_name_3, a3.englishName);
                 views.setTextViewText(R.id.slot_code_3, a3.code);
-                views.setTextViewText(R.id.slot_change_3, a3.defaultChange);
+                views.setTextViewText(R.id.slot_change_3, formatChangeText(a3.defaultChange, a3.isPositive));
                 views.setTextColor(R.id.slot_change_3, a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                views.setTextViewText(R.id.slot_price_3, a3.defaultPrice);
+                views.setTextViewText(R.id.slot_price_3, toPersianDigits(a3.defaultPrice));
                 views.setViewVisibility(R.id.slot_card_3, View.VISIBLE);
 
                 // Slot 4
@@ -138,9 +165,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                     views.setImageViewResource(R.id.slot_icon_4, a4.iconRes);
                     views.setTextViewText(R.id.slot_name_4, a4.englishName);
                     views.setTextViewText(R.id.slot_code_4, a4.code);
-                    views.setTextViewText(R.id.slot_change_4, a4.defaultChange);
+                    views.setTextViewText(R.id.slot_change_4, formatChangeText(a4.defaultChange, a4.isPositive));
                     views.setTextColor(R.id.slot_change_4, a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                    views.setTextViewText(R.id.slot_price_4, a4.defaultPrice);
+                    views.setTextViewText(R.id.slot_price_4, toPersianDigits(a4.defaultPrice));
                     views.setViewVisibility(R.id.slot_card_4, View.VISIBLE);
                 } else {
                     // Invisible preserves the square 2x2 grid balance
@@ -229,10 +256,11 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                             String price = c.optString("price", "");
                             String change = c.optString("change_24h", "");
                             if (!code.isEmpty() && !price.isEmpty()) {
-                                editor.putString("price_" + code, price);
+                                editor.putString("price_" + code, toPersianDigits(price));
                                 if (!change.isEmpty()) {
-                                    editor.putString("change_" + code, change);
-                                    editor.putBoolean("is_pos_" + code, !change.contains("-"));
+                                    boolean isPos = !change.contains("-");
+                                    editor.putString("change_" + code, formatChangeText(change, isPos));
+                                    editor.putBoolean("is_pos_" + code, isPos);
                                 }
                             }
                         }
@@ -254,10 +282,11 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                             else if (name.contains("گرمی") && !name.contains("حباب")) key = "gerami";
 
                             if (key != null && !price.isEmpty()) {
-                                editor.putString("price_" + key, price);
+                                editor.putString("price_" + key, toPersianDigits(price));
                                 if (!change.isEmpty()) {
-                                    editor.putString("change_" + key, change);
-                                    editor.putBoolean("is_pos_" + key, !change.contains("-"));
+                                    boolean isPos = !change.contains("-");
+                                    editor.putString("change_" + key, formatChangeText(change, isPos));
+                                    editor.putBoolean("is_pos_" + key, isPos);
                                 }
                             }
                         }
@@ -291,17 +320,19 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                                 long p = Math.round(item.optDouble("price", 0));
                                 double ch = item.optDouble("daily_change_price", 0);
                                 if (p > 0) {
-                                    editor.putString("price_usdt", String.format(Locale.US, "%,d", p));
-                                    editor.putString("change_usdt", String.format(Locale.US, "%s%.2f%% ↗", ch >= 0 ? "+" : "", ch));
-                                    editor.putBoolean("is_pos_usdt", ch >= 0);
+                                    boolean isPos = ch >= 0;
+                                    editor.putString("price_usdt", toPersianDigits(String.format(Locale.US, "%,d", p)));
+                                    editor.putString("change_usdt", formatChangeText(String.format(Locale.US, "%.2f", Math.abs(ch)), isPos));
+                                    editor.putBoolean("is_pos_usdt", isPos);
                                 }
                             } else if ("BTC_IRT".equalsIgnoreCase(symbol)) {
                                 long p = Math.round(item.optDouble("price", 0));
                                 double ch = item.optDouble("daily_change_price", 0);
                                 if (p > 0) {
-                                    editor.putString("price_btc", String.format(Locale.US, "%,d", p));
-                                    editor.putString("change_btc", String.format(Locale.US, "%s%.2f%% ↗", ch >= 0 ? "+" : "", ch));
-                                    editor.putBoolean("is_pos_btc", ch >= 0);
+                                    boolean isPos = ch >= 0;
+                                    editor.putString("price_btc", toPersianDigits(String.format(Locale.US, "%,d", p)));
+                                    editor.putString("change_btc", formatChangeText(String.format(Locale.US, "%.2f", Math.abs(ch)), isPos));
+                                    editor.putBoolean("is_pos_btc", isPos);
                                 }
                             }
                         }
