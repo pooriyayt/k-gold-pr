@@ -255,11 +255,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
         {/* Sheet Title & Subtitle */}
         <div className="text-center space-y-1">
-          <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">
-            Symbol - V2
+          <h3 className="text-base font-black text-slate-900 dark:text-white">
+            ویجت صفحه اصلی گوشی (Widget)
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            Focus on a single item • نمایش نرخ زنده روی صفحه اصلی
+            انتخاب ارز یا طلا برای نمایش نرخ زنده روی هوم‌اسکرین
           </p>
         </div>
 
@@ -351,25 +351,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </div>
         </div>
 
-        {/* Add Widget Button (Matching Reference media_1790790676445.png) */}
-        <div className="pt-2">
-          <button
-            type="button"
-            onClick={() => handleSelectWidgetAsset(selectedWidgetAsset)}
-            className="w-full py-4 px-6 rounded-full bg-black hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-2xl active:scale-98 transition-all"
-          >
-            <span>+ Add Widget (انتخاب و فعال‌سازی ویجت)</span>
-          </button>
-        </div>
-
         {widgetSavedMsg && (
           <div className="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold text-center animate-fadeIn">
-            ✓ ویجت صفحه اصلی با موفقیت روی ارز انتخاب شده تنظیم شد.
+            ✓ ارز ویجت با موفقیت انتخاب و اعمال شد.
           </div>
         )}
 
         <p className="text-[10.5px] text-slate-500 dark:text-slate-400 leading-relaxed text-right bg-white/50 dark:bg-white/5 p-3 rounded-2xl border border-slate-200/50 dark:border-white/5">
-          💡 <strong>راهنما:</strong> دست خود را روی صفحه خالی هوم‌اسکرین گوشی نگه دارید، وارد بخش ویجت‌ها شده و ویجت <strong>کی‌گلد</strong> را اضافه کنید.
+          💡 <strong>نحوه فعال‌سازی روی هوم‌اسکرین:</strong> انگشت خود را روی یک بخش خالی از صفحه اصلی گوشی نگه دارید، وارد بخش <strong>ویجت‌ها (Widgets)</strong> شوید و ویجت <strong>کی‌گلد</strong> را به صفحه بکشید.
         </p>
       </div>
 
