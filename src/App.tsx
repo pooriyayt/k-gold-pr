@@ -167,23 +167,46 @@ export const App: React.FC = () => {
   // Social Share Card Items
   const shareCardItems = useMemo<ShareCardItem[]>(() => {
     const list: ShareCardItem[] = [];
+
+    // 1. دلار آمریکا
     const usd = currencies.find((c) => c.code === 'USD');
-    if (usd) list.push({ name: 'دلار آمریکا', price: usd.price, change: usd.change_24h || '+۰.۸٪' });
+    if (usd) list.push({ name: 'دلار آمریکا', price: usd.price, change: usd.change_24h || '+۰.۸٪', code: 'USD · اسکناس' });
 
-    const usdt = cryptoList.find((c) => c.ticker === 'USDT');
-    if (usdt) list.push({ name: 'تتر (USDT)', price: formatPrice(usdt.priceToman, 'persian'), change: `+${usdt.change24h}%` });
-
-    const gold18 = goldList.find((g) => g.name.includes('۱۸') && !g.name.includes('حباب') && !g.name.includes('دست دوم'));
-    if (gold18) list.push({ name: 'طلای ۱۸ عیار', price: gold18.price, change: gold18.change_24h || '+۱.۸٪' });
-
-    const coin = goldList.find((g) => g.name === 'سکه امامی' || (g.name.includes('امامی') && !g.name.includes('حباب')));
-    if (coin) list.push({ name: 'سکه امامی', price: coin.price, change: coin.change_24h || '+۲.۱٪' });
-
-    const btc = cryptoList.find((c) => c.ticker === 'BTC');
-    if (btc) list.push({ name: 'بیت‌کوین', price: formatPrice(btc.priceToman, 'persian'), change: `${btc.change24h}%` });
-
+    // 2. یورو اروپا
     const eur = currencies.find((c) => c.code === 'EUR');
-    if (eur) list.push({ name: 'یورو اروپا', price: eur.price, change: eur.change_24h || '+۱.۹٪' });
+    if (eur) list.push({ name: 'یورو اروپا', price: eur.price, change: eur.change_24h || '+۱.۹٪', code: 'EUR · اسکناس' });
+
+    // 3. تتر
+    const usdt = cryptoList.find((c) => c.ticker === 'USDT');
+    if (usdt) list.push({ name: 'تتر', price: formatPrice(usdt.priceToman, 'persian'), change: `+${usdt.change24h}%`, code: 'USDT · دیجیتال' });
+
+    // 4. درهم امارات
+    const aed = currencies.find((c) => c.code === 'AED');
+    if (aed) list.push({ name: 'درهم امارات', price: aed.price, change: aed.change_24h || '+۱.۲٪', code: 'AED · اسکناس' });
+
+    // 5. بیت‌کوین
+    const btc = cryptoList.find((c) => c.ticker === 'BTC');
+    if (btc) list.push({ name: 'بیت‌کوین', price: formatPrice(btc.priceToman, 'persian'), change: `${btc.change24h}%`, code: 'BTC · رمزارز' });
+
+    // 6. سکه امامی
+    const coin = goldList.find((g) => g.name === 'سکه امامی' || (g.name.includes('امامی') && !g.name.includes('حباب')));
+    if (coin) list.push({ name: 'سکه تمام امامی', price: coin.price, change: coin.change_24h || '+۲.۱٪', code: 'EMAMI · طرح جدید' });
+
+    // 7. طلای ۱۸ عیار
+    const gold18 = goldList.find((g) => g.name.includes('۱۸') && !g.name.includes('حباب') && !g.name.includes('دست دوم'));
+    if (gold18) list.push({ name: 'طلای ۱۸ عیار', price: gold18.price, change: gold18.change_24h || '+۱.۸٪', code: '18K · هر گرم' });
+
+    // 8. سکه بهار آزادی
+    const bahar = goldList.find((g) => g.name.includes('بهار') && !g.name.includes('نیم') && !g.name.includes('ربع') && !g.name.includes('حباب'));
+    if (bahar) list.push({ name: 'سکه بهار آزادی', price: bahar.price, change: bahar.change_24h || '+۱.۵٪', code: 'BAHAR · طرح قدیم' });
+
+    // 9. نیم سکه
+    const half = goldList.find((g) => g.name.includes('نیم') && !g.name.includes('حباب'));
+    if (half) list.push({ name: 'نیم سکه بهار', price: half.price, change: half.change_24h || '+۱.۱٪', code: 'HALF · بانکی' });
+
+    // 10. ربع سکه
+    const quarter = goldList.find((g) => g.name.includes('ربع') && !g.name.includes('حباب'));
+    if (quarter) list.push({ name: 'ربع سکه بهار', price: quarter.price, change: quarter.change_24h || '+۰.۹٪', code: 'QUARTER · بانکی' });
 
     return list;
   }, [currencies, cryptoList, goldList]);

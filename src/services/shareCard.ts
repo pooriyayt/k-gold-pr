@@ -205,10 +205,10 @@ function drawAssetBadge(
     bgGrad.addColorStop(1, '#92400E');
     strokeColor = '#FDE68A';
     if (name.includes('امامی')) symbol = 'امامی';
-    else if (name.includes('بهار')) symbol = 'بهار';
     else if (name.includes('نیم')) symbol = 'نیم';
     else if (name.includes('ربع')) symbol = 'ربع';
     else if (name.includes('گرمی')) symbol = 'گرمی';
+    else if (name.includes('بهار')) symbol = 'بهار';
     else symbol = 'سکه';
     font = 'bold 14px "Vazirmatn", sans-serif';
     symbolColor = '#FEF3C7';
@@ -237,6 +237,68 @@ function drawAssetBadge(
   ctx.font = font;
   ctx.fillStyle = symbolColor;
   ctx.fillText(symbol, cx, cy + (font.includes('14') || font.includes('15') ? 5 : 7));
+}
+
+export const MASTER_ASSET_ORDER: { key: string; name: string; defaultCode: string; defaultPrice: string; defaultChange: string }[] = [
+  { key: 'USD', name: 'دلار آمریکا', defaultCode: 'USD · اسکناس', defaultPrice: '۲۵۹,۹۰۰', defaultChange: '+1.68%' },
+  { key: 'EUR', name: 'یورو اروپا', defaultCode: 'EUR · اسکناس', defaultPrice: '۲۹۲,۲۰۰', defaultChange: '+0.78%' },
+  { key: 'USDT', name: 'تتر', defaultCode: 'USDT · دیجیتال', defaultPrice: '۲۵۷,۵۴۵', defaultChange: '+1.79%' },
+  { key: 'AED', name: 'درهم امارات', defaultCode: 'AED · اسکناس', defaultPrice: '۷۰,۴۵۰', defaultChange: '+1.65%' },
+  { key: 'BTC', name: 'بیت‌کوین', defaultCode: 'BTC · رمزارز', defaultPrice: '۲۱,۸۳۷,۰۰۰,۰۰۰', defaultChange: '+3.19%' },
+  { key: 'EMAMI', name: 'سکه تمام امامی', defaultCode: 'EMAMI · طرح جدید', defaultPrice: '۲۶۰,۳۹۵,۰۰۰', defaultChange: '+0.92%' },
+  { key: '18K', name: 'طلای ۱۸ عیار', defaultCode: '18K · هر گرم', defaultPrice: '۲۵,۳۵۸,۰۰۰', defaultChange: '+1.82%' },
+  { key: 'BAHAR', name: 'سکه بهار آزادی', defaultCode: 'BAHAR · طرح قدیم', defaultPrice: '۲۴۸,۲۰۰,۰۰۰', defaultChange: '+1.51%' },
+  { key: 'HALF', name: 'نیم سکه بهار', defaultCode: 'HALF · بانکی', defaultPrice: '۱۳۲,۵۰۰,۰۰۰', defaultChange: '+1.10%' },
+  { key: 'QUARTER', name: 'ربع سکه بهار', defaultCode: 'QUARTER · بانکی', defaultPrice: '۸۴,۳۰۰,۰۰۰', defaultChange: '+0.88%' },
+];
+
+export function getNormalizedAssetKey(name: string, code?: string): string {
+  const c = (code || '').split(' ')[0].toUpperCase();
+  if (c === 'USD' || name.includes('دلار')) return 'USD';
+  if (c === 'EUR' || name.includes('یورو')) return 'EUR';
+  if (c === 'USDT' || name.includes('تتر')) return 'USDT';
+  if (c === 'AED' || name.includes('درهم')) return 'AED';
+  if (c === 'BTC' || name.includes('بیت')) return 'BTC';
+  if (c === '18K' || name.includes('۱۸')) return '18K';
+  if (c === 'EMAMI' || name.includes('امامی')) return 'EMAMI';
+  if (c === 'BAHAR' || (name.includes('بهار') && !name.includes('نیم') && !name.includes('ربع'))) return 'BAHAR';
+  if (c === 'HALF' || name.includes('نیم')) return 'HALF';
+  if (c === 'QUARTER' || name.includes('ربع')) return 'QUARTER';
+  if (c === 'GERAMI' || name.includes('گرمی')) return 'GERAMI';
+  if (c === 'GBP' || name.includes('پوند')) return 'GBP';
+  return name.trim();
+}
+
+export function resolveOrderedShareItems(providedItems: ShareCardItem[] = [], targetCount: number = 10): ShareCardItem[] {
+  const itemMap = new Map<string, ShareCardItem>();
+  for (const it of providedItems) {
+    const key = getNormalizedAssetKey(it.name, it.code);
+    if (!itemMap.has(key)) {
+      itemMap.set(key, it);
+    }
+  }
+
+  const result: ShareCardItem[] = [];
+  for (let i = 0; i < targetCount && i < MASTER_ASSET_ORDER.length; i++) {
+    const assetDef = MASTER_ASSET_ORDER[i];
+    const liveItem = itemMap.get(assetDef.key);
+    if (liveItem) {
+      result.push({
+        name: liveItem.name.includes('تتر') ? 'تتر' : liveItem.name,
+        price: liveItem.price,
+        change: liveItem.change,
+        code: liveItem.code || assetDef.defaultCode,
+      });
+    } else {
+      result.push({
+        name: assetDef.name,
+        price: assetDef.defaultPrice,
+        change: assetDef.defaultChange,
+        code: assetDef.defaultCode,
+      });
+    }
+  }
+  return result;
 }
 
 export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptions): void {
@@ -392,25 +454,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     curY += cardH + 28;
 
     // 3. 10 Key Assets
-    const fullItems: ShareCardItem[] = [...options.items];
-    const defaultFallbacks = [
-      { name: 'دلار آمریکا', price: '۲۵۹,۹۰۰', change: '+1.68%', code: 'USD' },
-      { name: 'تتر', price: '۲۵۷,۵۴۵', change: '+1.79%', code: 'USDT' },
-      { name: 'سکه تمام امامی', price: '۲۶۰,۳۹۵,۰۰۰', change: '+0.92%', code: 'EMAMI' },
-      { name: 'بیت‌کوین', price: '۲۱,۸۳۷,۰۰۰,۰۰۰', change: '+3.19%', code: 'BTC' },
-      { name: 'یورو اروپا', price: '۲۹۲,۲۰۰', change: '+0.78%', code: 'EUR' },
-      { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K' },
-      { name: 'سکه بهار آزادی', price: '۲۴۸,۲۰۰,۰۰۰', change: '+1.51%', code: 'BAHAR' },
-      { name: 'نیم سکه بهار', price: '۱۳۲,۵۰۰,۰۰۰', change: '+1.10%', code: 'HALF' },
-      { name: 'ربع سکه بهار', price: '۸۴,۳۰۰,۰۰۰', change: '+0.88%', code: 'QUARTER' },
-      { name: 'درهم امارات', price: '۷۰,۴۵۰', change: '+1.65%', code: 'AED' },
-    ];
-
-    defaultFallbacks.forEach((d) => {
-      if (!fullItems.some((fi) => fi.name === d.name) && fullItems.length < 10) {
-        fullItems.push(d);
-      }
-    });
+    const fullItems: ShareCardItem[] = resolveOrderedShareItems(options.items, 10);
 
     const rowW = 960;
     const rowH = 92;
@@ -418,7 +462,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     const rowX = (width - rowW) / 2;
 
     for (let i = 0; i < 10; i++) {
-      const item = fullItems[i] || defaultFallbacks[i];
+      const item = fullItems[i];
       const rowY = curY + i * (rowH + gap);
 
       // Frosted Card
@@ -614,21 +658,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     curY += headH + 28;
 
     // BENTO GRID: 2 Columns x 3 Rows = 6 Large Tiles
-    const postItems: ShareCardItem[] = options.items.slice(0, 6);
-    const defaultFallbacks = [
-      { name: 'دلار آمریکا', price: '۲۵۹,۹۰۰', change: '+1.68%', code: 'USD · اسکناس بازار' },
-      { name: 'تتر دیجیتال', price: '۲۵۷,۵۴۵', change: '+1.79%', code: 'USDT · استیبل‌کوین' },
-      { name: 'سکه تمام امامی', price: '۲۶۰,۳۹۵,۰۰۰', change: '+0.92%', code: 'EMAMI · طرح جدید' },
-      { name: 'بیت‌کوین', price: '۲۱,۸۳۷,۰۰۰,۰۰۰', change: '+3.19%', code: 'BTC · رمزارز پایه' },
-      { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K · هر گرم خام' },
-      { name: 'یورو اروپا', price: '۲۹۲,۲۰۰', change: '+0.78%', code: 'EUR · اسکناس بازار' },
-    ];
-
-    defaultFallbacks.forEach((d) => {
-      if (!postItems.some((pi) => pi.name === d.name) && postItems.length < 6) {
-        postItems.push(d);
-      }
-    });
+    const postItems: ShareCardItem[] = resolveOrderedShareItems(options.items, 6);
 
     const gridGapX = 18;
     const gridGapY = 18;
@@ -636,7 +666,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     const tileH = 220;
 
     itemsLoop: for (let idx = 0; idx < 6; idx++) {
-      const item = postItems[idx] || defaultFallbacks[idx];
+      const item = postItems[idx];
       const row = Math.floor(idx / 2);
       // RTL: even index on right (col 1), odd index on left (col 0)
       const col = idx % 2 === 0 ? 1 : 0;
