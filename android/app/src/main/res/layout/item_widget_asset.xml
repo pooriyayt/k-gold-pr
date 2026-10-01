@@ -56,7 +56,7 @@
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="۶۱,۳۰۰ تومان"
+            android:text="۶۱,۳۰۰"
             android:textColor="#0F172A"
             android:textSize="13.5sp"
             android:textStyle="bold" />

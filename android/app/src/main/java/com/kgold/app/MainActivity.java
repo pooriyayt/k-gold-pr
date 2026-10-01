@@ -236,9 +236,28 @@ public class MainActivity extends BridgeActivity {
         public void updateDefaultWidgetAssets(String assetsCsv) {
             try {
                 if (assetsCsv == null || assetsCsv.isEmpty()) return;
+                String[] parts = assetsCsv.split(",");
+                java.util.List<String> list = new java.util.ArrayList<>();
+                for (String p : parts) {
+                    String trimmed = p.trim().toLowerCase();
+                    if (!trimmed.isEmpty() && !list.contains(trimmed)) {
+                        list.add(trimmed);
+                    }
+                }
+                if (list.size() < 2) {
+                    if (!list.contains("usd")) list.add("usd");
+                    if (!list.contains("emami")) list.add("emami");
+                }
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < list.size(); i++) {
+                    if (i > 0) sb.append(",");
+                    sb.append(list.get(i));
+                }
+                String safeAssetsCsv = sb.toString();
+
                 SharedPreferences prefs = getSharedPreferences(WidgetConfigureActivity.PREFS_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("selected_assets", assetsCsv);
+                editor.putString("selected_assets", safeAssetsCsv);
 
                 // CRITICAL FIX: Overwrite all existing widget instances with this selection
                 // so the user's home screen widget immediately updates to the new selection!
@@ -247,7 +266,7 @@ public class MainActivity extends BridgeActivity {
                 int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
                 if (appWidgetIds != null && appWidgetIds.length > 0) {
                     for (int id : appWidgetIds) {
-                        editor.putString(WidgetConfigureActivity.PREF_PREFIX_KEY + id, assetsCsv);
+                        editor.putString(WidgetConfigureActivity.PREF_PREFIX_KEY + id, safeAssetsCsv);
                     }
                 }
                 editor.apply();

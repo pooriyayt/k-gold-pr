@@ -62,18 +62,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [isAlertsModalOpen, setIsAlertsModalOpen] = useState(false);
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
-  // Widget Asset Selection State (1 to 4 assets)
+  // Widget Asset Selection State (2 to 4 assets)
   const [selectedWidgetAssets, setSelectedWidgetAssets] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('widget_selected_assets');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length >= 2) return parsed;
       }
     } catch {}
     const oldSingle = localStorage.getItem('default_widget_asset');
-    if (oldSingle) return [oldSingle, 'eur', 'aed', 'gbp'].slice(0, 4);
-    return ['usd', 'eur', 'aed', 'gbp'];
+    if (oldSingle) return [oldSingle, 'emami'];
+    return ['usd', 'emami', 'gold18k', 'usdt'];
   });
   const [widgetSavedMsg, setWidgetSavedMsg] = useState(false);
   const [widgetErrorMsg, setWidgetErrorMsg] = useState<string | null>(null);
@@ -85,8 +85,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
     let updated: string[];
     if (selectedWidgetAssets.includes(key)) {
-      if (selectedWidgetAssets.length <= 1) {
-        setWidgetErrorMsg('حداقل ۱ ارز باید انتخاب شده باشد.');
+      if (selectedWidgetAssets.length <= 2) {
+        setWidgetErrorMsg('حداقل ۲ ارز باید برای ویجت انتخاب شود.');
         setTimeout(() => setWidgetErrorMsg(null), 3000);
         return;
       }
@@ -287,99 +287,58 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             ویجت صفحه اصلی گوشی (Widget)
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-            انتخاب ۱ تا ۴ ارز برای نمایش مربعی روی هوم‌اسکرین
+            انتخاب ۲ تا ۴ ارز برای نمایش روی هوم‌اسکرین (حداقل ۲ ارز)
           </p>
         </div>
 
         {/* Central Floating Live Preview with Soft Stage */}
         <div className="py-3 px-4 bg-slate-100/70 dark:bg-black/30 rounded-2xl flex flex-col items-center border border-slate-200/60 dark:border-white/5">
-          {selectedWidgetAssets.length === 1 ? (
-            /* Single Large Card Preview */
-            (() => {
-              const currentAsset = WIDGET_ASSET_OPTIONS.find((a) => a.key === selectedWidgetAssets[0]) || WIDGET_ASSET_OPTIONS[0];
+          {/* Multi Cards Grid Preview (Matching clean widget layout without تومان) */}
+          <div className="w-full max-w-[270px] grid grid-cols-2 gap-2.5">
+            {selectedWidgetAssets.map((key) => {
+              const item = WIDGET_ASSET_OPTIONS.find((a) => a.key === key) || WIDGET_ASSET_OPTIONS[0];
               return (
                 <div
+                  key={key}
                   dir="ltr"
-                  className="w-44 h-44 rounded-[26px] bg-white text-slate-900 p-4 shadow-xl shadow-slate-300/50 dark:shadow-black/60 border border-slate-200/90 flex flex-col justify-between select-none transform transition-all duration-300 hover:scale-105"
+                  className="bg-white rounded-[22px] p-3 shadow-md border border-slate-200/90 flex flex-col justify-between aspect-square select-none transform transition-all hover:scale-105"
                 >
+                  {/* Top: Icon Left, Name & Code Right */}
                   <div className="flex items-center justify-between">
-                    <CircularFlag assetKey={currentAsset.key} size={36} />
+                    <CircularFlag assetKey={item.key} size={24} />
                     <div className="text-right">
-                      <span className="block text-[13px] font-bold text-slate-800 leading-tight">
-                        {currentAsset.englishName || currentAsset.name}
+                      <span className="block text-[10.5px] font-bold text-slate-800 leading-tight">
+                        {item.englishName || item.name}
                       </span>
-                      <span className="block text-[11px] font-bold text-slate-400 tracking-wide mt-0.5">
-                        {currentAsset.code}
+                      <span className="block text-[8.5px] font-semibold text-slate-400">
+                        {item.code}
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-left space-y-0.5">
-                    <span
-                      className={`block text-[12.5px] font-bold leading-tight ${
-                        currentAsset.isPos ? 'text-emerald-600' : 'text-rose-600'
-                      }`}
-                    >
-                      {currentAsset.defaultChange}
+                  {/* Bottom: Change & Price */}
+                  <div>
+                    <span className={`block text-[9.5px] font-bold ${item.isPos ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      {item.defaultChange}
                     </span>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-[23px] font-black text-slate-950 tracking-tight leading-none">
-                        {currentAsset.defaultPrice}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-semibold">تومان</span>
-                    </div>
+                    <span className="block text-[14px] font-black text-slate-950 tracking-tight leading-tight">
+                      {item.defaultPrice}
+                    </span>
                   </div>
                 </div>
               );
-            })()
-          ) : (
-            /* Multi 2x2 Square Cards Grid Preview (Matching media_1790792863004.png) */
-            <div className="w-full max-w-[270px] grid grid-cols-2 gap-2.5">
-              {selectedWidgetAssets.map((key) => {
-                const item = WIDGET_ASSET_OPTIONS.find((a) => a.key === key) || WIDGET_ASSET_OPTIONS[0];
-                return (
-                  <div
-                    key={key}
-                    dir="ltr"
-                    className="bg-white rounded-[22px] p-3 shadow-md border border-slate-200/90 flex flex-col justify-between aspect-square select-none transform transition-all hover:scale-105"
-                  >
-                    {/* Top: Icon Left, Name & Code Right */}
-                    <div className="flex items-center justify-between">
-                      <CircularFlag assetKey={item.key} size={24} />
-                      <div className="text-right">
-                        <span className="block text-[10.5px] font-bold text-slate-800 leading-tight">
-                          {item.englishName || item.name}
-                        </span>
-                        <span className="block text-[8.5px] font-semibold text-slate-400">
-                          {item.code}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Bottom: Change & Price */}
-                    <div>
-                      <span className={`block text-[9.5px] font-bold ${item.isPos ? 'text-emerald-600' : 'text-rose-600'}`}>
-                        {item.defaultChange}
-                      </span>
-                      <span className="block text-[14px] font-black text-slate-950 tracking-tight leading-tight">
-                        {item.defaultPrice}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+            })}
+          </div>
         </div>
 
         {/* Asset Selection Grid */}
         <div className="space-y-2 pt-1">
           <div className="flex items-center justify-between">
             <span className="text-xs text-amber-600 dark:text-amber-400 font-black">
-              {selectedWidgetAssets.length} از ۴ ارز
+              {selectedWidgetAssets.length} از ۴ ارز (حداقل ۲)
             </span>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 text-right">
-              انتخاب ارزها برای نمایش روی ویجت (۱ تا ۴ ارز):
+              انتخاب ارزها برای نمایش روی ویجت (۲ تا ۴ ارز):
             </label>
           </div>
 
