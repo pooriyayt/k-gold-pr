@@ -5,13 +5,4 @@
             <certificates src="system" />
         </trust-anchors>
     </base-config>
-    <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">kgold.irkinsta.top</domain>
-        <domain includeSubdomains="true">hatscripts.github.io</domain>
-        <domain includeSubdomains="true">jsdelivr.net</domain>
-        <domain includeSubdomains="true">bitpin.ir</domain>
-        <trust-anchors>
-            <certificates src="system" />
-        </trust-anchors>
-    </domain-config>
 </network-security-config>

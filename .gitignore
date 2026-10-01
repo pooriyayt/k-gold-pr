@@ -20,6 +20,8 @@ scratch/
 scratch_*.mjs
 test_*.mjs
 generate_icons.ps1
+*API*.md
+*Documentation*.md
 
 # System & OS
 .DS_Store

@@ -173,13 +173,28 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    // Obfuscated secret decoder to prevent plain-text URL and token extraction
+    private static final int SEC_K = 42;
+    private static String decodeSecret(int[] arr, int k) {
+        StringBuilder sb = new StringBuilder(arr.length);
+        for (int i = 0; i < arr.length; i++) {
+            sb.append((char) (arr[i] ^ (k + (i % 7))));
+        }
+        return sb.toString();
+    }
+
+    private static final int[] SEC_URL_PRICES = new int[]{66,95,88,93,93,21,31,5,64,75,66,66,75,30,67,89,71,68,64,92,68,75,5,88,66,94,0,81,90,66,3,93,92,70,83,79,88};
+    private static final int[] SEC_URL_CRYPTO = new int[]{66,95,88,93,93,21,31,5,64,75,66,66,75,30,67,89,71,68,64,92,68,75,5,88,66,94,0,81,90,66,3,78,92,86,64,94,68};
+    private static final int[] SEC_SHIELD_HDR = new int[]{114,6,103,106,97,99,116,7,120,68,68,75,67,84};
+    private static final int[] SEC_SHIELD_TOK = new int[]{65,108,28,65,74,112,99,25,72,89,95,29,112,99,66,26,73,65,74,112,9,19,19,30};
+
     public static void fetchAndSyncLatestPrices(final Context context) {
         new Thread(() -> {
             try {
                 // 1. Fetch Currency & Gold prices from KGold API
-                URL urlPrices = new URL("https://kgold.irkinsta.top/api/prices");
+                URL urlPrices = new URL(decodeSecret(SEC_URL_PRICES, SEC_K));
                 HttpURLConnection connPrices = (HttpURLConnection) urlPrices.openConnection();
-                connPrices.setRequestProperty("X-KGOLD-Shield", "kG0ld_S3cur3_Sh1eld_9982");
+                connPrices.setRequestProperty(decodeSecret(SEC_SHIELD_HDR, SEC_K), decodeSecret(SEC_SHIELD_TOK, SEC_K));
                 connPrices.setRequestProperty("User-Agent", "KGOLD-Android-Widget/1.0");
                 connPrices.setConnectTimeout(8000);
                 connPrices.setReadTimeout(8000);
@@ -243,9 +258,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
 
                 // 2. Fetch Crypto prices for USDT & BTC
                 try {
-                    URL urlCrypto = new URL("https://kgold.irkinsta.top/api/crypto");
+                    URL urlCrypto = new URL(decodeSecret(SEC_URL_CRYPTO, SEC_K));
                     HttpURLConnection connCrypto = (HttpURLConnection) urlCrypto.openConnection();
-                    connCrypto.setRequestProperty("X-KGOLD-Shield", "kG0ld_S3cur3_Sh1eld_9982");
+                    connCrypto.setRequestProperty(decodeSecret(SEC_SHIELD_HDR, SEC_K), decodeSecret(SEC_SHIELD_TOK, SEC_K));
                     connCrypto.setRequestProperty("User-Agent", "KGOLD-Android-Widget/1.0");
                     connCrypto.setConnectTimeout(8000);
                     connCrypto.setReadTimeout(8000);

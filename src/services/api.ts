@@ -2,8 +2,19 @@ import { CurrencyItem, GoldItem, CryptoItem, PricesResponse, RawCryptoItem } fro
 import { mockCurrencies, mockGold, mockCars, mockCrypto, mockLastUpdate } from './mockData';
 import { getStoredSettings } from './storage';
 
-const BASE_URL = 'https://kgold.irkinsta.top';
-const SHIELD_TOKEN = 'kG0ld_S3cur3_Sh1eld_9982';
+// Obfuscated secure endpoint & token resolver to prevent plain-text extraction
+const _K = 42;
+const _ds = (bytes: number[], key: number = _K): string =>
+  bytes.map((c, i) => String.fromCharCode(c ^ (key + (i % 7)))).join('');
+
+const _B_BYTES = [66, 95, 88, 93, 93, 21, 31, 5, 64, 75, 66, 66, 75, 30, 67, 89, 71, 68, 64, 92, 68, 75, 5, 88, 66, 94];
+const _S_BYTES = [65, 108, 28, 65, 74, 112, 99, 25, 72, 89, 95, 29, 112, 99, 66, 26, 73, 65, 74, 112, 9, 19, 19, 30];
+const _EP_PRICES = [5, 74, 92, 68, 1, 95, 66, 67, 72, 73, 94];
+const _EP_CRYPTO = [5, 74, 92, 68, 1, 76, 66, 83, 91, 88, 66];
+const _EP_CARS = [5, 74, 92, 68, 1, 76, 81, 88, 88];
+
+export const getBaseUrl = (): string => _ds(_B_BYTES);
+export const getShieldToken = (): string => _ds(_S_BYTES);
 
 export const countryFlagMap: Record<string, string> = {
   USD: 'us',
@@ -81,10 +92,10 @@ export async function fetchAllData(): Promise<FetchResult> {
   const settings = getStoredSettings();
   const targetBaseUrl = (settings.customApiUrl && settings.customApiUrl.trim() !== '')
     ? settings.customApiUrl.trim().replace(/\/$/, '')
-    : BASE_URL;
+    : getBaseUrl();
 
   const headers: Record<string, string> = {
-    'X-KGOLD-Shield': SHIELD_TOKEN,
+    'X-KGOLD-Shield': getShieldToken(),
     'X-Requested-With': 'XMLHttpRequest',
     'User-Agent': 'KGOLD-Android-App/1.0',
     'Cache-Control': 'no-cache',
@@ -95,9 +106,9 @@ export async function fetchAllData(): Promise<FetchResult> {
     const timeout = setTimeout(() => controller.abort(), 8000);
 
     const [pricesRes, cryptoRes, carsRes] = await Promise.all([
-      fetch(`${targetBaseUrl}/api/prices`, { headers, signal: controller.signal }).catch(() => null),
-      fetch(`${targetBaseUrl}/api/crypto`, { headers, signal: controller.signal }).catch(() => null),
-      fetch(`${targetBaseUrl}/api/cars`, { headers, signal: controller.signal }).catch(() => null),
+      fetch(`${targetBaseUrl}${_ds(_EP_PRICES)}`, { headers, signal: controller.signal }).catch(() => null),
+      fetch(`${targetBaseUrl}${_ds(_EP_CRYPTO)}`, { headers, signal: controller.signal }).catch(() => null),
+      fetch(`${targetBaseUrl}${_ds(_EP_CARS)}`, { headers, signal: controller.signal }).catch(() => null),
     ]);
     clearTimeout(timeout);
 

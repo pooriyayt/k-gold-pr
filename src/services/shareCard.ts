@@ -438,7 +438,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
 
     ctx.font = 'normal 16px Vazirmatn, Tahoma, sans-serif';
     ctx.fillStyle = '#64748B';
-    ctx.fillText('استعلام آنلاین و بی‌درنگ • اپلیکیشن اندروید: kgold.irkinsta.top', width / 2, footY + 16);
+    ctx.fillText('استعلام آنلاین و بی‌درنگ • اپلیکیشن اختصاصی کی‌گلد', width / 2, footY + 16);
 
   } else {
     // -------------------------------------------------------------
