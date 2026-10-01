@@ -31,8 +31,9 @@
         <activity
             android:name=".WidgetConfigureActivity"
             android:exported="true"
-            android:label="انتخاب ارز ویجت"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+            android:excludeFromRecents="true"
+            android:label="تنظیمات ویجت کی‌گلد"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>

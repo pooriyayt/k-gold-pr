@@ -9,7 +9,7 @@
     android:maxResizeWidth="500dp"
     android:maxResizeHeight="500dp"
     android:resizeMode="horizontal|vertical"
-    android:widgetFeatures="reconfigurable"
+    android:widgetFeatures="reconfigurable|configuration_optional"
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_kgold"
     android:configure="com.kgold.app.WidgetConfigureActivity"

@@ -18,53 +18,86 @@ import java.util.List;
 
 public class KGoldWidgetRenderer {
 
-    private static Typeface sBoldTypeface = null;
-    private static Typeface sMediumTypeface = null;
-    private static Typeface sRegularTypeface = null;
+    // Fonts cache
+    private static Typeface sGsansBold = null;
+    private static Typeface sGsansMedium = null;
+    private static Typeface sVazirBold = null;
+    private static Typeface sVazirRegular = null;
+    private static Typeface sSfArabicBold = null;
+    private static Typeface sSfArabicRegular = null;
 
-    public static Typeface getBoldTypeface(Context context) {
-        if (sBoldTypeface == null) {
+    public static Typeface getGsansBold(Context context) {
+        if (sGsansBold == null) {
             try {
-                sBoldTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/Vazirmatn-Bold.ttf");
-            } catch (Exception e1) {
-                try {
-                    sBoldTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/SFProArabic-Bold.ttf");
-                } catch (Exception e2) {
-                    sBoldTypeface = Typeface.DEFAULT_BOLD;
-                }
+                sGsansBold = Typeface.createFromAsset(context.getAssets(), "public/fonts/GoogleSans-Bold.ttf");
+            } catch (Exception e) {
+                sGsansBold = Typeface.DEFAULT_BOLD;
             }
         }
-        return sBoldTypeface;
+        return sGsansBold;
     }
 
-    public static Typeface getMediumTypeface(Context context) {
-        if (sMediumTypeface == null) {
+    public static Typeface getGsansMedium(Context context) {
+        if (sGsansMedium == null) {
             try {
-                sMediumTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/Vazirmatn-Medium.ttf");
-            } catch (Exception e1) {
-                try {
-                    sMediumTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/SF-Arabic-600.ttf");
-                } catch (Exception e2) {
-                    sMediumTypeface = Typeface.DEFAULT_BOLD;
-                }
+                sGsansMedium = Typeface.createFromAsset(context.getAssets(), "public/fonts/GoogleSans-Medium.ttf");
+            } catch (Exception e) {
+                sGsansMedium = Typeface.DEFAULT;
             }
         }
-        return sMediumTypeface;
+        return sGsansMedium;
     }
 
-    public static Typeface getRegularTypeface(Context context) {
-        if (sRegularTypeface == null) {
+    public static Typeface getVazirBold(Context context) {
+        if (sVazirBold == null) {
             try {
-                sRegularTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/Vazirmatn-Regular.ttf");
+                sVazirBold = Typeface.createFromAsset(context.getAssets(), "public/fonts/Vazirmatn-Bold.ttf");
+            } catch (Exception e) {
+                sVazirBold = Typeface.DEFAULT_BOLD;
+            }
+        }
+        return sVazirBold;
+    }
+
+    public static Typeface getVazirRegular(Context context) {
+        if (sVazirRegular == null) {
+            try {
+                sVazirRegular = Typeface.createFromAsset(context.getAssets(), "public/fonts/Vazirmatn-Regular.ttf");
+            } catch (Exception e) {
+                sVazirRegular = Typeface.DEFAULT;
+            }
+        }
+        return sVazirRegular;
+    }
+
+    public static Typeface getSfArabicBold(Context context) {
+        if (sSfArabicBold == null) {
+            try {
+                sSfArabicBold = Typeface.createFromAsset(context.getAssets(), "public/fonts/SFProArabic-Bold.ttf");
             } catch (Exception e1) {
                 try {
-                    sRegularTypeface = Typeface.createFromAsset(context.getAssets(), "public/fonts/SFArabic-Regular.ttf");
+                    sSfArabicBold = Typeface.createFromAsset(context.getAssets(), "public/fonts/SF-Arabic-700.ttf");
                 } catch (Exception e2) {
-                    sRegularTypeface = Typeface.DEFAULT;
+                    sSfArabicBold = Typeface.DEFAULT_BOLD;
                 }
             }
         }
-        return sRegularTypeface;
+        return sSfArabicBold;
+    }
+
+    public static Typeface getSfArabicRegular(Context context) {
+        if (sSfArabicRegular == null) {
+            try {
+                sSfArabicRegular = Typeface.createFromAsset(context.getAssets(), "public/fonts/SFArabic-Regular.ttf");
+            } catch (Exception e1) {
+                try {
+                    sSfArabicRegular = Typeface.createFromAsset(context.getAssets(), "public/fonts/SF-Arabic-500.ttf");
+                } catch (Exception e2) {
+                    sSfArabicRegular = Typeface.DEFAULT;
+                }
+            }
+        }
+        return sSfArabicRegular;
     }
 
     public static String toPersianDigits(String str) {
@@ -114,7 +147,7 @@ public class KGoldWidgetRenderer {
         return formatDigits(sign + clean + pct + arrow, isPersian);
     }
 
-    public static String cleanName(String name) {
+    public static String cleanEnglishName(String name) {
         if (name == null) return "";
         if (name.equalsIgnoreCase("British Pound")) return "British Pound";
         if (name.equalsIgnoreCase("US Dollar")) return "US Dollar";
@@ -183,7 +216,7 @@ public class KGoldWidgetRenderer {
         if (digitsLang == null) {
             digitsLang = prefs.getString("widget_digits_lang", "fa");
         }
-        boolean isPersianDigits = !"en".equalsIgnoreCase(digitsLang);
+        boolean isPersian = !"en".equalsIgnoreCase(digitsLang);
 
         String theme = prefs.getString(WidgetConfigureActivity.PREF_THEME_PREFIX + appWidgetId, null);
         if (theme == null) {
@@ -214,7 +247,7 @@ public class KGoldWidgetRenderer {
                 float clampedRatio = Math.max(0.85f, Math.min(1.8f, ratio));
                 canvasH = Math.round(canvasW / clampedRatio);
             } else if (assets.size() == 2) {
-                // Two cards: naturally 1.5 to 2.4 ratio
+                // Two cards: naturally 1.35 to 2.4 ratio
                 canvasW = 720;
                 float clampedRatio = Math.max(1.35f, Math.min(2.4f, ratio));
                 canvasH = Math.round(canvasW / clampedRatio);
@@ -238,22 +271,28 @@ public class KGoldWidgetRenderer {
         Canvas canvas = new Canvas(bitmap);
 
         if (assets.size() == 1) {
-            renderSingleCard(context, canvas, assets.get(0), canvasW, canvasH, themeConfig, isPersianDigits);
+            renderSingleCard(context, canvas, assets.get(0), canvasW, canvasH, themeConfig, isPersian);
         } else if (assets.size() == 2) {
-            renderTwoCards(context, canvas, assets, canvasW, canvasH, themeConfig, isPersianDigits);
+            renderTwoCards(context, canvas, assets, canvasW, canvasH, themeConfig, isPersian);
         } else {
-            renderFourCardsGrid(context, canvas, assets, canvasW, canvasH, themeConfig, isPersianDigits);
+            renderFourCardsGrid(context, canvas, assets, canvasW, canvasH, themeConfig, isPersian);
         }
 
         return bitmap;
     }
 
     /**
-     * 1 ASSET MODE: Single Responsive Luxury Card (fits the widget bounds cleanly)
+     * 1 ASSET MODE: Single Responsive Card
      */
     private static void renderSingleCard(Context context, Canvas canvas, WidgetConfigureActivity.AssetItem asset, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
-        Typeface tfBold = getBoldTypeface(context);
-        Typeface tfRegular = getRegularTypeface(context);
+        // Typography based on language:
+        // Persian: SF Pro Arabic for words, Vazirmatn for numbers
+        // English: Google Sans (Gsans) for BOTH words and numbers
+        Typeface tfTitle = isPersian ? getSfArabicBold(context) : getGsansBold(context);
+        Typeface tfCode = isPersian ? getSfArabicBold(context) : getGsansMedium(context);
+        Typeface tfPrice = isPersian ? getVazirBold(context) : getGsansBold(context);
+        Typeface tfChange = isPersian ? getVazirBold(context) : getGsansBold(context);
+        Typeface tfUnit = isPersian ? getSfArabicRegular(context) : getGsansMedium(context);
 
         float pad = 12f;
         RectF cardRect = new RectF(pad, pad, w - pad, h - pad);
@@ -280,29 +319,31 @@ public class KGoldWidgetRenderer {
             icon.draw(canvas);
         }
 
+        // Title text (Persian name in Persian mode, English name in English mode)
+        String displayName = isPersian ? asset.name : cleanEnglishName(asset.englishName);
+
         Paint namePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        namePaint.setTypeface(tfBold);
+        namePaint.setTypeface(tfTitle);
         namePaint.setColor(theme.titleColor);
         float nameSize = Math.max(30f, Math.min(44f, w * 0.058f));
         namePaint.setTextSize(nameSize);
         namePaint.setTextAlign(Paint.Align.RIGHT);
 
-        String name = cleanName(asset.englishName);
-        if (namePaint.measureText(name) > (w - iconSize - 120f)) {
+        if (namePaint.measureText(displayName) > (w - iconSize - 120f)) {
             namePaint.setTextSize(nameSize * 0.85f);
         }
-        canvas.drawText(name, w - pad - 36f, iconY + iconSize * 0.44f, namePaint);
+        canvas.drawText(displayName, w - pad - 36f, iconY + iconSize * 0.44f, namePaint);
 
         Paint codePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        codePaint.setTypeface(tfBold);
+        codePaint.setTypeface(tfCode);
         codePaint.setColor(theme.codeColor);
         codePaint.setTextSize(nameSize * 0.62f);
         codePaint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText(asset.code, w - pad - 36f, iconY + iconSize * 0.84f, codePaint);
 
-        // 4. Bottom Row: Change Percentage
+        // 4. Bottom Row: Change Percentage (Left-Aligned)
         Paint changePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        changePaint.setTypeface(tfBold);
+        changePaint.setTypeface(tfChange);
         float changeSize = Math.max(26f, Math.min(38f, w * 0.052f));
         changePaint.setTextSize(changeSize);
         changePaint.setColor(asset.isPositive ? theme.posColor : theme.negColor);
@@ -312,7 +353,7 @@ public class KGoldWidgetRenderer {
 
         // 5. Live Price & Unit
         Paint pricePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        pricePaint.setTypeface(tfBold);
+        pricePaint.setTypeface(tfPrice);
         pricePaint.setColor(theme.priceColor);
         float priceSize = Math.max(48f, Math.min(74f, w * 0.098f));
         pricePaint.setTextSize(priceSize);
@@ -327,11 +368,12 @@ public class KGoldWidgetRenderer {
         canvas.drawText(pStr, iconX, h - pad - 38f, pricePaint);
 
         Paint unitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        unitPaint.setTypeface(tfRegular);
+        unitPaint.setTypeface(tfUnit);
         unitPaint.setColor(theme.unitColor);
         unitPaint.setTextSize(priceSize * 0.38f);
         unitPaint.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("تومان", iconX + pWidth + 16f, h - pad - 38f, unitPaint);
+        String unitStr = isPersian ? "تومان" : "TOMAN";
+        canvas.drawText(unitStr, iconX + pWidth + 16f, h - pad - 38f, unitPaint);
     }
 
     /**
@@ -375,7 +417,10 @@ public class KGoldWidgetRenderer {
      * Renders a Single Mini Card (in 2-asset or 4-asset mode)
      */
     private static void drawMiniCard(Context context, Canvas canvas, WidgetConfigureActivity.AssetItem asset, int x, int y, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
-        Typeface tfBold = getBoldTypeface(context);
+        Typeface tfTitle = isPersian ? getSfArabicBold(context) : getGsansBold(context);
+        Typeface tfCode = isPersian ? getSfArabicBold(context) : getGsansMedium(context);
+        Typeface tfPrice = isPersian ? getVazirBold(context) : getGsansBold(context);
+        Typeface tfChange = isPersian ? getVazirBold(context) : getGsansBold(context);
 
         RectF cardRect = new RectF(x, y, x + w, y + h);
 
@@ -402,21 +447,22 @@ public class KGoldWidgetRenderer {
         }
 
         // Top Row: Name & Code (Right-Aligned)
+        String displayName = isPersian ? asset.name : cleanEnglishName(asset.englishName);
+
         Paint namePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        namePaint.setTypeface(tfBold);
+        namePaint.setTypeface(tfTitle);
         namePaint.setColor(theme.titleColor);
         float nameSize = Math.max(20f, Math.min(26f, w * 0.076f));
         namePaint.setTextSize(nameSize);
         namePaint.setTextAlign(Paint.Align.RIGHT);
 
-        String name = cleanName(asset.englishName);
-        if (namePaint.measureText(name) > (w - iconSize - 55f)) {
+        if (namePaint.measureText(displayName) > (w - iconSize - 55f)) {
             namePaint.setTextSize(nameSize * 0.82f);
         }
-        canvas.drawText(name, x + w - 20f, iconY + iconSize * 0.44f, namePaint);
+        canvas.drawText(displayName, x + w - 20f, iconY + iconSize * 0.44f, namePaint);
 
         Paint codePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        codePaint.setTypeface(tfBold);
+        codePaint.setTypeface(tfCode);
         codePaint.setColor(theme.codeColor);
         codePaint.setTextSize(nameSize * 0.72f);
         codePaint.setTextAlign(Paint.Align.RIGHT);
@@ -424,7 +470,7 @@ public class KGoldWidgetRenderer {
 
         // Bottom: Change Percentage (Left-Aligned)
         Paint changePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        changePaint.setTypeface(tfBold);
+        changePaint.setTypeface(tfChange);
         float changeSize = Math.max(19f, Math.min(26f, w * 0.072f));
         changePaint.setTextSize(changeSize);
         changePaint.setColor(asset.isPositive ? theme.posColor : theme.negColor);
@@ -434,7 +480,7 @@ public class KGoldWidgetRenderer {
 
         // Bottom: Live Price
         Paint pricePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        pricePaint.setTypeface(tfBold);
+        pricePaint.setTypeface(tfPrice);
         pricePaint.setColor(theme.priceColor);
         float priceSize = Math.max(30f, Math.min(44f, w * 0.125f));
         pricePaint.setTextSize(priceSize);

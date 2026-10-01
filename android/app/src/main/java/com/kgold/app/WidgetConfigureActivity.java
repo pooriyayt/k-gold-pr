@@ -145,21 +145,20 @@ public class WidgetConfigureActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Default to OK so buggy launchers that fail to complete result won't drop widget
         setResult(RESULT_CANCELED);
         setContentView(R.layout.activity_widget_configure);
 
         Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = intent != null ? intent.getExtras() : null;
         if (extras != null) {
             mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID
             );
         }
-
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish();
-            return;
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID && intent != null) {
+            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         final List<AssetItem> allAssets = getAllAssets();
@@ -176,7 +175,10 @@ public class WidgetConfigureActivity extends Activity {
         }
 
         // Initialize Selected Assets (Default 4: USD, EUR, AED, GBP)
-        String savedCsv = prefs.getString(PREF_PREFIX_KEY + mAppWidgetId, null);
+        String savedCsv = null;
+        if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            savedCsv = prefs.getString(PREF_PREFIX_KEY + mAppWidgetId, null);
+        }
         if (savedCsv == null || savedCsv.trim().isEmpty()) {
             savedCsv = prefs.getString("selected_assets", "usd,eur,aed,gbp");
         }
@@ -198,8 +200,13 @@ public class WidgetConfigureActivity extends Activity {
         }
 
         // Read initial digits language & theme
-        mDigitsLang = prefs.getString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, prefs.getString("widget_digits_lang", "fa"));
-        mTheme = prefs.getString(PREF_THEME_PREFIX + mAppWidgetId, prefs.getString("widget_theme", "white"));
+        if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            mDigitsLang = prefs.getString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, prefs.getString("widget_digits_lang", "fa"));
+            mTheme = prefs.getString(PREF_THEME_PREFIX + mAppWidgetId, prefs.getString("widget_theme", "white"));
+        } else {
+            mDigitsLang = prefs.getString("widget_digits_lang", "fa");
+            mTheme = prefs.getString("widget_theme", "white");
+        }
 
         // UI references
         final View previewSingleContainer = findViewById(R.id.preview_single_container);
@@ -278,7 +285,7 @@ public class WidgetConfigureActivity extends Activity {
 
                 AssetItem single = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 previewIcon.setImageResource(single.iconRes);
-                previewName.setText(single.englishName);
+                previewName.setText(isPersian ? single.name : single.englishName);
                 previewCode.setText(single.code);
                 previewChange.setText(formatChangeText(single.defaultChange, single.isPositive, isPersian));
                 previewChange.setTextColor(single.isPositive ? 0xFF16A34A : 0xFFDC2626);
@@ -290,7 +297,7 @@ public class WidgetConfigureActivity extends Activity {
                 // Slot 1
                 AssetItem a1 = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 prevIcon1.setImageResource(a1.iconRes);
-                prevName1.setText(a1.englishName);
+                prevName1.setText(isPersian ? a1.name : a1.englishName);
                 prevCode1.setText(a1.code);
                 prevChange1.setText(formatChangeText(a1.defaultChange, a1.isPositive, isPersian));
                 prevChange1.setTextColor(a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
@@ -299,7 +306,7 @@ public class WidgetConfigureActivity extends Activity {
                 // Slot 2
                 AssetItem a2 = getAssetByKey(this, mSelectedKeys.get(1), isPersian);
                 prevIcon2.setImageResource(a2.iconRes);
-                prevName2.setText(a2.englishName);
+                prevName2.setText(isPersian ? a2.name : a2.englishName);
                 prevCode2.setText(a2.code);
                 prevChange2.setText(formatChangeText(a2.defaultChange, a2.isPositive, isPersian));
                 prevChange2.setTextColor(a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
@@ -313,7 +320,7 @@ public class WidgetConfigureActivity extends Activity {
                     // Slot 3
                     AssetItem a3 = getAssetByKey(this, mSelectedKeys.get(2), isPersian);
                     prevIcon3.setImageResource(a3.iconRes);
-                    prevName3.setText(a3.englishName);
+                    prevName3.setText(isPersian ? a3.name : a3.englishName);
                     prevCode3.setText(a3.code);
                     prevChange3.setText(formatChangeText(a3.defaultChange, a3.isPositive, isPersian));
                     prevChange3.setTextColor(a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
@@ -324,7 +331,7 @@ public class WidgetConfigureActivity extends Activity {
                         AssetItem a4 = getAssetByKey(this, mSelectedKeys.get(3), isPersian);
                         prevSlot4.setVisibility(View.VISIBLE);
                         prevIcon4.setImageResource(a4.iconRes);
-                        prevName4.setText(a4.englishName);
+                        prevName4.setText(isPersian ? a4.name : a4.englishName);
                         prevCode4.setText(a4.code);
                         prevChange4.setText(formatChangeText(a4.defaultChange, a4.isPositive, isPersian));
                         prevChange4.setTextColor(a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
@@ -429,21 +436,28 @@ public class WidgetConfigureActivity extends Activity {
 
             // Save selected assets, digits language, and theme for this appWidgetId and globally
             SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-            editor.putString(PREF_PREFIX_KEY + mAppWidgetId, resultCsv);
+            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                editor.putString(PREF_PREFIX_KEY + mAppWidgetId, resultCsv);
+                editor.putString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, mDigitsLang);
+                editor.putString(PREF_THEME_PREFIX + mAppWidgetId, mTheme);
+            }
             editor.putString("selected_assets", resultCsv);
-            editor.putString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, mDigitsLang);
             editor.putString("widget_digits_lang", mDigitsLang);
-            editor.putString(PREF_THEME_PREFIX + mAppWidgetId, mTheme);
             editor.putString("widget_theme", mTheme);
             editor.apply();
 
             // Update widget immediately
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigureActivity.this);
-            KGoldWidgetProvider.updateAppWidget(WidgetConfigureActivity.this, appWidgetManager, mAppWidgetId);
+            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                KGoldWidgetProvider.updateAppWidget(WidgetConfigureActivity.this, appWidgetManager, mAppWidgetId);
+            }
+            KGoldWidgetProvider.updateAllWidgets(WidgetConfigureActivity.this);
 
             // Return success
             Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+            }
             setResult(RESULT_OK, resultValue);
             finish();
         });

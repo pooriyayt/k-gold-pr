@@ -31,6 +31,14 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_AUTO_UPDATE = "com.kgold.app.ACTION_AUTO_UPDATE";
 
     @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        updateAllWidgets(context);
+        scheduleAutoUpdate(context);
+        fetchAndSyncLatestPrices(context);
+    }
+
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
