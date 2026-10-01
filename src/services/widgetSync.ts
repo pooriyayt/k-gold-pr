@@ -12,7 +12,7 @@ export const WIDGET_ASSET_OPTIONS = [
   { key: 'half', name: 'نیم سکه', englishName: 'Half Coin', code: 'HALF', icon: '🪙', defaultPrice: '۲۳,۵۰۰,۰۰۰', defaultChange: '+۱.۱۰٪ ↗', isPos: true },
   { key: 'quarter', name: 'ربع سکه', englishName: 'Quarter Coin', code: 'QUARTER', icon: '🪙', defaultPrice: '۱۵,۵۰۰,۰۰۰', defaultChange: '+۰.۸۸٪ ↗', isPos: true },
   { key: 'gerami', name: 'سکه گرمی', englishName: 'Gerami Coin', code: 'GERAMI', icon: '🪙', defaultPrice: '۷,۲۰۰,۰۰۰', defaultChange: '+۰.۵۰٪ ↗', isPos: true },
-  { key: 'usdt', name: 'تتر دیجیتال', englishName: 'Tether USD', code: 'USDT', icon: '₮', defaultPrice: '۶۱,۲۵۰', defaultChange: '+۰.۲۵٪ ↗', isPos: true },
+  { key: 'usdt', name: 'تتر', englishName: 'Tether', code: 'USDT', icon: '₮', defaultPrice: '۶۱,۲۵۰', defaultChange: '+۰.۲۵٪ ↗', isPos: true },
   { key: 'btc', name: 'بیت‌کوین', englishName: 'Bitcoin', code: 'BTC', icon: '₿', defaultPrice: '۴,۱۲۰,۰۰۰,۰۰۰', defaultChange: '+۲.۱۲٪ ↗', isPos: true },
 ];
 

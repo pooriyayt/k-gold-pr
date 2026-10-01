@@ -283,7 +283,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     const fullItems: ShareCardItem[] = [...options.items];
     const defaultFallbacks = [
       { name: 'دلار آمریکا', price: '۲۵۶,۵۰۰', change: '+2.23%', code: 'USD' },
-      { name: 'تتر دیجیتال', price: '۲۵۴,۱۱۶', change: '+0.22%', code: 'USDT' },
+      { name: 'تتر', price: '۲۵۴,۱۱۶', change: '+0.22%', code: 'USDT' },
       { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K' },
       { name: 'سکه تمام امامی', price: '۲۵۹,۰۰۵,۰۰۰', change: '+2.73%', code: 'EMAMI' },
       { name: 'سکه بهار آزادی', price: '۲۴۸,۲۰۰,۰۰۰', change: '+1.51%', code: 'BAHAR' },
@@ -449,7 +449,7 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
     const postItems: ShareCardItem[] = options.items.slice(0, 7);
     const defaultFallbacks = [
       { name: 'دلار آمریکا', price: '۲۵۶,۵۰۰', change: '+2.23%', code: 'USD' },
-      { name: 'تتر دیجیتال', price: '۲۵۴,۱۱۶', change: '+0.22%', code: 'USDT' },
+      { name: 'تتر', price: '۲۵۴,۱۱۶', change: '+2.23%', code: 'USDT' },
       { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K' },
       { name: 'سکه تمام امامی', price: '۲۵۹,۰۰۵,۰۰۰', change: '+2.73%', code: 'EMAMI' },
       { name: 'بیت‌کوین', price: '۲۱,۳۶۰,۶۸۸,۷۴۹', change: '+2.12%', code: 'BTC' },

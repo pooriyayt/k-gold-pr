@@ -66,7 +66,7 @@ public class WidgetConfigureActivity extends Activity {
         list.add(new AssetItem("half", "نیم سکه بهار", "Half Coin", "HALF", R.drawable.widget_icon_coin, "۲۳,۵۰۰,۰۰۰", "+۱.۱۰٪ ↗", true));
         list.add(new AssetItem("quarter", "ربع سکه بهار", "Quarter Coin", "QUARTER", R.drawable.widget_icon_coin, "۱۵,۵۰۰,۰۰۰", "+۰.۸۸٪ ↗", true));
         list.add(new AssetItem("gerami", "سکه گرمی", "Gerami Coin", "GERAMI", R.drawable.widget_icon_coin, "۷,۲۰۰,۰۰۰", "+۰.۵۰٪ ↗", true));
-        list.add(new AssetItem("usdt", "تتر دیجیتال", "Tether USD", "USDT", R.drawable.widget_icon_tether, "۶۱,۲۵۰", "+۰.۲۵٪ ↗", true));
+        list.add(new AssetItem("usdt", "تتر", "Tether", "USDT", R.drawable.widget_icon_tether, "۶۱,۲۵۰", "+۰.۲۵٪ ↗", true));
         list.add(new AssetItem("btc", "بیت‌کوین", "Bitcoin", "BTC", R.drawable.widget_icon_btc, "۴,۱۲۰,۰۰۰,۰۰۰", "+۲.۱۲٪ ↗", true));
         return list;
     }
@@ -193,11 +193,10 @@ public class WidgetConfigureActivity extends Activity {
                 }
             }
         }
-        if (mSelectedKeys.isEmpty()) {
+        if (mSelectedKeys.size() < 2) {
+            mSelectedKeys.clear();
             mSelectedKeys.add("usd");
-            mSelectedKeys.add("eur");
-            mSelectedKeys.add("aed");
-            mSelectedKeys.add("gbp");
+            mSelectedKeys.add("emami");
         }
 
         // Read initial digits language & theme
@@ -214,6 +213,7 @@ public class WidgetConfigureActivity extends Activity {
         final View previewMultiContainer = findViewById(R.id.preview_multi_container);
         final View previewRow1 = findViewById(R.id.preview_row_1);
         final View previewRow2 = findViewById(R.id.preview_row_2);
+        final View previewHDivider = findViewById(R.id.preview_h_divider);
 
         // Single preview views
         final ImageView previewIcon = findViewById(R.id.preview_icon);
@@ -270,33 +270,17 @@ public class WidgetConfigureActivity extends Activity {
         // Update preview helper
         Runnable updatePreview = () -> {
             boolean isPersian = "fa".equalsIgnoreCase(mDigitsLang);
-            txtSelectionCounter.setText("انتخاب ارزها (" + mSelectedKeys.size() + " از ۴ ارز انتخاب شده):");
+            txtSelectionCounter.setText("انتخاب ارزها (" + mSelectedKeys.size() + " از ۴ ارز - حداقل ۲ ارز):");
 
             Typeface tfTitle = isPersian ? KGoldWidgetRenderer.getSfArabicBold(this) : KGoldWidgetRenderer.getGsansBold(this);
             Typeface tfCode = isPersian ? KGoldWidgetRenderer.getSfArabicBold(this) : KGoldWidgetRenderer.getGsansMedium(this);
             Typeface tfPrice = isPersian ? KGoldWidgetRenderer.getVazirBold(this) : KGoldWidgetRenderer.getGsansBold(this);
             Typeface tfChange = isPersian ? KGoldWidgetRenderer.getVazirBold(this) : KGoldWidgetRenderer.getGsansBold(this);
 
-            if (mSelectedKeys.size() == 1) {
-                previewSingleContainer.setVisibility(View.VISIBLE);
-                previewMultiContainer.setVisibility(View.GONE);
+            previewSingleContainer.setVisibility(View.GONE);
+            previewMultiContainer.setVisibility(View.VISIBLE);
 
-                AssetItem single = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
-                previewIcon.setImageResource(single.iconRes);
-                previewName.setTypeface(tfTitle);
-                previewName.setText(isPersian ? single.name : single.englishName);
-                previewCode.setTypeface(tfCode);
-                previewCode.setText(single.code);
-                previewChange.setTypeface(tfChange);
-                previewChange.setText(formatChangeText(single.defaultChange, single.isPositive, isPersian));
-                previewChange.setTextColor(single.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                previewPrice.setTypeface(tfPrice);
-                previewPrice.setText(single.defaultPrice);
-            } else {
-                previewSingleContainer.setVisibility(View.GONE);
-                previewMultiContainer.setVisibility(View.VISIBLE);
-
-                // Slot 1
+            // Slot 1
                 AssetItem a1 = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 prevIcon1.setImageResource(a1.iconRes);
                 prevName1.setTypeface(tfTitle);
@@ -323,8 +307,10 @@ public class WidgetConfigureActivity extends Activity {
                 prevPrice2.setText(a2.defaultPrice);
 
                 if (mSelectedKeys.size() == 2) {
+                    if (previewHDivider != null) previewHDivider.setVisibility(View.GONE);
                     previewRow2.setVisibility(View.GONE);
                 } else {
+                    if (previewHDivider != null) previewHDivider.setVisibility(View.VISIBLE);
                     previewRow2.setVisibility(View.VISIBLE);
 
                     // Slot 3
@@ -358,7 +344,6 @@ public class WidgetConfigureActivity extends Activity {
                         prevSlot4.setVisibility(View.INVISIBLE);
                     }
                 }
-            }
         };
 
         // Listeners for setting toggles
@@ -415,8 +400,8 @@ public class WidgetConfigureActivity extends Activity {
             String key = clicked.key.toLowerCase();
 
             if (mSelectedKeys.contains(key)) {
-                if (mSelectedKeys.size() <= 1) {
-                    Toast.makeText(this, "حداقل ۱ ارز باید انتخاب شده باشد", Toast.LENGTH_SHORT).show();
+                if (mSelectedKeys.size() <= 2) {
+                    Toast.makeText(this, "حداقل ۲ ارز باید برای ویجت انتخاب شود", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mSelectedKeys.remove(key);
@@ -436,11 +421,9 @@ public class WidgetConfigureActivity extends Activity {
     }
 
     private void saveAndFinish() {
-        if (mSelectedKeys.isEmpty()) {
-            mSelectedKeys.add("usd");
-            mSelectedKeys.add("eur");
-            mSelectedKeys.add("aed");
-            mSelectedKeys.add("gbp");
+        if (mSelectedKeys.size() < 2) {
+            if (!mSelectedKeys.contains("usd")) mSelectedKeys.add("usd");
+            if (!mSelectedKeys.contains("emami")) mSelectedKeys.add("emami");
         }
 
         StringBuilder sb = new StringBuilder();

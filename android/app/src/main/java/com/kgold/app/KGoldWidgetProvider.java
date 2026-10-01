@@ -112,8 +112,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
                 }
             }
         }
-        if (assetKeys.isEmpty()) {
-            assetKeys.add("usd");
+        if (assetKeys.size() < 2) {
+            if (!assetKeys.contains("usd")) assetKeys.add("usd");
+            if (!assetKeys.contains("emami")) assetKeys.add("emami");
         }
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_kgold);
