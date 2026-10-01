@@ -238,46 +238,11 @@ public class KGoldWidgetRenderer {
 
         WidgetThemeConfig themeConfig = WidgetThemeConfig.get();
 
-        // Calculate dynamic, responsive canvas dimensions based on launcher's actual size
-        int actualW = 0;
-        int actualH = 0;
-        if (appWidgetManager != null && appWidgetId > 0) {
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
-            if (options != null) {
-                boolean isPortrait = context.getResources().getConfiguration().orientation != android.content.res.Configuration.ORIENTATION_LANDSCAPE;
-                int optW = isPortrait ?
-                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0) :
-                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, 0);
-                int optH = isPortrait ?
-                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0) :
-                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
-
-                if (optW > 0 && optH > 0) {
-                    actualW = optW;
-                    actualH = optH;
-                } else {
-                    actualW = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0);
-                    actualH = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
-                }
-            }
-        }
-
+        // Always produce standard Ultra HD 1080p canvas with optimal aspect ratio
+        // 2 assets: 1080x480 (2.25:1) - Two wide, luxurious cards spanning full width
+        // 3-4 assets: 1080x680 (1.59:1) - 2x2 grid filling a 4x2 home screen block
         int canvasW = 1080;
-        int canvasH;
-
-        if (actualW > 0 && actualH > 0) {
-            float ratio = (float) actualW / (float) actualH;
-            float clampedRatio = Math.max(0.85f, Math.min(3.2f, ratio));
-            canvasH = Math.round(canvasW / clampedRatio);
-        } else {
-            // Default wide card
-            if (assets.size() == 2) {
-                canvasH = 480; // 2.25:1 aspect ratio
-            } else {
-                canvasH = 680; // 1.58:1 aspect ratio
-            }
-        }
-        canvasH = Math.max(360, Math.min(1200, canvasH));
+        int canvasH = (assets.size() == 2) ? 480 : 680;
 
         Bitmap bitmap = Bitmap.createBitmap(canvasW, canvasH, Bitmap.Config.ARGB_8888);
         bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
@@ -286,41 +251,28 @@ public class KGoldWidgetRenderer {
                 Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG | Paint.SUBPIXEL_TEXT_FLAG));
 
         if (assets.size() == 2) {
-            // 2 ASSETS: Two distinct rounded cards with a clean launcher-style gap in between
-            float padH = 6f;
-            float padV = 6f;
-            float gap = 30f;
+            // 2 ASSETS: Two distinct rounded cards spanning the full width with a clean launcher-style gap in between
+            float padH = 8f;
+            float padV = 8f;
+            float gap = 28f;
             float cardW = (canvasW - (padH * 2f) - gap) / 2f;
+            float cardH = canvasH - (padV * 2f);
 
-            // Proportional card height: A single card should NEVER be a tall stretched vertical skyscraper!
-            // Maximum height for a 2-card row is capped to keep it balanced and square/golden ratio
-            float maxCardH = Math.min(cardW * 0.96f, 480f);
-            float cardH = Math.min(canvasH - (padV * 2f), maxCardH);
-
-            // Center the 2 cards vertically if canvas is taller than the cards need (e.g. on Daria OS / Pixel 4x2 slot)
-            float topY = padV + Math.max(0f, (canvasH - (padV * 2f) - cardH) / 2f);
-
-            drawItemInSlot(context, canvas, assets.get(0), padH, topY, cardW, cardH, themeConfig, isPersian);
-            drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gap, topY, cardW, cardH, themeConfig, isPersian);
+            drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
+            drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gap, padV, cardW, cardH, themeConfig, isPersian);
         } else {
             // 3 or 4 ASSETS: 2x2 Grid of distinct rounded cards with horizontal & vertical gaps
-            float padH = 6f;
-            float padV = 6f;
+            float padH = 8f;
+            float padV = 8f;
             float gapX = 24f;
             float gapY = 24f;
             float cardW = (canvasW - (padH * 2f) - gapX) / 2f;
+            float cardH = (canvasH - (padV * 2f) - gapY) / 2f;
 
-            float maxCardH = Math.min(cardW * 0.85f, 400f);
-            float availableH = (canvasH - (padV * 2f) - gapY) / 2f;
-            float cardH = Math.min(availableH, maxCardH);
-
-            float totalGridH = (cardH * 2f) + gapY;
-            float topY = padV + Math.max(0f, (canvasH - (padV * 2f) - totalGridH) / 2f);
-
-            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), padH, topY, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gapX, topY, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), padH, topY + cardH + gapY, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), padH + cardW + gapX, topY + cardH + gapY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gapX, padV, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), padH, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), padH + cardW + gapX, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
         }
 
         return bitmap;
