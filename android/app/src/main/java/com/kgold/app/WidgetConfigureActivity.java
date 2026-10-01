@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -256,22 +257,14 @@ public class WidgetConfigureActivity extends Activity {
 
         final TextView btnDigitsFa = findViewById(R.id.btn_digits_fa);
         final TextView btnDigitsEn = findViewById(R.id.btn_digits_en);
-        final TextView btnThemeWhite = findViewById(R.id.btn_theme_white);
-        final TextView btnThemeTransparent = findViewById(R.id.btn_theme_transparent);
 
-        // Setup initial button states
+        // Setup initial button states (Segmented pill style)
         Runnable updateButtonsState = () -> {
             boolean isFa = "fa".equalsIgnoreCase(mDigitsLang);
-            btnDigitsFa.setBackgroundResource(isFa ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
-            btnDigitsFa.setTextColor(isFa ? 0xFFFFFFFF : 0xFF475569);
-            btnDigitsEn.setBackgroundResource(!isFa ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
-            btnDigitsEn.setTextColor(!isFa ? 0xFFFFFFFF : 0xFF475569);
-
-            boolean isWhite = "white".equalsIgnoreCase(mTheme);
-            btnThemeWhite.setBackgroundResource(isWhite ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
-            btnThemeWhite.setTextColor(isWhite ? 0xFFFFFFFF : 0xFF475569);
-            btnThemeTransparent.setBackgroundResource(!isWhite ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
-            btnThemeTransparent.setTextColor(!isWhite ? 0xFFFFFFFF : 0xFF475569);
+            btnDigitsFa.setBackgroundResource(isFa ? R.drawable.widget_pill_active : android.R.color.transparent);
+            btnDigitsFa.setTextColor(isFa ? 0xFFFFFFFF : 0xFF64748B);
+            btnDigitsEn.setBackgroundResource(!isFa ? R.drawable.widget_pill_active : android.R.color.transparent);
+            btnDigitsEn.setTextColor(!isFa ? 0xFFFFFFFF : 0xFF64748B);
         };
 
         // Update preview helper
@@ -279,16 +272,25 @@ public class WidgetConfigureActivity extends Activity {
             boolean isPersian = "fa".equalsIgnoreCase(mDigitsLang);
             txtSelectionCounter.setText("انتخاب ارزها (" + mSelectedKeys.size() + " از ۴ ارز انتخاب شده):");
 
+            Typeface tfTitle = isPersian ? KGoldWidgetRenderer.getSfArabicBold(this) : KGoldWidgetRenderer.getGsansBold(this);
+            Typeface tfCode = isPersian ? KGoldWidgetRenderer.getSfArabicBold(this) : KGoldWidgetRenderer.getGsansMedium(this);
+            Typeface tfPrice = isPersian ? KGoldWidgetRenderer.getVazirBold(this) : KGoldWidgetRenderer.getGsansBold(this);
+            Typeface tfChange = isPersian ? KGoldWidgetRenderer.getVazirBold(this) : KGoldWidgetRenderer.getGsansBold(this);
+
             if (mSelectedKeys.size() == 1) {
                 previewSingleContainer.setVisibility(View.VISIBLE);
                 previewMultiContainer.setVisibility(View.GONE);
 
                 AssetItem single = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 previewIcon.setImageResource(single.iconRes);
+                previewName.setTypeface(tfTitle);
                 previewName.setText(isPersian ? single.name : single.englishName);
+                previewCode.setTypeface(tfCode);
                 previewCode.setText(single.code);
+                previewChange.setTypeface(tfChange);
                 previewChange.setText(formatChangeText(single.defaultChange, single.isPositive, isPersian));
                 previewChange.setTextColor(single.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                previewPrice.setTypeface(tfPrice);
                 previewPrice.setText(single.defaultPrice);
             } else {
                 previewSingleContainer.setVisibility(View.GONE);
@@ -297,19 +299,27 @@ public class WidgetConfigureActivity extends Activity {
                 // Slot 1
                 AssetItem a1 = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 prevIcon1.setImageResource(a1.iconRes);
+                prevName1.setTypeface(tfTitle);
                 prevName1.setText(isPersian ? a1.name : a1.englishName);
+                prevCode1.setTypeface(tfCode);
                 prevCode1.setText(a1.code);
+                prevChange1.setTypeface(tfChange);
                 prevChange1.setText(formatChangeText(a1.defaultChange, a1.isPositive, isPersian));
                 prevChange1.setTextColor(a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                prevPrice1.setTypeface(tfPrice);
                 prevPrice1.setText(a1.defaultPrice);
 
                 // Slot 2
                 AssetItem a2 = getAssetByKey(this, mSelectedKeys.get(1), isPersian);
                 prevIcon2.setImageResource(a2.iconRes);
+                prevName2.setTypeface(tfTitle);
                 prevName2.setText(isPersian ? a2.name : a2.englishName);
+                prevCode2.setTypeface(tfCode);
                 prevCode2.setText(a2.code);
+                prevChange2.setTypeface(tfChange);
                 prevChange2.setText(formatChangeText(a2.defaultChange, a2.isPositive, isPersian));
                 prevChange2.setTextColor(a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                prevPrice2.setTypeface(tfPrice);
                 prevPrice2.setText(a2.defaultPrice);
 
                 if (mSelectedKeys.size() == 2) {
@@ -320,10 +330,14 @@ public class WidgetConfigureActivity extends Activity {
                     // Slot 3
                     AssetItem a3 = getAssetByKey(this, mSelectedKeys.get(2), isPersian);
                     prevIcon3.setImageResource(a3.iconRes);
+                    prevName3.setTypeface(tfTitle);
                     prevName3.setText(isPersian ? a3.name : a3.englishName);
+                    prevCode3.setTypeface(tfCode);
                     prevCode3.setText(a3.code);
+                    prevChange3.setTypeface(tfChange);
                     prevChange3.setText(formatChangeText(a3.defaultChange, a3.isPositive, isPersian));
                     prevChange3.setTextColor(a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                    prevPrice3.setTypeface(tfPrice);
                     prevPrice3.setText(a3.defaultPrice);
 
                     // Slot 4
@@ -331,10 +345,14 @@ public class WidgetConfigureActivity extends Activity {
                         AssetItem a4 = getAssetByKey(this, mSelectedKeys.get(3), isPersian);
                         prevSlot4.setVisibility(View.VISIBLE);
                         prevIcon4.setImageResource(a4.iconRes);
+                        prevName4.setTypeface(tfTitle);
                         prevName4.setText(isPersian ? a4.name : a4.englishName);
+                        prevCode4.setTypeface(tfCode);
                         prevCode4.setText(a4.code);
+                        prevChange4.setTypeface(tfChange);
                         prevChange4.setText(formatChangeText(a4.defaultChange, a4.isPositive, isPersian));
                         prevChange4.setTextColor(a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
+                        prevPrice4.setTypeface(tfPrice);
                         prevPrice4.setText(a4.defaultPrice);
                     } else {
                         prevSlot4.setVisibility(View.INVISIBLE);
@@ -352,18 +370,6 @@ public class WidgetConfigureActivity extends Activity {
 
         btnDigitsEn.setOnClickListener(v -> {
             mDigitsLang = "en";
-            updateButtonsState.run();
-            updatePreview.run();
-        });
-
-        btnThemeWhite.setOnClickListener(v -> {
-            mTheme = "white";
-            updateButtonsState.run();
-            updatePreview.run();
-        });
-
-        btnThemeTransparent.setOnClickListener(v -> {
-            mTheme = "transparent";
             updateButtonsState.run();
             updatePreview.run();
         });
