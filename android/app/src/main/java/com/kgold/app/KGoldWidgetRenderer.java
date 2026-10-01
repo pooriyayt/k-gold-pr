@@ -239,22 +239,35 @@ public class KGoldWidgetRenderer {
         WidgetThemeConfig themeConfig = WidgetThemeConfig.get();
 
         // Calculate dynamic, responsive canvas dimensions based on launcher's actual size
-        int minW = 0;
-        int minH = 0;
+        int actualW = 0;
+        int actualH = 0;
         if (appWidgetManager != null && appWidgetId > 0) {
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             if (options != null) {
-                minW = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0);
-                minH = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
+                boolean isPortrait = context.getResources().getConfiguration().orientation != android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+                int optW = isPortrait ?
+                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0) :
+                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, 0);
+                int optH = isPortrait ?
+                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0) :
+                        options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
+
+                if (optW > 0 && optH > 0) {
+                    actualW = optW;
+                    actualH = optH;
+                } else {
+                    actualW = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0);
+                    actualH = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
+                }
             }
         }
 
         int canvasW = 1080;
         int canvasH;
 
-        if (minW > 0 && minH > 0) {
-            float ratio = (float) minW / (float) minH;
-            float clampedRatio = Math.max(0.95f, Math.min(3.2f, ratio));
+        if (actualW > 0 && actualH > 0) {
+            float ratio = (float) actualW / (float) actualH;
+            float clampedRatio = Math.max(0.85f, Math.min(3.2f, ratio));
             canvasH = Math.round(canvasW / clampedRatio);
         } else {
             // Default wide card
@@ -278,10 +291,17 @@ public class KGoldWidgetRenderer {
             float padV = 6f;
             float gap = 30f;
             float cardW = (canvasW - (padH * 2f) - gap) / 2f;
-            float cardH = canvasH - (padV * 2f);
 
-            drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
-            drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gap, padV, cardW, cardH, themeConfig, isPersian);
+            // Proportional card height: A single card should NEVER be a tall stretched vertical skyscraper!
+            // Maximum height for a 2-card row is capped to keep it balanced and square/golden ratio
+            float maxCardH = Math.min(cardW * 0.96f, 480f);
+            float cardH = Math.min(canvasH - (padV * 2f), maxCardH);
+
+            // Center the 2 cards vertically if canvas is taller than the cards need (e.g. on Daria OS / Pixel 4x2 slot)
+            float topY = padV + Math.max(0f, (canvasH - (padV * 2f) - cardH) / 2f);
+
+            drawItemInSlot(context, canvas, assets.get(0), padH, topY, cardW, cardH, themeConfig, isPersian);
+            drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gap, topY, cardW, cardH, themeConfig, isPersian);
         } else {
             // 3 or 4 ASSETS: 2x2 Grid of distinct rounded cards with horizontal & vertical gaps
             float padH = 6f;
@@ -289,12 +309,18 @@ public class KGoldWidgetRenderer {
             float gapX = 24f;
             float gapY = 24f;
             float cardW = (canvasW - (padH * 2f) - gapX) / 2f;
-            float cardH = (canvasH - (padV * 2f) - gapY) / 2f;
 
-            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gapX, padV, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), padH, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
-            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), padH + cardW + gapX, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
+            float maxCardH = Math.min(cardW * 0.85f, 400f);
+            float availableH = (canvasH - (padV * 2f) - gapY) / 2f;
+            float cardH = Math.min(availableH, maxCardH);
+
+            float totalGridH = (cardH * 2f) + gapY;
+            float topY = padV + Math.max(0f, (canvasH - (padV * 2f) - totalGridH) / 2f);
+
+            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), padH, topY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gapX, topY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), padH, topY + cardH + gapY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), padH + cardW + gapX, topY + cardH + gapY, cardW, cardH, themeConfig, isPersian);
         }
 
         return bitmap;
