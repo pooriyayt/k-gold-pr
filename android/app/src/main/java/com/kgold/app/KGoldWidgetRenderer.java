@@ -321,7 +321,6 @@ public class KGoldWidgetRenderer {
         Typeface tfCode = isPersian ? getSfArabicBold(context) : getGsansMedium(context);
         Typeface tfPrice = isPersian ? getVazirBold(context) : getGsansBold(context);
         Typeface tfChange = isPersian ? getVazirBold(context) : getGsansBold(context);
-        Typeface tfUnit = isPersian ? getSfArabicRegular(context) : getGsansMedium(context);
 
         boolean isCompact = slotH <= 340f;
 
@@ -372,7 +371,7 @@ public class KGoldWidgetRenderer {
         float changeY = isCompact ? (slotY + slotH - 78f) : (slotY + slotH - 108f);
         canvas.drawText(changeStr, iconX, changeY, changePaint);
 
-        // 4. Live Price & Unit (Left-Aligned with icon)
+        // 4. Live Price (Left-Aligned with icon)
         float priceSize = isCompact ?
                 Math.max(50f, Math.min(62f, slotW * 0.118f)) :
                 Math.max(64f, Math.min(76f, slotW * 0.144f));
@@ -380,7 +379,7 @@ public class KGoldWidgetRenderer {
 
         String pStr = formatDigits(asset.defaultPrice, isPersian);
         float pWidth = pricePaint.measureText(pStr);
-        float maxPriceWidth = slotW - 74f;
+        float maxPriceWidth = slotW - 54f;
         if (pWidth > maxPriceWidth) {
             pricePaint.setTextSize(priceSize * 0.80f);
             pWidth = pricePaint.measureText(pStr);
@@ -388,14 +387,5 @@ public class KGoldWidgetRenderer {
 
         float priceY = isCompact ? (slotY + slotH - 24f) : (slotY + slotH - 38f);
         canvas.drawText(pStr, iconX, priceY, pricePaint);
-
-        // Currency Unit ("تومان" / "TOMAN")
-        float unitSize = isCompact ? 22f : 28f;
-        Paint unitPaint = createTextPaint(tfUnit, theme.unitColor, unitSize, Paint.Align.LEFT);
-        String unitStr = isPersian ? "تومان" : "TOMAN";
-        float unitX = iconX + pWidth + 14f;
-        if (unitX + unitPaint.measureText(unitStr) < slotX + slotW - 14f) {
-            canvas.drawText(unitStr, unitX, priceY, unitPaint);
-        }
     }
 }
