@@ -90,6 +90,52 @@ function drawImageCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, cw
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
 }
 
+// In-memory cache for country flags and crypto emblems
+const flagCache: Record<string, HTMLImageElement> = {};
+
+function getFlagImage(key: string): HTMLImageElement | null {
+  if (typeof Image === 'undefined') return null;
+  if (flagCache[key]) {
+    if (flagCache[key].complete && flagCache[key].naturalWidth > 0) {
+      return flagCache[key];
+    }
+    return null;
+  }
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.src = `/flags/${key}.png`;
+  img.onload = () => {
+    flagCache[key] = img;
+  };
+  flagCache[key] = img;
+  return img.complete && img.naturalWidth > 0 ? img : null;
+}
+
+function getAssetIconKey(name: string, code: string): string | null {
+  const c = code.split(' ')[0].toUpperCase();
+  if (c === 'USD' || name.includes('دلار')) return 'us';
+  if (c === 'EUR' || name.includes('یورو')) return 'eu';
+  if (c === 'AED' || name.includes('درهم')) return 'ae';
+  if (c === 'GBP' || name.includes('پوند')) return 'gb';
+  if (c === 'TRY' || name.includes('لیر')) return 'tr';
+  if (c === 'CAD' || name.includes('کانادا')) return 'ca';
+  if (c === 'AUD' || name.includes('استرالیا')) return 'au';
+  if (c === 'CHF' || name.includes('فرانک')) return 'ch';
+  if (c === 'CNY' || name.includes('یوان')) return 'cn';
+  if (c === 'USDT' || name.includes('تتر')) return 'usdt';
+  if (c === 'BTC' || name.includes('بیت')) return 'btc';
+  return null;
+}
+
+// Trigger pre-load of flags in browser environments
+if (typeof window !== 'undefined') {
+  setTimeout(() => {
+    ['us', 'eu', 'ae', 'gb', 'tr', 'ca', 'au', 'ch', 'cn', 'usdt', 'btc'].forEach((k) => {
+      getFlagImage(k);
+    });
+  }, 100);
+}
+
 function drawAssetBadge(
   ctx: CanvasRenderingContext2D,
   cx: number,
@@ -100,68 +146,61 @@ function drawAssetBadge(
 ) {
   ctx.save();
   ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 4;
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetY = 3;
 
+  const iconKey = getAssetIconKey(name, code);
+  const iconImg = iconKey ? getFlagImage(iconKey) : null;
+
+  if (iconImg) {
+    // 1. Draw circular background base
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = '#0F172A';
+    ctx.fill();
+
+    // 2. Clip circle for image
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.clip();
+
+    // Draw image centered and scaled
+    const imgW = iconImg.naturalWidth || iconImg.width;
+    const imgH = iconImg.naturalHeight || iconImg.height;
+    const scale = Math.max((r * 2) / imgW, (r * 2) / imgH);
+    const dw = imgW * scale;
+    const dh = imgH * scale;
+    ctx.drawImage(iconImg, cx - dw / 2, cy - dh / 2, dw, dh);
+    ctx.restore();
+
+    // 3. Specular glass highlight ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+
+    ctx.restore();
+    return;
+  }
+
+  // Fallback / Gold metallic badge
   let bgGrad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
-  let strokeColor = 'rgba(255, 255, 255, 0.2)';
-  let symbol = '$';
-  let symbolColor = '#FFFFFF';
-  let font = 'bold 22px "SF Pro Arabic", "SF Pro Display", -apple-system, "Vazirmatn", sans-serif';
+  let strokeColor = '#FDE68A';
+  let symbol = 'سکه';
+  let symbolColor = '#FEF3C7';
+  let font = 'bold 14px "Vazirmatn", sans-serif';
 
   const baseCode = code.split(' ')[0];
-
-  if (name.includes('دلار') || baseCode === 'USD') {
-    bgGrad.addColorStop(0, '#1E293B');
-    bgGrad.addColorStop(1, '#0F172A');
-    strokeColor = '#F59E0B';
-    symbol = '$';
-    symbolColor = '#FCD34D';
-    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('یورو') || baseCode === 'EUR') {
-    bgGrad.addColorStop(0, '#1E3A8A');
-    bgGrad.addColorStop(1, '#172554');
-    strokeColor = '#60A5FA';
-    symbol = '€';
-    symbolColor = '#93C5FD';
-    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('درهم') || baseCode === 'AED') {
-    bgGrad.addColorStop(0, '#064E3B');
-    bgGrad.addColorStop(1, '#022C22');
-    strokeColor = '#34D399';
-    symbol = 'AED';
-    symbolColor = '#6EE7B7';
-    font = 'bold 14px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('پوند') || baseCode === 'GBP') {
-    bgGrad.addColorStop(0, '#312E81');
-    bgGrad.addColorStop(1, '#1E1B4B');
-    strokeColor = '#A5B4FC';
-    symbol = '£';
-    symbolColor = '#C7D2FE';
-    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('تتر') || baseCode === 'USDT') {
-    bgGrad.addColorStop(0, '#0D9488');
-    bgGrad.addColorStop(1, '#115E59');
-    strokeColor = '#2DD4BF';
-    symbol = '₮';
-    symbolColor = '#FFFFFF';
-    font = '900 26px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('بیت') || baseCode === 'BTC') {
-    bgGrad.addColorStop(0, '#EA580C');
-    bgGrad.addColorStop(1, '#9A3412');
-    strokeColor = '#FDBA74';
-    symbol = '₿';
-    symbolColor = '#FFFFFF';
-    font = '900 25px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
-  } else if (name.includes('۱۸') || baseCode === '18K') {
+  if (name.includes('۱۸') || baseCode === '18K') {
     bgGrad.addColorStop(0, '#D97706');
     bgGrad.addColorStop(1, '#78350F');
     strokeColor = '#FDE68A';
     symbol = '18K';
     symbolColor = '#FEF3C7';
-    font = 'bold 15px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+    font = 'bold 15px "SF Pro Arabic", "SF Pro Display", sans-serif';
   } else {
-    // Gold Coins (Emami, Bahar, Half, Quarter, Gerami)
     bgGrad.addColorStop(0, '#F59E0B');
     bgGrad.addColorStop(1, '#92400E');
     strokeColor = '#FDE68A';
@@ -171,7 +210,7 @@ function drawAssetBadge(
     else if (name.includes('ربع')) symbol = 'ربع';
     else if (name.includes('گرمی')) symbol = 'گرمی';
     else symbol = 'سکه';
-    font = 'bold 14px "Vazirmatn", Tahoma, sans-serif';
+    font = 'bold 14px "Vazirmatn", sans-serif';
     symbolColor = '#FEF3C7';
   }
 
