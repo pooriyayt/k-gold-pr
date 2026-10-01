@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { X, ArrowUpDown, ChevronDown, Search, Copy, Check, Sparkles } from 'lucide-react';
 import { CurrencyItem } from '../../types';
 import { getFlagUrl } from '../../services/api';
-import { formatPrice } from '../../services/format';
+import { formatPrice, toEnglishDigits } from '../../services/format';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 interface CurrencyConverterModalProps {
@@ -48,7 +48,7 @@ export const CurrencyConverterModal: React.FC<CurrencyConverterModalProps> = ({
       price: '234,250',
     };
 
-  const rawPrice = parseFloat(currentCurrency.price.replace(/,/g, '')) || 234250;
+  const rawPrice = parseFloat(toEnglishDigits(currentCurrency.price).replace(/[^0-9.]/g, '')) || 234250;
   const numAmount = parseFloat(amount) || 0;
 
   let result = 0;
