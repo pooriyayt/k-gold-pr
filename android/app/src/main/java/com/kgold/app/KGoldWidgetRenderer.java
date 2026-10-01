@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -189,8 +190,31 @@ public class KGoldWidgetRenderer {
         }
     }
 
+    private static Paint createPaint(int color, Paint.Style style, float strokeWidth) {
+        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        p.setAntiAlias(true);
+        p.setDither(true);
+        p.setColor(color);
+        p.setStyle(style);
+        if (strokeWidth > 0) p.setStrokeWidth(strokeWidth);
+        return p;
+    }
+
+    private static Paint createTextPaint(Typeface tf, int color, float size, Paint.Align align) {
+        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG | Paint.LINEAR_TEXT_FLAG);
+        p.setAntiAlias(true);
+        p.setSubpixelText(true);
+        p.setLinearText(true);
+        p.setFilterBitmap(true);
+        p.setTypeface(tf);
+        p.setColor(color);
+        p.setTextSize(size);
+        p.setTextAlign(align);
+        return p;
+    }
+
     /**
-     * Main Entry: Render pixel-perfect luxury widget Bitmap
+     * Main Entry: Render pixel-perfect luxury widget Bitmap in Ultra HD Retina resolution (1080p)
      */
     public static Bitmap renderWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, List<String> assetKeys) {
         // Read user preferences
@@ -211,7 +235,7 @@ public class KGoldWidgetRenderer {
 
         WidgetThemeConfig themeConfig = WidgetThemeConfig.get();
 
-        // Calculate dynamic, responsive canvas dimensions to fit the user's widget cell exactly
+        // Calculate dynamic, responsive canvas dimensions (Retina 1080p definition)
         int minW = 0;
         int minH = 0;
         if (appWidgetManager != null && appWidgetId > 0) {
@@ -222,39 +246,36 @@ public class KGoldWidgetRenderer {
             }
         }
 
-        int canvasW = 720;
-        int canvasH = 720;
+        int canvasW = 1080;
+        int canvasH = 1080;
 
         if (minW > 0 && minH > 0) {
             float ratio = (float) minW / (float) minH;
-            if (assets.size() == 1) {
-                // Single card: Allow graceful aspect ratio between 0.85 and 1.8
-                canvasW = 720;
-                float clampedRatio = Math.max(0.85f, Math.min(1.8f, ratio));
-                canvasH = Math.round(canvasW / clampedRatio);
-            } else if (assets.size() == 2) {
-                // Two cards: naturally 1.35 to 2.4 ratio
-                canvasW = 720;
-                float clampedRatio = Math.max(1.35f, Math.min(2.4f, ratio));
-                canvasH = Math.round(canvasW / clampedRatio);
-            } else {
-                // 3 to 4 cards: 2x2 grid ratio
-                canvasW = 720;
-                float clampedRatio = Math.max(0.85f, Math.min(1.6f, ratio));
-                canvasH = Math.round(canvasW / clampedRatio);
-            }
-        } else {
             if (assets.size() == 2) {
-                canvasW = 720;
-                canvasH = 380;
+                if (ratio > 1.35f) {
+                    // Wide horizontal layout (4x2)
+                    canvasW = 1080;
+                    canvasH = 540;
+                } else if (ratio < 0.85f) {
+                    // Tall vertical layout (2x4)
+                    canvasW = 540;
+                    canvasH = 1080;
+                } else {
+                    canvasW = 1080;
+                    canvasH = 1080;
+                }
             } else {
-                canvasW = 720;
-                canvasH = 720;
+                // 1 asset or 3-4 assets: always a clean 1080x1080 square canvas
+                canvasW = 1080;
+                canvasH = 1080;
             }
         }
 
         Bitmap bitmap = Bitmap.createBitmap(canvasW, canvasH, Bitmap.Config.ARGB_8888);
+        bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
         Canvas canvas = new Canvas(bitmap);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
+                Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG | Paint.SUBPIXEL_TEXT_FLAG));
 
         if (assets.size() == 1) {
             renderSingleCard(context, canvas, assets.get(0), canvasW, canvasH, themeConfig, isPersian);
@@ -268,37 +289,29 @@ public class KGoldWidgetRenderer {
     }
 
     /**
-     * 1 ASSET MODE: Single Responsive Card
+     * 1 ASSET MODE: Single Responsive Card in 1080p
      */
     private static void renderSingleCard(Context context, Canvas canvas, WidgetConfigureActivity.AssetItem asset, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
-        // Typography based on language:
-        // Persian: SF Pro Arabic for words, Vazirmatn for numbers
-        // English: Google Sans (Gsans) for BOTH words and numbers
         Typeface tfTitle = isPersian ? getSfArabicBold(context) : getGsansBold(context);
         Typeface tfCode = isPersian ? getSfArabicBold(context) : getGsansMedium(context);
         Typeface tfPrice = isPersian ? getVazirBold(context) : getGsansBold(context);
         Typeface tfChange = isPersian ? getVazirBold(context) : getGsansBold(context);
         Typeface tfUnit = isPersian ? getSfArabicRegular(context) : getGsansMedium(context);
 
-        float pad = 14f;
+        float pad = 24f;
         RectF cardRect = new RectF(pad, pad, w - pad, h - pad);
 
-        // 1. Background
-        Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bgPaint.setColor(theme.bgColor);
-        canvas.drawRoundRect(cardRect, 56f, 56f, bgPaint);
+        // 1. Background & Border
+        Paint bgPaint = createPaint(theme.bgColor, Paint.Style.FILL, 0);
+        canvas.drawRoundRect(cardRect, 76f, 76f, bgPaint);
 
-        // 2. Border
-        Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(theme.strokeColor);
-        strokePaint.setStrokeWidth(theme.strokeWidth);
-        canvas.drawRoundRect(cardRect, 56f, 56f, strokePaint);
+        Paint strokePaint = createPaint(theme.strokeColor, Paint.Style.STROKE, 3.5f);
+        canvas.drawRoundRect(cardRect, 76f, 76f, strokePaint);
 
-        // 3. Top Row: Icon on Left, Name & Code on Right
-        int iconSize = Math.max(90, Math.min(124, Math.round(Math.min(w, h) * 0.18f)));
-        int iconX = Math.round(pad + 44f);
-        int iconY = Math.round(pad + 44f);
+        // 2. Top Row: Icon on Left, Name & Code on Right
+        int iconSize = 136;
+        int iconX = Math.round(pad + 48f);
+        int iconY = Math.round(pad + 48f);
         Drawable icon = ContextCompat.getDrawable(context, asset.iconRes);
         if (icon != null) {
             icon.setBounds(iconX, iconY, iconX + iconSize, iconY + iconSize);
@@ -306,83 +319,74 @@ public class KGoldWidgetRenderer {
         }
 
         // Title text (Persian name in Persian mode, English name in English mode)
-        float textRight = w - pad - 48f;
+        float textRight = w - pad - 54f;
         String displayName = isPersian ? asset.name : cleanEnglishName(asset.englishName);
 
-        Paint namePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        namePaint.setTypeface(tfTitle);
-        namePaint.setColor(theme.titleColor);
-        float nameSize = Math.max(38f, Math.min(52f, w * 0.072f));
-        namePaint.setTextSize(nameSize);
-        namePaint.setTextAlign(Paint.Align.RIGHT);
+        float nameSize = 58f;
+        Paint namePaint = createTextPaint(tfTitle, theme.titleColor, nameSize, Paint.Align.RIGHT);
 
-        float maxNameWidth = textRight - (iconX + iconSize + 24f);
+        float maxNameWidth = textRight - (iconX + iconSize + 32f);
         if (namePaint.measureText(displayName) > maxNameWidth) {
-            namePaint.setTextSize(nameSize * 0.85f);
+            namePaint.setTextSize(nameSize * 0.84f);
         }
-        canvas.drawText(displayName, textRight, iconY + iconSize * 0.44f, namePaint);
+        canvas.drawText(displayName, textRight, iconY + 62f, namePaint);
 
-        Paint codePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        codePaint.setTypeface(tfCode);
-        codePaint.setColor(theme.codeColor);
-        codePaint.setTextSize(nameSize * 0.65f);
-        codePaint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(asset.code, textRight, iconY + iconSize * 0.86f, codePaint);
+        float codeSize = 36f;
+        Paint codePaint = createTextPaint(tfCode, theme.codeColor, codeSize, Paint.Align.RIGHT);
+        canvas.drawText(asset.code, textRight, iconY + 116f, codePaint);
 
-        // 4. Bottom Row: Change Percentage (Left-Aligned)
-        Paint changePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        changePaint.setTypeface(tfChange);
-        float changeSize = Math.max(30f, Math.min(42f, w * 0.058f));
-        changePaint.setTextSize(changeSize);
-        changePaint.setColor(asset.isPositive ? theme.posColor : theme.negColor);
-        changePaint.setTextAlign(Paint.Align.LEFT);
+        // 3. Bottom Row: Change Percentage & Hero Price
+        float changeSize = 44f;
+        int changeColor = asset.isPositive ? theme.posColor : theme.negColor;
+        Paint changePaint = createTextPaint(tfChange, changeColor, changeSize, Paint.Align.LEFT);
         String changeStr = formatChangeText(asset.defaultChange, asset.isPositive, isPersian);
-        canvas.drawText(changeStr, iconX, h - pad - 124f, changePaint);
+        canvas.drawText(changeStr, iconX, h - pad - 190f, changePaint);
 
-        // 5. Live Price & Unit
-        Paint pricePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        pricePaint.setTypeface(tfPrice);
-        pricePaint.setColor(theme.priceColor);
-        float priceSize = Math.max(56f, Math.min(84f, w * 0.115f));
-        pricePaint.setTextSize(priceSize);
-        pricePaint.setTextAlign(Paint.Align.LEFT);
-
+        float priceSize = 100f;
+        Paint pricePaint = createTextPaint(tfPrice, theme.priceColor, priceSize, Paint.Align.LEFT);
         String pStr = formatDigits(asset.defaultPrice, isPersian);
         float pWidth = pricePaint.measureText(pStr);
-        if (pWidth > (w - iconX * 2 - 140f)) {
+        float maxPriceWidth = w - iconX * 2 - 160f;
+        if (pWidth > maxPriceWidth) {
             pricePaint.setTextSize(priceSize * 0.82f);
             pWidth = pricePaint.measureText(pStr);
         }
-        canvas.drawText(pStr, iconX, h - pad - 42f, pricePaint);
+        canvas.drawText(pStr, iconX, h - pad - 60f, pricePaint);
 
-        Paint unitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        unitPaint.setTypeface(tfUnit);
-        unitPaint.setColor(theme.unitColor);
-        unitPaint.setTextSize(priceSize * 0.38f);
-        unitPaint.setTextAlign(Paint.Align.LEFT);
+        float unitSize = 38f;
+        Paint unitPaint = createTextPaint(tfUnit, theme.unitColor, unitSize, Paint.Align.LEFT);
         String unitStr = isPersian ? "تومان" : "TOMAN";
-        canvas.drawText(unitStr, iconX + pWidth + 18f, h - pad - 42f, unitPaint);
+        canvas.drawText(unitStr, iconX + pWidth + 20f, h - pad - 60f, unitPaint);
     }
 
     /**
-     * 2 ASSETS MODE: Two Cards Side-by-Side
+     * 2 ASSETS MODE: Two Cards Side-by-Side or Stacked
      */
     private static void renderTwoCards(Context context, Canvas canvas, List<WidgetConfigureActivity.AssetItem> assets, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
-        int pad = 12;
-        int gap = 14;
-        int cardW = (w - (pad * 2) - gap) / 2;
-        int cardH = h - (pad * 2);
+        int pad = 20;
+        int gap = 20;
 
-        drawMiniCard(context, canvas, assets.get(0), pad, pad, cardW, cardH, theme, isPersian);
-        drawMiniCard(context, canvas, assets.get(1), pad + cardW + gap, pad, cardW, cardH, theme, isPersian);
+        if (w >= h) {
+            // Horizontal side-by-side
+            int cardW = (w - (pad * 2) - gap) / 2;
+            int cardH = h - (pad * 2);
+            drawMiniCard(context, canvas, assets.get(0), pad, pad, cardW, cardH, theme, isPersian);
+            drawMiniCard(context, canvas, assets.get(1), pad + cardW + gap, pad, cardW, cardH, theme, isPersian);
+        } else {
+            // Vertical stacked
+            int cardW = w - (pad * 2);
+            int cardH = (h - (pad * 2) - gap) / 2;
+            drawMiniCard(context, canvas, assets.get(0), pad, pad, cardW, cardH, theme, isPersian);
+            drawMiniCard(context, canvas, assets.get(1), pad, pad + cardH + gap, cardW, cardH, theme, isPersian);
+        }
     }
 
     /**
-     * 4 ASSETS MODE: 2x2 Grid (Responsive & Balanced)
+     * 4 ASSETS MODE: 2x2 Grid (Responsive & Balanced in 1080p)
      */
     private static void renderFourCardsGrid(Context context, Canvas canvas, List<WidgetConfigureActivity.AssetItem> assets, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
-        int pad = 12;
-        int gap = 14;
+        int pad = 20;
+        int gap = 20;
         int cardW = (w - (pad * 2) - gap) / 2;
         int cardH = (h - (pad * 2) - gap) / 2;
 
@@ -402,7 +406,7 @@ public class KGoldWidgetRenderer {
     }
 
     /**
-     * Renders a Single Mini Card (in 2-asset or 4-asset mode)
+     * Renders a Single Mini Card in 1080p Ultra HD
      */
     private static void drawMiniCard(Context context, Canvas canvas, WidgetConfigureActivity.AssetItem asset, int x, int y, int w, int h, WidgetThemeConfig theme, boolean isPersian) {
         Typeface tfTitle = isPersian ? getSfArabicBold(context) : getGsansBold(context);
@@ -412,22 +416,17 @@ public class KGoldWidgetRenderer {
 
         RectF cardRect = new RectF(x, y, x + w, y + h);
 
-        // Background
-        Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bgPaint.setColor(theme.bgColor);
-        canvas.drawRoundRect(cardRect, 48f, 48f, bgPaint);
+        // Background & Border
+        Paint bgPaint = createPaint(theme.bgColor, Paint.Style.FILL, 0);
+        canvas.drawRoundRect(cardRect, 68f, 68f, bgPaint);
 
-        // Border
-        Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(theme.strokeColor);
-        strokePaint.setStrokeWidth(theme.strokeWidth);
-        canvas.drawRoundRect(cardRect, 48f, 48f, strokePaint);
+        Paint strokePaint = createPaint(theme.strokeColor, Paint.Style.STROKE, 3.5f);
+        canvas.drawRoundRect(cardRect, 68f, 68f, strokePaint);
 
         // Top Row: Icon
-        int iconSize = Math.max(62, Math.min(74, Math.round(Math.min(w, h) * 0.21f)));
-        int iconX = x + 32;
-        int iconY = y + 32;
+        int iconSize = Math.max(86, Math.min(106, Math.round(Math.min(w, h) * 0.20f)));
+        int iconX = x + 44;
+        int iconY = y + 44;
         Drawable icon = ContextCompat.getDrawable(context, asset.iconRes);
         if (icon != null) {
             icon.setBounds(iconX, iconY, iconX + iconSize, iconY + iconSize);
@@ -435,53 +434,39 @@ public class KGoldWidgetRenderer {
         }
 
         // Top Row: Name & Code (Right-Aligned with generous margin matching reference sample)
-        float textRight = x + w - 38f;
+        float textRight = x + w - 52f;
         String displayName = isPersian ? asset.name : cleanEnglishName(asset.englishName);
 
-        Paint namePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        namePaint.setTypeface(tfTitle);
-        namePaint.setColor(theme.titleColor);
-        float nameSize = Math.max(28f, Math.min(35f, w * 0.102f));
-        namePaint.setTextSize(nameSize);
-        namePaint.setTextAlign(Paint.Align.RIGHT);
+        float nameSize = Math.max(38f, Math.min(50f, w * 0.098f));
+        Paint namePaint = createTextPaint(tfTitle, theme.titleColor, nameSize, Paint.Align.RIGHT);
 
-        float maxNameWidth = textRight - (iconX + iconSize + 16f);
+        float maxNameWidth = textRight - (iconX + iconSize + 22f);
         if (namePaint.measureText(displayName) > maxNameWidth) {
             namePaint.setTextSize(nameSize * 0.84f);
         }
-        canvas.drawText(displayName, textRight, iconY + 36f, namePaint);
+        canvas.drawText(displayName, textRight, iconY + 52f, namePaint);
 
-        Paint codePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        codePaint.setTypeface(tfCode);
-        codePaint.setColor(theme.codeColor);
-        codePaint.setTextSize(Math.max(20f, nameSize * 0.68f));
-        codePaint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(asset.code, textRight, iconY + 68f, codePaint);
+        float codeSize = Math.max(26f, nameSize * 0.68f);
+        Paint codePaint = createTextPaint(tfCode, theme.codeColor, codeSize, Paint.Align.RIGHT);
+        canvas.drawText(asset.code, textRight, iconY + 98f, codePaint);
 
         // Bottom: Change Percentage (Left-Aligned with icon)
-        Paint changePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        changePaint.setTypeface(tfChange);
-        float changeSize = Math.max(23f, Math.min(28f, w * 0.080f));
-        changePaint.setTextSize(changeSize);
-        changePaint.setColor(asset.isPositive ? theme.posColor : theme.negColor);
-        changePaint.setTextAlign(Paint.Align.LEFT);
+        float changeSize = Math.max(32f, Math.min(40f, w * 0.078f));
+        int changeColor = asset.isPositive ? theme.posColor : theme.negColor;
+        Paint changePaint = createTextPaint(tfChange, changeColor, changeSize, Paint.Align.LEFT);
         String changeStr = formatChangeText(asset.defaultChange, asset.isPositive, isPersian);
-        canvas.drawText(changeStr, iconX, y + h - 86f, changePaint);
+        canvas.drawText(changeStr, iconX, y + h - 124f, changePaint);
 
         // Bottom: Live Price (Bold, prominent, left-aligned)
-        Paint pricePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        pricePaint.setTypeface(tfPrice);
-        pricePaint.setColor(theme.priceColor);
-        float priceSize = Math.max(44f, Math.min(54f, w * 0.155f));
-        pricePaint.setTextSize(priceSize);
-        pricePaint.setTextAlign(Paint.Align.LEFT);
+        float priceSize = Math.max(62f, Math.min(78f, w * 0.155f));
+        Paint pricePaint = createTextPaint(tfPrice, theme.priceColor, priceSize, Paint.Align.LEFT);
 
         String pStr = formatDigits(asset.defaultPrice, isPersian);
         float pWidth = pricePaint.measureText(pStr);
-        float maxPriceWidth = w - 64f;
+        float maxPriceWidth = w - 88f;
         if (pWidth > maxPriceWidth) {
             pricePaint.setTextSize(priceSize * 0.80f);
         }
-        canvas.drawText(pStr, iconX, y + h - 30f, pricePaint);
+        canvas.drawText(pStr, iconX, y + h - 42f, pricePaint);
     }
 }

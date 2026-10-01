@@ -432,40 +432,54 @@ public class WidgetConfigureActivity extends Activity {
             updatePreview.run();
         });
 
-        btnAddWidget.setOnClickListener(v -> {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mSelectedKeys.size(); i++) {
-                if (i > 0) sb.append(",");
-                sb.append(mSelectedKeys.get(i));
-            }
-            String resultCsv = sb.toString();
+        btnAddWidget.setOnClickListener(v -> saveAndFinish());
+    }
 
-            // Save selected assets, digits language, and theme for this appWidgetId and globally
-            SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                editor.putString(PREF_PREFIX_KEY + mAppWidgetId, resultCsv);
-                editor.putString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, mDigitsLang);
-                editor.putString(PREF_THEME_PREFIX + mAppWidgetId, mTheme);
-            }
-            editor.putString("selected_assets", resultCsv);
-            editor.putString("widget_digits_lang", mDigitsLang);
-            editor.putString("widget_theme", mTheme);
-            editor.apply();
+    private void saveAndFinish() {
+        if (mSelectedKeys.isEmpty()) {
+            mSelectedKeys.add("usd");
+            mSelectedKeys.add("eur");
+            mSelectedKeys.add("aed");
+            mSelectedKeys.add("gbp");
+        }
 
-            // Update widget immediately
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigureActivity.this);
-            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                KGoldWidgetProvider.updateAppWidget(WidgetConfigureActivity.this, appWidgetManager, mAppWidgetId);
-            }
-            KGoldWidgetProvider.updateAllWidgets(WidgetConfigureActivity.this);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mSelectedKeys.size(); i++) {
+            if (i > 0) sb.append(",");
+            sb.append(mSelectedKeys.get(i));
+        }
+        String resultCsv = sb.toString();
 
-            // Return success
-            Intent resultValue = new Intent();
-            if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            }
-            setResult(RESULT_OK, resultValue);
-            finish();
-        });
+        // Save selected assets, digits language, and theme for this appWidgetId and globally
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            editor.putString(PREF_PREFIX_KEY + mAppWidgetId, resultCsv);
+            editor.putString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, mDigitsLang);
+            editor.putString(PREF_THEME_PREFIX + mAppWidgetId, mTheme);
+        }
+        editor.putString("selected_assets", resultCsv);
+        editor.putString("widget_digits_lang", mDigitsLang);
+        editor.putString("widget_theme", mTheme);
+        editor.apply();
+
+        // Update widget immediately
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigureActivity.this);
+        if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            KGoldWidgetProvider.updateAppWidget(WidgetConfigureActivity.this, appWidgetManager, mAppWidgetId);
+        }
+        KGoldWidgetProvider.updateAllWidgets(WidgetConfigureActivity.this);
+
+        // Return success
+        Intent resultValue = new Intent();
+        if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        }
+        setResult(RESULT_OK, resultValue);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveAndFinish();
     }
 }
