@@ -17,16 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class WidgetConfigureActivity extends Activity {
 
     public static final String PREFS_NAME = "com.kgold.app.widget_prefs";
     public static final String PREF_PREFIX_KEY = "widget_assets_";
+    public static final String PREF_DIGITS_LANG_PREFIX = "widget_digits_lang_";
+    public static final String PREF_THEME_PREFIX = "widget_theme_";
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private final List<String> mSelectedKeys = new ArrayList<>();
+    private String mDigitsLang = "fa"; // "fa" or "en"
+    private String mTheme = "white"; // "white" or "transparent"
 
     public static class AssetItem {
         public String key;
@@ -82,19 +85,47 @@ public class WidgetConfigureActivity extends Activity {
                   .replace('%', '٪');
     }
 
+    public static String toEnglishDigits(String str) {
+        if (str == null || str.isEmpty()) return "";
+        return str.replace('۰', '0')
+                  .replace('۱', '1')
+                  .replace('۲', '2')
+                  .replace('۳', '3')
+                  .replace('۴', '4')
+                  .replace('۵', '5')
+                  .replace('۶', '6')
+                  .replace('۷', '7')
+                  .replace('۸', '8')
+                  .replace('۹', '9')
+                  .replace('٪', '%');
+    }
+
+    public static String formatDigits(String str, boolean isPersian) {
+        return isPersian ? toPersianDigits(str) : toEnglishDigits(str);
+    }
+
     public static String formatChangeText(String change, boolean isPositive) {
+        return formatChangeText(change, isPositive, true);
+    }
+
+    public static String formatChangeText(String change, boolean isPositive, boolean isPersian) {
         if (change == null || change.trim().isEmpty()) {
-            return isPositive ? "+۰.۰۰٪ ↗" : "-۰.۰۰٪ ↘";
+            return isPersian ? (isPositive ? "+۰.۰۰٪ ↗" : "-۰.۰۰٪ ↘") : (isPositive ? "+0.00% ↗" : "-0.00% ↘");
         }
         boolean isNeg = change.contains("-") || !isPositive;
         String clean = change.replaceAll("[+\\-\\s%٪↗↘]", "").trim();
         if (clean.isEmpty()) clean = "0.00";
         String arrow = isNeg ? " ↘" : " ↗";
         String sign = isNeg ? "-" : "+";
-        return toPersianDigits(sign + clean + "٪" + arrow);
+        String pct = isPersian ? "٪" : "%";
+        return formatDigits(sign + clean + pct + arrow, isPersian);
     }
 
     public static AssetItem getAssetByKey(Context context, String key) {
+        return getAssetByKey(context, key, true);
+    }
+
+    public static AssetItem getAssetByKey(Context context, String key, boolean isPersian) {
         List<AssetItem> assets = getAllAssets();
         for (AssetItem item : assets) {
             if (item.key.equalsIgnoreCase(key)) {
@@ -103,8 +134,8 @@ public class WidgetConfigureActivity extends Activity {
                 String change = prefs.getString("change_" + key, item.defaultChange);
                 boolean isPos = prefs.getBoolean("is_pos_" + key, item.isPositive);
                 return new AssetItem(item.key, item.name, item.englishName, item.code, item.iconRes, 
-                        toPersianDigits(price), 
-                        formatChangeText(change, isPos), 
+                        formatDigits(price, isPersian), 
+                        formatChangeText(change, isPos, isPersian), 
                         isPos);
             }
         }
@@ -166,6 +197,10 @@ public class WidgetConfigureActivity extends Activity {
             mSelectedKeys.add("gbp");
         }
 
+        // Read initial digits language & theme
+        mDigitsLang = prefs.getString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, prefs.getString("widget_digits_lang", "fa"));
+        mTheme = prefs.getString(PREF_THEME_PREFIX + mAppWidgetId, prefs.getString("widget_theme", "white"));
+
         // UI references
         final View previewSingleContainer = findViewById(R.id.preview_single_container);
         final View previewMultiContainer = findViewById(R.id.preview_multi_container);
@@ -212,42 +247,63 @@ public class WidgetConfigureActivity extends Activity {
         final Button btnAddWidget = findViewById(R.id.btn_add_widget);
         final GridView gridView = findViewById(R.id.assets_grid);
 
+        final TextView btnDigitsFa = findViewById(R.id.btn_digits_fa);
+        final TextView btnDigitsEn = findViewById(R.id.btn_digits_en);
+        final TextView btnThemeWhite = findViewById(R.id.btn_theme_white);
+        final TextView btnThemeTransparent = findViewById(R.id.btn_theme_transparent);
+
+        // Setup initial button states
+        Runnable updateButtonsState = () -> {
+            boolean isFa = "fa".equalsIgnoreCase(mDigitsLang);
+            btnDigitsFa.setBackgroundResource(isFa ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
+            btnDigitsFa.setTextColor(isFa ? 0xFFFFFFFF : 0xFF475569);
+            btnDigitsEn.setBackgroundResource(!isFa ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
+            btnDigitsEn.setTextColor(!isFa ? 0xFFFFFFFF : 0xFF475569);
+
+            boolean isWhite = "white".equalsIgnoreCase(mTheme);
+            btnThemeWhite.setBackgroundResource(isWhite ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
+            btnThemeWhite.setTextColor(isWhite ? 0xFFFFFFFF : 0xFF475569);
+            btnThemeTransparent.setBackgroundResource(!isWhite ? R.drawable.widget_pill_active : R.drawable.widget_pill_inactive);
+            btnThemeTransparent.setTextColor(!isWhite ? 0xFFFFFFFF : 0xFF475569);
+        };
+
         // Update preview helper
         Runnable updatePreview = () -> {
+            boolean isPersian = "fa".equalsIgnoreCase(mDigitsLang);
             txtSelectionCounter.setText("انتخاب ارزها (" + mSelectedKeys.size() + " از ۴ ارز انتخاب شده):");
 
             if (mSelectedKeys.size() == 1) {
                 previewSingleContainer.setVisibility(View.VISIBLE);
                 previewMultiContainer.setVisibility(View.GONE);
 
-                AssetItem single = getAssetByKey(this, mSelectedKeys.get(0));
+                AssetItem single = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 previewIcon.setImageResource(single.iconRes);
                 previewName.setText(single.englishName);
                 previewCode.setText(single.code);
-                previewChange.setText(formatChangeText(single.defaultChange, single.isPositive));
+                previewChange.setText(formatChangeText(single.defaultChange, single.isPositive, isPersian));
                 previewChange.setTextColor(single.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                previewPrice.setText(toPersianDigits(single.defaultPrice));
+                previewPrice.setText(single.defaultPrice);
             } else {
                 previewSingleContainer.setVisibility(View.GONE);
                 previewMultiContainer.setVisibility(View.VISIBLE);
 
                 // Slot 1
-                AssetItem a1 = getAssetByKey(this, mSelectedKeys.get(0));
+                AssetItem a1 = getAssetByKey(this, mSelectedKeys.get(0), isPersian);
                 prevIcon1.setImageResource(a1.iconRes);
                 prevName1.setText(a1.englishName);
                 prevCode1.setText(a1.code);
-                prevChange1.setText(formatChangeText(a1.defaultChange, a1.isPositive));
+                prevChange1.setText(formatChangeText(a1.defaultChange, a1.isPositive, isPersian));
                 prevChange1.setTextColor(a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                prevPrice1.setText(toPersianDigits(a1.defaultPrice));
+                prevPrice1.setText(a1.defaultPrice);
 
                 // Slot 2
-                AssetItem a2 = getAssetByKey(this, mSelectedKeys.get(1));
+                AssetItem a2 = getAssetByKey(this, mSelectedKeys.get(1), isPersian);
                 prevIcon2.setImageResource(a2.iconRes);
                 prevName2.setText(a2.englishName);
                 prevCode2.setText(a2.code);
-                prevChange2.setText(formatChangeText(a2.defaultChange, a2.isPositive));
+                prevChange2.setText(formatChangeText(a2.defaultChange, a2.isPositive, isPersian));
                 prevChange2.setTextColor(a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                prevPrice2.setText(toPersianDigits(a2.defaultPrice));
+                prevPrice2.setText(a2.defaultPrice);
 
                 if (mSelectedKeys.size() == 2) {
                     previewRow2.setVisibility(View.GONE);
@@ -255,24 +311,24 @@ public class WidgetConfigureActivity extends Activity {
                     previewRow2.setVisibility(View.VISIBLE);
 
                     // Slot 3
-                    AssetItem a3 = getAssetByKey(this, mSelectedKeys.get(2));
+                    AssetItem a3 = getAssetByKey(this, mSelectedKeys.get(2), isPersian);
                     prevIcon3.setImageResource(a3.iconRes);
                     prevName3.setText(a3.englishName);
                     prevCode3.setText(a3.code);
-                    prevChange3.setText(formatChangeText(a3.defaultChange, a3.isPositive));
+                    prevChange3.setText(formatChangeText(a3.defaultChange, a3.isPositive, isPersian));
                     prevChange3.setTextColor(a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                    prevPrice3.setText(toPersianDigits(a3.defaultPrice));
+                    prevPrice3.setText(a3.defaultPrice);
 
                     // Slot 4
                     if (mSelectedKeys.size() >= 4) {
-                        AssetItem a4 = getAssetByKey(this, mSelectedKeys.get(3));
+                        AssetItem a4 = getAssetByKey(this, mSelectedKeys.get(3), isPersian);
                         prevSlot4.setVisibility(View.VISIBLE);
                         prevIcon4.setImageResource(a4.iconRes);
                         prevName4.setText(a4.englishName);
                         prevCode4.setText(a4.code);
-                        prevChange4.setText(formatChangeText(a4.defaultChange, a4.isPositive));
+                        prevChange4.setText(formatChangeText(a4.defaultChange, a4.isPositive, isPersian));
                         prevChange4.setTextColor(a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                        prevPrice4.setText(toPersianDigits(a4.defaultPrice));
+                        prevPrice4.setText(a4.defaultPrice);
                     } else {
                         prevSlot4.setVisibility(View.INVISIBLE);
                     }
@@ -280,7 +336,33 @@ public class WidgetConfigureActivity extends Activity {
             }
         };
 
-        // Initial preview
+        // Listeners for setting toggles
+        btnDigitsFa.setOnClickListener(v -> {
+            mDigitsLang = "fa";
+            updateButtonsState.run();
+            updatePreview.run();
+        });
+
+        btnDigitsEn.setOnClickListener(v -> {
+            mDigitsLang = "en";
+            updateButtonsState.run();
+            updatePreview.run();
+        });
+
+        btnThemeWhite.setOnClickListener(v -> {
+            mTheme = "white";
+            updateButtonsState.run();
+            updatePreview.run();
+        });
+
+        btnThemeTransparent.setOnClickListener(v -> {
+            mTheme = "transparent";
+            updateButtonsState.run();
+            updatePreview.run();
+        });
+
+        // Initial preview & button states
+        updateButtonsState.run();
         updatePreview.run();
 
         final ArrayAdapter<AssetItem> adapter = new ArrayAdapter<AssetItem>(this, R.layout.item_widget_chip, allAssets) {
@@ -345,10 +427,14 @@ public class WidgetConfigureActivity extends Activity {
             }
             String resultCsv = sb.toString();
 
-            // Save selected assets for this appWidgetId and globally
+            // Save selected assets, digits language, and theme for this appWidgetId and globally
             SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
             editor.putString(PREF_PREFIX_KEY + mAppWidgetId, resultCsv);
             editor.putString("selected_assets", resultCsv);
+            editor.putString(PREF_DIGITS_LANG_PREFIX + mAppWidgetId, mDigitsLang);
+            editor.putString("widget_digits_lang", mDigitsLang);
+            editor.putString(PREF_THEME_PREFIX + mAppWidgetId, mTheme);
+            editor.putString("widget_theme", mTheme);
             editor.apply();
 
             // Update widget immediately
