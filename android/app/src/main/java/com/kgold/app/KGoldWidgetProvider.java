@@ -42,6 +42,12 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
     }
 
     @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, android.os.Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        updateAppWidget(context, appWidgetManager, appWidgetId);
+    }
+
+    @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent != null ? intent.getAction() : null;
@@ -104,77 +110,9 @@ public class KGoldWidgetProvider extends AppWidgetProvider {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_kgold);
 
-        if (assetKeys.size() == 1) {
-            // === 1 ASSET MODE (Large Single Square Card) ===
-            views.setViewVisibility(R.id.widget_single_layout, View.VISIBLE);
-            views.setViewVisibility(R.id.widget_multi_layout, View.GONE);
-
-            WidgetConfigureActivity.AssetItem asset = WidgetConfigureActivity.getAssetByKey(context, assetKeys.get(0));
-            views.setImageViewResource(R.id.widget_icon, asset.iconRes);
-            views.setTextViewText(R.id.widget_name, asset.englishName);
-            views.setTextViewText(R.id.widget_code, asset.code);
-            views.setTextViewText(R.id.widget_change, formatChangeText(asset.defaultChange, asset.isPositive));
-            views.setTextColor(R.id.widget_change, asset.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.widget_price, toPersianDigits(asset.defaultPrice));
-            views.setTextViewText(R.id.widget_unit, "تومان");
-
-        } else {
-            // === 2 TO 4 ASSETS MODE (2x2 Square Grid) ===
-            views.setViewVisibility(R.id.widget_single_layout, View.GONE);
-            views.setViewVisibility(R.id.widget_multi_layout, View.VISIBLE);
-
-            // Slot 1
-            WidgetConfigureActivity.AssetItem a1 = WidgetConfigureActivity.getAssetByKey(context, assetKeys.get(0));
-            views.setImageViewResource(R.id.slot_icon_1, a1.iconRes);
-            views.setTextViewText(R.id.slot_name_1, a1.englishName);
-            views.setTextViewText(R.id.slot_code_1, a1.code);
-            views.setTextViewText(R.id.slot_change_1, formatChangeText(a1.defaultChange, a1.isPositive));
-            views.setTextColor(R.id.slot_change_1, a1.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.slot_price_1, toPersianDigits(a1.defaultPrice));
-            views.setViewVisibility(R.id.slot_card_1, View.VISIBLE);
-
-            // Slot 2
-            WidgetConfigureActivity.AssetItem a2 = WidgetConfigureActivity.getAssetByKey(context, assetKeys.get(1));
-            views.setImageViewResource(R.id.slot_icon_2, a2.iconRes);
-            views.setTextViewText(R.id.slot_name_2, a2.englishName);
-            views.setTextViewText(R.id.slot_code_2, a2.code);
-            views.setTextViewText(R.id.slot_change_2, formatChangeText(a2.defaultChange, a2.isPositive));
-            views.setTextColor(R.id.slot_change_2, a2.isPositive ? 0xFF16A34A : 0xFFDC2626);
-            views.setTextViewText(R.id.slot_price_2, toPersianDigits(a2.defaultPrice));
-            views.setViewVisibility(R.id.slot_card_2, View.VISIBLE);
-
-            if (assetKeys.size() == 2) {
-                // If only 2 assets, hide Row 2 so Row 1 sits centered
-                views.setViewVisibility(R.id.multi_row_2, View.GONE);
-            } else {
-                views.setViewVisibility(R.id.multi_row_2, View.VISIBLE);
-
-                // Slot 3
-                WidgetConfigureActivity.AssetItem a3 = WidgetConfigureActivity.getAssetByKey(context, assetKeys.get(2));
-                views.setImageViewResource(R.id.slot_icon_3, a3.iconRes);
-                views.setTextViewText(R.id.slot_name_3, a3.englishName);
-                views.setTextViewText(R.id.slot_code_3, a3.code);
-                views.setTextViewText(R.id.slot_change_3, formatChangeText(a3.defaultChange, a3.isPositive));
-                views.setTextColor(R.id.slot_change_3, a3.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                views.setTextViewText(R.id.slot_price_3, toPersianDigits(a3.defaultPrice));
-                views.setViewVisibility(R.id.slot_card_3, View.VISIBLE);
-
-                // Slot 4
-                if (assetKeys.size() >= 4) {
-                    WidgetConfigureActivity.AssetItem a4 = WidgetConfigureActivity.getAssetByKey(context, assetKeys.get(3));
-                    views.setImageViewResource(R.id.slot_icon_4, a4.iconRes);
-                    views.setTextViewText(R.id.slot_name_4, a4.englishName);
-                    views.setTextViewText(R.id.slot_code_4, a4.code);
-                    views.setTextViewText(R.id.slot_change_4, formatChangeText(a4.defaultChange, a4.isPositive));
-                    views.setTextColor(R.id.slot_change_4, a4.isPositive ? 0xFF16A34A : 0xFFDC2626);
-                    views.setTextViewText(R.id.slot_price_4, toPersianDigits(a4.defaultPrice));
-                    views.setViewVisibility(R.id.slot_card_4, View.VISIBLE);
-                } else {
-                    // Invisible preserves the square 2x2 grid balance
-                    views.setViewVisibility(R.id.slot_card_4, View.INVISIBLE);
-                }
-            }
-        }
+        // Render pixel-perfect high-definition Canvas bitmap with SF Pro Arabic typography & 1:1 square
+        android.graphics.Bitmap widgetBmp = KGoldWidgetRenderer.renderWidget(context, appWidgetManager, appWidgetId, assetKeys);
+        views.setImageViewBitmap(R.id.widget_canvas_image, widgetBmp);
 
         // Tap on widget opens MainActivity
         Intent intent = new Intent(context, MainActivity.class);
