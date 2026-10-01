@@ -272,56 +272,51 @@ public class KGoldWidgetRenderer {
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0,
                 Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG | Paint.SUBPIXEL_TEXT_FLAG));
 
-        // 1. Draw ONE UNIFIED RECTANGULAR BOX
-        float pad = 10f;
-        RectF cardRect = new RectF(pad, pad, canvasW - pad, canvasH - pad);
-        float cornerRadius = 54f;
-
-        // Solid pure white background
-        Paint bgPaint = createPaint(themeConfig.bgColor, Paint.Style.FILL, 0);
-        canvas.drawRoundRect(cardRect, cornerRadius, cornerRadius, bgPaint);
-
-        // Elegant border stroke
-        Paint strokePaint = createPaint(themeConfig.strokeColor, Paint.Style.STROKE, themeConfig.strokeWidth);
-        canvas.drawRoundRect(cardRect, cornerRadius, cornerRadius, strokePaint);
-
-        // 2. Render items with subtle divider lines
-        Paint dividerPaint = createPaint(0xFFF1F5F9, Paint.Style.STROKE, 2.5f);
-
         if (assets.size() == 2) {
-            // 2 ASSETS: Left and Right Columns
-            float midX = canvasW / 2f;
-            canvas.drawLine(midX, pad + 32f, midX, canvasH - pad - 32f, dividerPaint);
+            // 2 ASSETS: Two distinct rounded cards with a clean launcher-style gap in between
+            float padH = 6f;
+            float padV = 6f;
+            float gap = 30f;
+            float cardW = (canvasW - (padH * 2f) - gap) / 2f;
+            float cardH = canvasH - (padV * 2f);
 
-            float colW = midX - pad;
-            float colH = canvasH - pad * 2f;
-            drawItemInSlot(context, canvas, assets.get(0), pad, pad, colW, colH, themeConfig, isPersian);
-            drawItemInSlot(context, canvas, assets.get(1), midX, pad, colW, colH, themeConfig, isPersian);
+            drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
+            drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gap, padV, cardW, cardH, themeConfig, isPersian);
         } else {
-            // 3 or 4 ASSETS: 2x2 Quadrant Grid inside the single rectangular box
-            float midX = canvasW / 2f;
-            float midY = canvasH / 2f;
-            canvas.drawLine(midX, pad + 24f, midX, canvasH - pad - 24f, dividerPaint);
-            canvas.drawLine(pad + 24f, midY, canvasW - pad - 24f, midY, dividerPaint);
+            // 3 or 4 ASSETS: 2x2 Grid of distinct rounded cards with horizontal & vertical gaps
+            float padH = 6f;
+            float padV = 6f;
+            float gapX = 24f;
+            float gapY = 24f;
+            float cardW = (canvasW - (padH * 2f) - gapX) / 2f;
+            float cardH = (canvasH - (padV * 2f) - gapY) / 2f;
 
-            float quadW = midX - pad;
-            float quadH = midY - pad;
-
-            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), pad, pad, quadW, quadH, themeConfig, isPersian);
-            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), midX, pad, quadW, quadH, themeConfig, isPersian);
-            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), pad, midY, quadW, quadH, themeConfig, isPersian);
-            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), midX, midY, quadW, quadH, themeConfig, isPersian);
+            if (assets.size() > 0) drawItemInSlot(context, canvas, assets.get(0), padH, padV, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 1) drawItemInSlot(context, canvas, assets.get(1), padH + cardW + gapX, padV, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 2) drawItemInSlot(context, canvas, assets.get(2), padH, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
+            if (assets.size() > 3) drawItemInSlot(context, canvas, assets.get(3), padH + cardW + gapX, padV + cardH + gapY, cardW, cardH, themeConfig, isPersian);
         }
 
         return bitmap;
     }
 
     /**
-     * Renders a Single Currency Item inside a designated slot of the unified card.
+     * Renders a Single Currency Item as a standalone luxury rounded card.
      */
     private static void drawItemInSlot(Context context, Canvas canvas, WidgetConfigureActivity.AssetItem asset,
                                        float slotX, float slotY, float slotW, float slotH,
                                        WidgetThemeConfig theme, boolean isPersian) {
+        // Draw individual Card Background & Border
+        RectF cardRect = new RectF(slotX, slotY, slotX + slotW, slotY + slotH);
+        float cornerRadius = 52f;
+
+        // Solid pure white background
+        Paint bgPaint = createPaint(theme.bgColor, Paint.Style.FILL, 0);
+        canvas.drawRoundRect(cardRect, cornerRadius, cornerRadius, bgPaint);
+
+        // Elegant border stroke
+        Paint strokePaint = createPaint(theme.strokeColor, Paint.Style.STROKE, theme.strokeWidth);
+        canvas.drawRoundRect(cardRect, cornerRadius, cornerRadius, strokePaint);
         Typeface tfTitle = isPersian ? getSfArabicBold(context) : getGsansBold(context);
         Typeface tfCode = isPersian ? getSfArabicBold(context) : getGsansMedium(context);
         Typeface tfPrice = isPersian ? getVazirBold(context) : getGsansBold(context);

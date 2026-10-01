@@ -213,7 +213,6 @@ public class WidgetConfigureActivity extends Activity {
         final View previewMultiContainer = findViewById(R.id.preview_multi_container);
         final View previewRow1 = findViewById(R.id.preview_row_1);
         final View previewRow2 = findViewById(R.id.preview_row_2);
-        final View previewHDivider = findViewById(R.id.preview_h_divider);
 
         // Single preview views
         final ImageView previewIcon = findViewById(R.id.preview_icon);
@@ -307,10 +306,8 @@ public class WidgetConfigureActivity extends Activity {
                 prevPrice2.setText(a2.defaultPrice);
 
                 if (mSelectedKeys.size() == 2) {
-                    if (previewHDivider != null) previewHDivider.setVisibility(View.GONE);
                     previewRow2.setVisibility(View.GONE);
                 } else {
-                    if (previewHDivider != null) previewHDivider.setVisibility(View.VISIBLE);
                     previewRow2.setVisibility(View.VISIBLE);
 
                     // Slot 3

@@ -152,22 +152,22 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 2. Unified Rectangular Card Preview -->
+        <!-- 2. Dual/Quad Cards Preview -->
         <LinearLayout
             android:id="@+id/preview_multi_container"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/widget_bg_white"
-            android:elevation="4dp"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:padding="0dp"
             android:visibility="visible">
 
             <!-- Row 1 -->
             <LinearLayout
                 android:id="@+id/preview_row_1"
                 android:layout_width="match_parent"
-                android:layout_height="82dp"
+                android:layout_height="84dp"
                 android:orientation="horizontal">
 
                 <!-- Slot 1 -->
@@ -176,9 +176,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/widget_bg_white"
+                    android:elevation="3dp"
                     android:orientation="vertical"
-                    android:padding="4dp">
+                    android:padding="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -187,8 +189,8 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/prev_icon_1"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/widget_icon_usd" />
                         <LinearLayout
@@ -241,24 +243,17 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Divider V1 -->
-                <View
-                    android:id="@+id/prev_v_divider_1"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="#F1F5F9" />
-
                 <!-- Slot 2 -->
                 <LinearLayout
                     android:id="@+id/prev_slot_2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/widget_bg_white"
+                    android:elevation="3dp"
                     android:orientation="vertical"
-                    android:padding="4dp">
+                    android:padding="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -267,8 +262,8 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/prev_icon_2"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/widget_icon_eur" />
                         <LinearLayout
@@ -322,23 +317,12 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Divider Horizontal -->
-            <View
-                android:id="@+id/preview_h_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="#F1F5F9"
-                android:visibility="gone" />
-
             <!-- Row 2 -->
             <LinearLayout
                 android:id="@+id/preview_row_2"
                 android:layout_width="match_parent"
-                android:layout_height="82dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -348,9 +332,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/widget_bg_white"
+                    android:elevation="3dp"
                     android:orientation="vertical"
-                    android:padding="4dp">
+                    android:padding="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -359,8 +345,8 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/prev_icon_3"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/widget_icon_aed" />
                         <LinearLayout
@@ -413,24 +399,17 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Divider V2 -->
-                <View
-                    android:id="@+id/prev_v_divider_2"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="#F1F5F9" />
-
                 <!-- Slot 4 -->
                 <LinearLayout
                     android:id="@+id/prev_slot_4"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/widget_bg_white"
+                    android:elevation="3dp"
                     android:orientation="vertical"
-                    android:padding="4dp">
+                    android:padding="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -439,8 +418,8 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/prev_icon_4"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/widget_icon_gbp" />
                         <LinearLayout
