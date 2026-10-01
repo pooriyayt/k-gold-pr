@@ -52,7 +52,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentSection, onSelectSe
     const targetRect = targetBtn.getBoundingClientRect();
 
     const targetCenter = targetRect.left - containerRect.left + targetRect.width / 2;
-    const baseWidth = Math.max(48, Math.min(targetRect.width - 6, 68));
+    const baseWidth = Math.round(targetRect.width + 12);
     const targetLeft = targetCenter - baseWidth / 2;
 
     if (!animate) {
