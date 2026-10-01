@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CurrencyItem, GoldItem, CryptoItem, TabType } from '../types';
 import { AppleSparkline } from '../components/AppleSparkline';
 import { getFlagUrl } from '../services/api';
-import { formatPrice, formatNumber } from '../services/format';
+import { formatPrice, formatNumber, toEnglishDigits } from '../services/format';
 import { Coins, CircleDollarSign, Star, TrendingUp, Receipt, Share2, LineChart, Sparkles } from 'lucide-react';
 import { GoldBarsHero } from '../components/GoldBarsHero';
 import { isItemFavorite } from '../services/storage';
@@ -46,7 +46,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       !g.name.includes('دست دوم')
   );
   const raw18kPrice = gold18k
-    ? parseFloat(gold18k.price.replace(/,/g, ''))
+    ? parseFloat(toEnglishDigits(gold18k.price).replace(/[^0-9.]/g, ''))
     : 23874800;
 
   // Find exact items or sensible fallbacks (never match حباب for hero cards)
@@ -266,7 +266,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onOpenChart && onOpenChart('دلار آمریکا', parseFloat(dollarItem.price.replace(/,/g, '')) || 233300);
+                  onOpenChart && onOpenChart('دلار آمریکا', parseFloat(toEnglishDigits(dollarItem.price).replace(/[^0-9.]/g, '')) || 233300);
                 }}
                 className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
                 title="نمودار تحلیلی"
@@ -334,7 +334,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onOpenChart && onOpenChart('سکه امامی', parseFloat(coinEmamiItem.price.replace(/,/g, '')) || 237480000);
+                  onOpenChart && onOpenChart('سکه امامی', parseFloat(toEnglishDigits(coinEmamiItem.price).replace(/[^0-9.]/g, '')) || 237480000);
                 }}
                 className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
                 title="نمودار تحلیلی"
@@ -402,7 +402,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onOpenChart && onOpenChart('طلای ۱۸ عیار', parseFloat(gold18Item.price.replace(/,/g, '')) || 23874800);
+                  onOpenChart && onOpenChart('طلای ۱۸ عیار', parseFloat(toEnglishDigits(gold18Item.price).replace(/[^0-9.]/g, '')) || 23874800);
                 }}
                 className="p-1 text-slate-400 hover:text-amber-400 active:scale-90 transition-transform"
                 title="نمودار تحلیلی"

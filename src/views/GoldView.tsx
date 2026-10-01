@@ -3,7 +3,7 @@ import { GoldItem } from '../types';
 import { AppleSparkline } from '../components/AppleSparkline';
 import { GoldCalculatorModal } from '../components/Modals/GoldCalculatorModal';
 import { CoinBubbleModal } from '../components/Modals/CoinBubbleModal';
-import { formatPrice, formatNumber } from '../services/format';
+import { formatPrice, formatNumber, toEnglishDigits } from '../services/format';
 import { Search, Receipt, Coins, CircleDollarSign, Star, TrendingUp } from 'lucide-react';
 import { isItemFavorite } from '../services/storage';
 
@@ -181,7 +181,7 @@ export const GoldView: React.FC<GoldViewProps> = ({
               key={item.name}
               onClick={() => {
                 if (!isBubble && onOpenChart) {
-                  const p = parseFloat(item.price.replace(/,/g, '')) || 0;
+                  const p = parseFloat(toEnglishDigits(item.price).replace(/[^0-9.]/g, '')) || 0;
                   onOpenChart(item.name, p);
                 }
               }}

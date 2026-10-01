@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CurrencyItem } from '../types';
 import { getFlagUrl } from '../services/api';
 import { AppleSparkline } from '../components/AppleSparkline';
-import { formatPrice, formatNumber } from '../services/format';
+import { formatPrice, formatNumber, toEnglishDigits } from '../services/format';
 import { CurrencyConverterModal } from '../components/Modals/CurrencyConverterModal';
 import { Search, Globe, ArrowUpDown, Star } from 'lucide-react';
 import { isItemFavorite } from '../services/storage';
@@ -147,7 +147,7 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
               key={c.code}
               onClick={() => {
                 if (onOpenChart) {
-                  const p = parseFloat(c.price.replace(/,/g, '')) || 0;
+                  const p = parseFloat(toEnglishDigits(c.price).replace(/[^0-9.]/g, '')) || 0;
                   onOpenChart(c.name, p);
                 }
               }}

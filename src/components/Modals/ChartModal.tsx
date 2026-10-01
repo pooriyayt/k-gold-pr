@@ -264,8 +264,8 @@ export const ChartModal: React.FC<ChartModalProps> = ({
               />
             </svg>
 
-            {/* Time labels below chart */}
-            <div className="flex justify-between items-center px-2 text-[10px] text-slate-500 font-bold tabular-nums">
+            {/* Time labels below chart (LTR aligned with SVG x-axis) */}
+            <div dir="ltr" className="flex justify-between items-center px-2 text-[10px] text-slate-500 font-bold tabular-nums">
               <span>{points[0]?.label}</span>
               <span>{points[Math.floor(points.length / 2)]?.label}</span>
               <span>{points[points.length - 1]?.label}</span>
