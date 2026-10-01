@@ -1,4 +1,5 @@
 // Social Media Price Card Generator Service via Native HTML5 Canvas
+// Apple iOS & Samsung One UI Luxury Design System
 
 export interface ShareCardItem {
   name: string;
@@ -16,6 +17,31 @@ export interface ShareCardOptions {
   items: ShareCardItem[];
 }
 
+// In-memory cache for story background image
+let cachedStoryBg: HTMLImageElement | null = null;
+let bgLoadAttempted = false;
+
+function getStoryBgImage(): HTMLImageElement | null {
+  if (cachedStoryBg && cachedStoryBg.complete && cachedStoryBg.naturalWidth > 0) {
+    return cachedStoryBg;
+  }
+  if (!bgLoadAttempted && typeof Image !== 'undefined') {
+    bgLoadAttempted = true;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = '/images/story_bg.png';
+    img.onload = () => {
+      cachedStoryBg = img;
+    };
+  }
+  return cachedStoryBg;
+}
+
+// Trigger pre-load in browser environments
+if (typeof window !== 'undefined') {
+  setTimeout(() => getStoryBgImage(), 100);
+}
+
 function toPersianDigits(n: number | string): string {
   const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
   return n
@@ -28,29 +54,40 @@ function formatChangePercent(changeStr: string): { isPositive: boolean; text: st
   const cleanNum = changeStr.replace(/[^0-9.]/g, '');
   const numVal = parseFloat(cleanNum) || 0;
   const pDigits = toPersianDigits(numVal.toFixed(2));
-  const arrow = isPos ? ' ↗' : ' ↘';
+  const arrow = isPos ? '↗' : '↘';
   const sign = isPos ? '+' : '-';
   return {
     isPositive: isPos,
-    text: `${sign}${pDigits}٪${arrow}`,
+    text: `${sign}${pDigits}٪ ${arrow}`,
   };
 }
 
 function getAssetCode(name: string, explicitCode?: string): string {
   if (explicitCode) return explicitCode;
-  if (name.includes('دلار')) return 'USD';
-  if (name.includes('تتر')) return 'USDT';
-  if (name.includes('۱۸')) return '18K';
-  if (name.includes('امامی')) return 'EMAMI';
-  if (name.includes('بهار')) return 'BAHAR';
-  if (name.includes('نیم')) return 'HALF';
-  if (name.includes('ربع')) return 'QUARTER';
-  if (name.includes('گرمی')) return 'GERAMI';
-  if (name.includes('یورو')) return 'EUR';
-  if (name.includes('درهم')) return 'AED';
-  if (name.includes('پوند')) return 'GBP';
-  if (name.includes('بیت')) return 'BTC';
+  if (name.includes('دلار')) return 'USD · اسکناس';
+  if (name.includes('تتر')) return 'USDT · دیجیتال';
+  if (name.includes('۱۸')) return '18K · هر گرم';
+  if (name.includes('امامی')) return 'EMAMI · طرح جدید';
+  if (name.includes('بهار')) return 'BAHAR · طرح قدیم';
+  if (name.includes('نیم')) return 'HALF · بانکی';
+  if (name.includes('ربع')) return 'QUARTER · بانکی';
+  if (name.includes('گرمی')) return 'GERAMI · بانکی';
+  if (name.includes('یورو')) return 'EUR · اسکناس';
+  if (name.includes('درهم')) return 'AED · اسکناس';
+  if (name.includes('پوند')) return 'GBP · اسکناس';
+  if (name.includes('بیت')) return 'BTC · رمزارز';
   return '';
+}
+
+function drawImageCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, cw: number, ch: number) {
+  const iw = img.naturalWidth || img.width;
+  const ih = img.naturalHeight || img.height;
+  const scale = Math.max(cw / iw, ch / ih);
+  const sw = cw / scale;
+  const sh = ch / scale;
+  const sx = (iw - sw) / 2;
+  const sy = (ih - sh) / 2;
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
 }
 
 function drawAssetBadge(
@@ -63,64 +100,66 @@ function drawAssetBadge(
 ) {
   ctx.save();
   ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
-  ctx.shadowBlur = 8;
-  ctx.shadowOffsetY = 3;
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetY = 4;
 
   let bgGrad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
   let strokeColor = 'rgba(255, 255, 255, 0.2)';
   let symbol = '$';
   let symbolColor = '#FFFFFF';
-  let font = 'bold 22px Vazirmatn, Tahoma, sans-serif';
+  let font = 'bold 22px "SF Pro Arabic", "SF Pro Display", -apple-system, "Vazirmatn", sans-serif';
 
-  if (name.includes('دلار') || code === 'USD') {
+  const baseCode = code.split(' ')[0];
+
+  if (name.includes('دلار') || baseCode === 'USD') {
     bgGrad.addColorStop(0, '#1E293B');
     bgGrad.addColorStop(1, '#0F172A');
     strokeColor = '#F59E0B';
     symbol = '$';
     symbolColor = '#FCD34D';
-    font = '900 23px Vazirmatn, Arial, sans-serif';
-  } else if (name.includes('یورو') || code === 'EUR') {
+    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('یورو') || baseCode === 'EUR') {
     bgGrad.addColorStop(0, '#1E3A8A');
     bgGrad.addColorStop(1, '#172554');
     strokeColor = '#60A5FA';
     symbol = '€';
     symbolColor = '#93C5FD';
-    font = '900 23px Vazirmatn, Arial, sans-serif';
-  } else if (name.includes('درهم') || code === 'AED') {
+    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('درهم') || baseCode === 'AED') {
     bgGrad.addColorStop(0, '#064E3B');
     bgGrad.addColorStop(1, '#022C22');
     strokeColor = '#34D399';
-    symbol = 'د.إ';
+    symbol = 'AED';
     symbolColor = '#6EE7B7';
-    font = 'bold 16px Vazirmatn, Tahoma, sans-serif';
-  } else if (name.includes('پوند') || code === 'GBP') {
+    font = 'bold 14px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('پوند') || baseCode === 'GBP') {
     bgGrad.addColorStop(0, '#312E81');
     bgGrad.addColorStop(1, '#1E1B4B');
     strokeColor = '#A5B4FC';
     symbol = '£';
     symbolColor = '#C7D2FE';
-    font = '900 23px Vazirmatn, Arial, sans-serif';
-  } else if (name.includes('تتر') || code === 'USDT') {
+    font = '900 24px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('تتر') || baseCode === 'USDT') {
     bgGrad.addColorStop(0, '#0D9488');
     bgGrad.addColorStop(1, '#115E59');
     strokeColor = '#2DD4BF';
     symbol = '₮';
     symbolColor = '#FFFFFF';
-    font = '900 25px Vazirmatn, Arial, sans-serif';
-  } else if (name.includes('بیت') || code === 'BTC') {
+    font = '900 26px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('بیت') || baseCode === 'BTC') {
     bgGrad.addColorStop(0, '#EA580C');
     bgGrad.addColorStop(1, '#9A3412');
     strokeColor = '#FDBA74';
     symbol = '₿';
     symbolColor = '#FFFFFF';
-    font = '900 25px Vazirmatn, Arial, sans-serif';
-  } else if (name.includes('۱۸') || code === '18K') {
+    font = '900 25px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+  } else if (name.includes('۱۸') || baseCode === '18K') {
     bgGrad.addColorStop(0, '#D97706');
     bgGrad.addColorStop(1, '#78350F');
     strokeColor = '#FDE68A';
-    symbol = '۱۸K';
+    symbol = '18K';
     symbolColor = '#FEF3C7';
-    font = 'bold 15px Vazirmatn, Tahoma, sans-serif';
+    font = 'bold 15px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
   } else {
     // Gold Coins (Emami, Bahar, Half, Quarter, Gerami)
     bgGrad.addColorStop(0, '#F59E0B');
@@ -132,7 +171,7 @@ function drawAssetBadge(
     else if (name.includes('ربع')) symbol = 'ربع';
     else if (name.includes('گرمی')) symbol = 'گرمی';
     else symbol = 'سکه';
-    font = 'bold 14px Vazirmatn, Tahoma, sans-serif';
+    font = 'bold 14px "Vazirmatn", Tahoma, sans-serif';
     symbolColor = '#FEF3C7';
   }
 
@@ -145,11 +184,11 @@ function drawAssetBadge(
   ctx.lineWidth = 1.8;
   ctx.stroke();
 
-  // Inner subtle rim
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+  // Subtle glossy specular ring
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.arc(cx, cy, r - 3.5, 0, Math.PI * 2);
+  ctx.arc(cx, cy, r - 3, 0, Math.PI * 2);
   ctx.stroke();
 
   ctx.restore();
@@ -158,7 +197,7 @@ function drawAssetBadge(
   ctx.direction = 'ltr';
   ctx.font = font;
   ctx.fillStyle = symbolColor;
-  ctx.fillText(symbol, cx, cy + (font.includes('14') || font.includes('15') || font.includes('16') ? 5 : 7));
+  ctx.fillText(symbol, cx, cy + (font.includes('14') || font.includes('15') ? 5 : 7));
 }
 
 export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptions): void {
@@ -172,126 +211,160 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  // 1. Deep Luxury Obsidian & Navy Gradient Background
-  const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-  bgGrad.addColorStop(0, '#05070D');
-  bgGrad.addColorStop(0.35, '#0A0F1D');
-  bgGrad.addColorStop(0.7, '#0D1527');
-  bgGrad.addColorStop(1, '#05070E');
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, width, height);
+  // 1. Apple Luxury Ambient Wallpaper Background
+  const bgImg = getStoryBgImage();
+  if (bgImg && bgImg.complete && bgImg.naturalWidth > 0) {
+    drawImageCover(ctx, bgImg, width, height);
 
-  // Radiant Gold & Emerald Mesh Orbs
-  const goldOrb = ctx.createRadialGradient(width * 0.85, isStory ? 280 : 160, 20, width * 0.85, isStory ? 280 : 160, 560);
-  goldOrb.addColorStop(0, 'rgba(245, 158, 11, 0.24)');
-  goldOrb.addColorStop(1, 'rgba(245, 158, 11, 0)');
-  ctx.fillStyle = goldOrb;
-  ctx.fillRect(0, 0, width, height);
+    // Deep vignette for contrast
+    const overlay = ctx.createLinearGradient(0, 0, 0, height);
+    overlay.addColorStop(0, 'rgba(5, 7, 14, 0.65)');
+    overlay.addColorStop(0.35, 'rgba(5, 7, 14, 0.35)');
+    overlay.addColorStop(0.75, 'rgba(5, 7, 14, 0.5)');
+    overlay.addColorStop(1, 'rgba(5, 7, 14, 0.85)');
+    ctx.fillStyle = overlay;
+    ctx.fillRect(0, 0, width, height);
+  } else {
+    // Procedural Apple Deep Navy & Obsidian Mesh Gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+    bgGrad.addColorStop(0, '#060814');
+    bgGrad.addColorStop(0.5, '#0B0F24');
+    bgGrad.addColorStop(1, '#050711');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, height);
 
-  const emeraldOrb = ctx.createRadialGradient(width * 0.15, isStory ? 1700 : 940, 20, width * 0.15, isStory ? 1700 : 940, 560);
-  emeraldOrb.addColorStop(0, 'rgba(16, 185, 129, 0.18)');
-  emeraldOrb.addColorStop(1, 'rgba(16, 185, 129, 0)');
-  ctx.fillStyle = emeraldOrb;
-  ctx.fillRect(0, 0, width, height);
+    // Ambient radial glows
+    const radialAura = ctx.createRadialGradient(width * 0.85, isStory ? 240 : 120, 20, width * 0.85, isStory ? 240 : 120, 600);
+    radialAura.addColorStop(0, 'rgba(99, 102, 241, 0.22)');
+    radialAura.addColorStop(1, 'rgba(99, 102, 241, 0)');
+    ctx.fillStyle = radialAura;
+    ctx.fillRect(0, 0, width, height);
 
-  // Outer Luxury Double Frame
-  ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
-  ctx.lineWidth = 2.5;
-  roundRect(ctx, 32, 32, width - 64, height - 64, 38);
-  ctx.stroke();
-
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
-  ctx.lineWidth = 1;
-  roundRect(ctx, 44, 44, width - 88, height - 88, 30);
-  ctx.stroke();
-
-  // -------------------------------------------------------------
-  // HEADER SECTION
-  // -------------------------------------------------------------
-  let curY = isStory ? 95 : 75;
-
-  // Header Badge Pill
-  ctx.textAlign = 'center';
-  ctx.direction = 'rtl';
-  const badgeW = 340;
-  const badgeH = 44;
-  const badgeX = (width - badgeW) / 2;
-
-  ctx.fillStyle = 'rgba(245, 158, 11, 0.14)';
-  roundRect(ctx, badgeX, curY, badgeW, badgeH, 22);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(245, 158, 11, 0.45)';
-  ctx.lineWidth = 1.4;
-  ctx.stroke();
-
-  ctx.font = 'bold 20px Vazirmatn, Tahoma, sans-serif';
-  ctx.fillStyle = '#FBBF24';
-  ctx.fillText('⚡ تابلوی زنده معاملات طلا و ارز', width / 2, curY + 29);
-
-  // Main Brand Title
-  curY += 72;
-  ctx.font = '900 54px Vazirmatn, Tahoma, sans-serif';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillText('KGold  |  کـی گـلـد', width / 2, curY);
-
-  // Date & Time Subtitle
-  curY += 42;
-  ctx.font = 'bold 20px Vazirmatn, Tahoma, sans-serif';
-  ctx.fillStyle = '#94A3B8';
-  ctx.fillText(`تاریخ: ${toPersianDigits(options.dateStr)}   •   ساعت: ${toPersianDigits(options.timeStr)}`, width / 2, curY);
+    const goldAura = ctx.createRadialGradient(width * 0.15, isStory ? height - 240 : height - 120, 20, width * 0.15, isStory ? height - 240 : height - 120, 600);
+    goldAura.addColorStop(0, 'rgba(245, 158, 11, 0.16)');
+    goldAura.addColorStop(1, 'rgba(245, 158, 11, 0)');
+    ctx.fillStyle = goldAura;
+    ctx.fillRect(0, 0, width, height);
+  }
 
   // -------------------------------------------------------------
   // STORY MODE (9:16) - 1080 x 1920
   // -------------------------------------------------------------
   if (isStory) {
-    curY += 40;
+    let curY = 145; // Safe Zone for Instagram story top bar
 
-    // 1. Market Pulse Status Bar (3 Metric Cards)
-    const pulseW = width - 120; // 960px
-    const pulseH = 82;
-    const pulseX = 60;
+    // 1. Integrated Hero Bar (Dynamic Island Style)
+    const headerW = 960;
+    const headerX = (width - headerW) / 2;
+    const headerH = 76;
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-    roundRect(ctx, pulseX, curY, pulseW, pulseH, 22);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    roundRect(ctx, headerX, curY, headerW, headerH, 24);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+
+    const hStroke = ctx.createLinearGradient(headerX, curY, headerX + headerW, curY + headerH);
+    hStroke.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+    hStroke.addColorStop(0.5, 'rgba(255, 255, 255, 0.06)');
+    hStroke.addColorStop(1, 'rgba(255, 255, 255, 0.16)');
+    ctx.strokeStyle = hStroke;
     ctx.lineWidth = 1.2;
     ctx.stroke();
 
-    const colStep = pulseW / 3;
-    const metrics = [
-      { t: 'شاخص نبض بازار', v: 'صعودی ↗', c: '#34D399' },
-      { t: 'دامنه نوسان ۲۴h', v: 'متوسط (۱.۸٪)', c: '#FBBF24' },
-      { t: 'انس جهانی طلا', v: '۲,۶۵۸ $', c: '#60A5FA' },
+    // Right Side: Brand Logo & Title
+    const brandX = headerX + headerW - 28;
+    const brandY = curY + headerH / 2;
+
+    ctx.textAlign = 'right';
+    ctx.direction = 'rtl';
+    ctx.font = '900 25px "SF Pro Arabic", "SF Pro Display", "Vazirmatn", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('کی‌گلد  |  KGOLD', brandX, brandY - 5);
+
+    ctx.font = '500 14px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#94A3B8';
+    ctx.fillText('تابلوی زنده معاملات طلا، سکه و ارز', brandX, brandY + 19);
+
+    // Left Side: Live Badge with Date
+    const pillW = 260;
+    const pillH = 42;
+    const pillX = headerX + 20;
+    const pillY = curY + (headerH - pillH) / 2;
+
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
+    roundRect(ctx, pillX, pillY, pillW, pillH, 16);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.fillStyle = '#10B981';
+    ctx.shadowColor = '#10B981';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(pillX + 22, pillY + pillH / 2, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.textAlign = 'center';
+    ctx.direction = 'rtl';
+    ctx.font = 'bold 15px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#E2E8F0';
+    ctx.fillText(`زنده  •  ${toPersianDigits(options.dateStr)}  •  ${toPersianDigits(options.timeStr)}`, pillX + pillW / 2 + 10, pillY + 26);
+
+    curY += headerH + 24;
+
+    // 2. Apple Watch Complications Bar (3 cards)
+    const barW = 960;
+    const barX = (width - barW) / 2;
+    const cardW = (barW - 24) / 3;
+    const cardH = 92;
+
+    const complications = [
+      { title: 'انس جهانی طلا', val: '۲,۶۵۸ دلار', valColor: '#38BDF8' },
+      { title: 'شاخص نبض بازار', val: 'صعودی ↗', valColor: '#34D399' },
+      { title: 'دامنه نوسان ۲۴h', val: '۱.۸٪ ±', valColor: '#FBBF24' },
     ];
 
-    metrics.forEach((item, idx) => {
-      const cx = pulseX + colStep * idx + colStep / 2;
-      ctx.textAlign = 'center';
-      ctx.font = 'normal 16px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#94A3B8';
-      ctx.fillText(item.t, cx, curY + 30);
+    complications.forEach((c, idx) => {
+      const cx = barX + idx * (cardW + 12);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      roundRect(ctx, cx, curY, cardW, cardH, 22);
+      ctx.fill();
 
-      ctx.font = 'bold 22px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = item.c;
-      ctx.fillText(item.v, cx, curY + 62);
+      const strokeGrad = ctx.createLinearGradient(cx, curY, cx, curY + cardH);
+      strokeGrad.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+      strokeGrad.addColorStop(1, 'rgba(255, 255, 255, 0.05)');
+      ctx.strokeStyle = strokeGrad;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.direction = 'rtl';
+      ctx.font = '500 15px "Vazirmatn", Tahoma, sans-serif';
+      ctx.fillStyle = '#94A3B8';
+      ctx.fillText(c.title, cx + cardW / 2, curY + 30);
+
+      ctx.font = 'bold 23px "Vazirmatn", "SF Pro Arabic", Tahoma, sans-serif';
+      ctx.fillStyle = c.valColor;
+      ctx.fillText(c.val, cx + cardW / 2, curY + 66);
     });
 
-    curY += pulseH + 28;
+    curY += cardH + 28;
 
-    // 2. Main 10 Key Market Assets Table (Fills height seamlessly)
+    // 3. 10 Key Assets
     const fullItems: ShareCardItem[] = [...options.items];
     const defaultFallbacks = [
-      { name: 'دلار آمریکا', price: '۲۵۶,۵۰۰', change: '+2.23%', code: 'USD' },
-      { name: 'تتر', price: '۲۵۴,۱۱۶', change: '+0.22%', code: 'USDT' },
+      { name: 'دلار آمریکا', price: '۲۵۹,۹۰۰', change: '+1.68%', code: 'USD' },
+      { name: 'تتر', price: '۲۵۷,۵۴۵', change: '+1.79%', code: 'USDT' },
+      { name: 'سکه تمام امامی', price: '۲۶۰,۳۹۵,۰۰۰', change: '+0.92%', code: 'EMAMI' },
+      { name: 'بیت‌کوین', price: '۲۱,۸۳۷,۰۰۰,۰۰۰', change: '+3.19%', code: 'BTC' },
+      { name: 'یورو اروپا', price: '۲۹۲,۲۰۰', change: '+0.78%', code: 'EUR' },
       { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K' },
-      { name: 'سکه تمام امامی', price: '۲۵۹,۰۰۵,۰۰۰', change: '+2.73%', code: 'EMAMI' },
       { name: 'سکه بهار آزادی', price: '۲۴۸,۲۰۰,۰۰۰', change: '+1.51%', code: 'BAHAR' },
       { name: 'نیم سکه بهار', price: '۱۳۲,۵۰۰,۰۰۰', change: '+1.10%', code: 'HALF' },
       { name: 'ربع سکه بهار', price: '۸۴,۳۰۰,۰۰۰', change: '+0.88%', code: 'QUARTER' },
-      { name: 'یورو اروپا', price: '۲۹۰,۸۰۰', change: '+2.14%', code: 'EUR' },
-      { name: 'درهم امارات', price: '۶۹,۸۵۰', change: '+2.10%', code: 'AED' },
-      { name: 'بیت‌کوین', price: '۲۱,۳۶۰,۶۸۸,۷۴۹', change: '+2.12%', code: 'BTC' },
+      { name: 'درهم امارات', price: '۷۰,۴۵۰', change: '+1.65%', code: 'AED' },
     ];
 
     defaultFallbacks.forEach((d) => {
@@ -300,265 +373,316 @@ export function drawPriceCard(canvas: HTMLCanvasElement, options: ShareCardOptio
       }
     });
 
-    const rowW = width - 120; // 960px
-    const rowH = 95;
+    const rowW = 960;
+    const rowH = 92;
     const gap = 12;
+    const rowX = (width - rowW) / 2;
 
     for (let i = 0; i < 10; i++) {
       const item = fullItems[i] || defaultFallbacks[i];
-      const rowX = 60;
       const rowY = curY + i * (rowH + gap);
 
-      // Card Background with Subtle Glass Gradient
-      const cardGrad = ctx.createLinearGradient(rowX, rowY, rowX + rowW, rowY + rowH);
-      cardGrad.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
-      cardGrad.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
-      ctx.fillStyle = cardGrad;
-      roundRect(ctx, rowX, rowY, rowW, rowH, 20);
+      // Frosted Card
+      const rowGrad = ctx.createLinearGradient(rowX, rowY, rowX, rowY + rowH);
+      rowGrad.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+      rowGrad.addColorStop(1, 'rgba(255, 255, 255, 0.03)');
+      ctx.fillStyle = rowGrad;
+      roundRect(ctx, rowX, rowY, rowW, rowH, 22);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.09)';
+      const strokeGrad = ctx.createLinearGradient(rowX, rowY, rowX, rowY + rowH);
+      strokeGrad.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
+      strokeGrad.addColorStop(1, 'rgba(255, 255, 255, 0.04)');
+      ctx.strokeStyle = strokeGrad;
       ctx.lineWidth = 1.2;
       ctx.stroke();
 
       const centerY = rowY + rowH / 2;
 
-      // RIGHT SECTION: Custom Vector Badge + Name + Ticker
-      const code = getAssetCode(item.name, item.code);
+      // RIGHT SIDE: Vector Badge + Persian Name + Ticker
+      const codeFull = getAssetCode(item.name, item.code);
       const badgeX = rowX + rowW - 48;
-      drawAssetBadge(ctx, badgeX, centerY, 24, item.name, code);
+      drawAssetBadge(ctx, badgeX, centerY, 25, item.name, codeFull);
 
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
-      ctx.font = 'bold 24px Vazirmatn, Tahoma, sans-serif';
+      ctx.font = 'bold 22px "Vazirmatn", Tahoma, sans-serif';
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillText(item.name, badgeX - 36, centerY - 4);
+      ctx.fillText(item.name, badgeX - 38, centerY - 6);
 
-      ctx.font = 'bold 15px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#94A3B8';
-      ctx.fillText(code, badgeX - 36, centerY + 21);
+      ctx.font = 'bold 14px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
+      ctx.fillStyle = '#64748B';
+      ctx.fillText(codeFull, badgeX - 38, centerY + 18);
 
-      // LEFT SECTION: Price (Top) and Change Badge (Bottom)
+      // LEFT SIDE: Price (Top) and Change Pill (Bottom)
       const ch = formatChangePercent(item.change);
       const priceText = toPersianDigits(item.price);
 
-      // 1. Live Price + "تومان"
       ctx.textAlign = 'left';
       ctx.direction = 'rtl';
-      ctx.font = '900 27px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#FBBF24';
-      ctx.fillText(priceText, rowX + 28, centerY - 4);
+      ctx.font = 'bold 24px "Vazirmatn", Tahoma, sans-serif';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText(priceText, rowX + 28, centerY - 6);
 
-      const pWidth = ctx.measureText(priceText).width;
-      ctx.font = 'normal 15px Vazirmatn, Tahoma, sans-serif';
+      const priceWidth = ctx.measureText(priceText).width;
+      ctx.font = '500 13px "Vazirmatn", Tahoma, sans-serif';
       ctx.fillStyle = '#94A3B8';
-      ctx.fillText('تومان', rowX + 28 + pWidth + 8, centerY - 5);
+      ctx.fillText('تومان', rowX + 28 + priceWidth + 6, centerY - 6);
 
-      // 2. Change Pill Badge directly below price
-      const pillW = 115;
-      const pillH = 30;
+      const pillW = 108;
+      const pillH = 28;
       const pillX = rowX + 28;
-      const pillY = centerY + 8;
+      const pillY = centerY + 4;
 
-      ctx.fillStyle = ch.isPositive ? 'rgba(34, 197, 94, 0.18)' : 'rgba(239, 68, 68, 0.18)';
-      roundRect(ctx, pillX, pillY, pillW, pillH, 15);
+      ctx.fillStyle = ch.isPositive ? 'rgba(16, 185, 129, 0.16)' : 'rgba(239, 68, 68, 0.16)';
+      roundRect(ctx, pillX, pillY, pillW, pillH, 10);
       ctx.fill();
-      ctx.strokeStyle = ch.isPositive ? 'rgba(34, 197, 94, 0.5)' : 'rgba(239, 68, 68, 0.5)';
-      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = ch.isPositive ? 'rgba(16, 185, 129, 0.38)' : 'rgba(239, 68, 68, 0.38)';
+      ctx.lineWidth = 1.1;
       ctx.stroke();
 
       ctx.textAlign = 'center';
       ctx.direction = 'ltr';
-      ctx.font = 'bold 16px Vazirmatn, Tahoma, sans-serif';
+      ctx.font = 'bold 14px "Vazirmatn", "SF Pro Arabic", sans-serif';
       ctx.fillStyle = ch.isPositive ? '#34D399' : '#F87171';
-      ctx.fillText(ch.text, pillX + pillW / 2, pillY + 21);
-
-      // Subtle Center Connector Line (Connecting Right & Left gracefully)
-      ctx.save();
-      ctx.setLineDash([3, 7]);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(badgeX - 190, centerY);
-      ctx.lineTo(rowX + 28 + pWidth + 70, centerY);
-      ctx.stroke();
-      ctx.restore();
+      ctx.fillText(ch.text, pillX + pillW / 2, pillY + 19);
     }
 
-    // 3. Market Bubble & Intelligence Card (Fills lower section)
+    // 4. Bubble Intelligence Box
     curY += 10 * (rowH + gap) + 16;
-    const infoH = 125;
-    ctx.fillStyle = 'rgba(245, 158, 11, 0.07)';
-    roundRect(ctx, 60, curY, width - 120, infoH, 24);
+    const bubbleH = 106;
+    const bubbleW = rowW;
+    const bubbleX = rowX;
+
+    ctx.fillStyle = 'rgba(245, 158, 11, 0.06)';
+    roundRect(ctx, bubbleX, curY, bubbleW, bubbleH, 22);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
-    ctx.lineWidth = 1.5;
+
+    const bubbleStroke = ctx.createLinearGradient(bubbleX, curY, bubbleX + bubbleW, curY);
+    bubbleStroke.addColorStop(0, 'rgba(245, 158, 11, 0.35)');
+    bubbleStroke.addColorStop(0.5, 'rgba(217, 119, 6, 0.15)');
+    bubbleStroke.addColorStop(1, 'rgba(245, 158, 11, 0.35)');
+    ctx.strokeStyle = bubbleStroke;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.direction = 'rtl';
-    ctx.font = 'bold 21px Vazirmatn, Tahoma, sans-serif';
-    ctx.fillStyle = '#FDE68A';
-    ctx.fillText('💎 تحلیل زنده حباب سکه و محاسبه فاکتور طلا در کی‌گلد', width / 2, curY + 38);
-
-    // 3 Pill Badges inside Bubble Box
-    const chipW = 260;
-    const chipH = 34;
-    const chipGap = 16;
-    const startChipX = (width - (3 * chipW + 2 * chipGap)) / 2;
-    const chipY = curY + 62;
+    ctx.font = 'bold 17px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#FEF3C7';
+    ctx.fillText('💎 تحلیل هوشمند حباب مسکوکات طلا در کی‌گلد', width / 2, curY + 32);
 
     const chips = [
-      'حباب سکه امامی: ۲۱.۴٪',
-      'حباب نیم سکه: ۲۴.۱٪',
-      'حباب ربع سکه: ۳۹.۲٪',
+      { name: 'حباب امامی', val: '۲۱.۴٪' },
+      { name: 'حباب نیم', val: '۲۴.۱٪' },
+      { name: 'حباب ربع', val: '۳۹.۲٪' },
     ];
+    const chipW = (bubbleW - 48 - 24) / 3;
+    const chipH = 36;
+    const chipY = curY + 50;
 
-    chips.forEach((txt, idx) => {
-      const cx = startChipX + idx * (chipW + chipGap);
+    chips.forEach((c, idx) => {
+      const cx = bubbleX + 24 + idx * (chipW + 12);
       ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
-      roundRect(ctx, cx, chipY, chipW, chipH, 17);
+      roundRect(ctx, cx, chipY, chipW, chipH, 14);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      ctx.font = 'bold 15px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#F3F4F6';
-      ctx.fillText(txt, cx + chipW / 2, chipY + 23);
+      ctx.textAlign = 'center';
+      ctx.font = '600 15px "Vazirmatn", Tahoma, sans-serif';
+      ctx.fillStyle = '#F1F5F9';
+      ctx.fillText(`${c.name}: ${c.val}`, cx + chipW / 2, chipY + 23);
     });
 
-    // 4. Footer & Brand Showcase
-    const footY = height - 70;
+    // Footer
+    const footY = height - 52;
     ctx.textAlign = 'center';
     ctx.direction = 'rtl';
-    ctx.font = 'bold 22px Vazirmatn, Tahoma, sans-serif';
+    ctx.font = 'bold 17px "Vazirmatn", Tahoma, sans-serif';
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillText('کی گلد • سامانه استعلام زنده قیمت طلا، سکه و ارز', width / 2, footY - 14);
+    ctx.fillText('کی‌گلد • مرجع تخصصی نرخ طلا، سکه، ارز و رمزارزها', width / 2, footY - 10);
 
-    ctx.font = 'normal 16px Vazirmatn, Tahoma, sans-serif';
+    ctx.font = 'bold 13px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
     ctx.fillStyle = '#64748B';
-    ctx.fillText('استعلام آنلاین و بی‌درنگ • اپلیکیشن اختصاصی کی‌گلد', width / 2, footY + 16);
+    ctx.fillText('KGOLD FINANCIAL INTELLIGENCE PLATFORM', width / 2, footY + 14);
 
   } else {
     // -------------------------------------------------------------
-    // POST MODE (1:1) - 1080 x 1080
+    // POST MODE (1:1) - 1080 x 1080 (Bento Grid 2x3 Luxury Cards)
     // -------------------------------------------------------------
-    curY += 25;
+    let curY = 60;
+    const pad = 54;
+    const contW = width - pad * 2; // 972px
+    const headH = 80;
 
-    const postItems: ShareCardItem[] = options.items.slice(0, 7);
+    // Header Bar
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    roundRect(ctx, pad, curY, contW, headH, 26);
+    ctx.fill();
+
+    const hStroke = ctx.createLinearGradient(pad, curY, pad + contW, curY + headH);
+    hStroke.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+    hStroke.addColorStop(0.5, 'rgba(255, 255, 255, 0.06)');
+    hStroke.addColorStop(1, 'rgba(255, 255, 255, 0.16)');
+    ctx.strokeStyle = hStroke;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    // Right Side: Brand
+    const brandX = pad + contW - 28;
+    const brandY = curY + headH / 2;
+
+    ctx.textAlign = 'right';
+    ctx.direction = 'rtl';
+    ctx.font = '900 26px "SF Pro Arabic", "SF Pro Display", "Vazirmatn", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('کی‌گلد  |  KGOLD', brandX, brandY - 5);
+
+    ctx.font = '500 14px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#94A3B8';
+    ctx.fillText('تابلوی زنده معاملات طلا، سکه و ارز', brandX, brandY + 19);
+
+    // Left Side: Live Badge
+    const livePillW = 240;
+    const livePillH = 42;
+    const livePillX = pad + 20;
+    const livePillY = curY + (headH - livePillH) / 2;
+
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
+    roundRect(ctx, livePillX, livePillY, livePillW, livePillH, 16);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.fillStyle = '#10B981';
+    ctx.shadowColor = '#10B981';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(livePillX + 22, livePillY + livePillH / 2, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.textAlign = 'center';
+    ctx.direction = 'rtl';
+    ctx.font = 'bold 15px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#E2E8F0';
+    ctx.fillText(`زنده  •  ${toPersianDigits(options.dateStr)}  •  ${toPersianDigits(options.timeStr)}`, livePillX + livePillW / 2 + 10, livePillY + 26);
+
+    curY += headH + 28;
+
+    // BENTO GRID: 2 Columns x 3 Rows = 6 Large Tiles
+    const postItems: ShareCardItem[] = options.items.slice(0, 6);
     const defaultFallbacks = [
-      { name: 'دلار آمریکا', price: '۲۵۶,۵۰۰', change: '+2.23%', code: 'USD' },
-      { name: 'تتر', price: '۲۵۴,۱۱۶', change: '+2.23%', code: 'USDT' },
-      { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K' },
-      { name: 'سکه تمام امامی', price: '۲۵۹,۰۰۵,۰۰۰', change: '+2.73%', code: 'EMAMI' },
-      { name: 'بیت‌کوین', price: '۲۱,۳۶۰,۶۸۸,۷۴۹', change: '+2.12%', code: 'BTC' },
-      { name: 'یورو اروپا', price: '۲۹۰,۸۰۰', change: '+2.14%', code: 'EUR' },
-      { name: 'درهم امارات', price: '۶۹,۸۵۰', change: '+2.10%', code: 'AED' },
+      { name: 'دلار آمریکا', price: '۲۵۹,۹۰۰', change: '+1.68%', code: 'USD · اسکناس بازار' },
+      { name: 'تتر دیجیتال', price: '۲۵۷,۵۴۵', change: '+1.79%', code: 'USDT · استیبل‌کوین' },
+      { name: 'سکه تمام امامی', price: '۲۶۰,۳۹۵,۰۰۰', change: '+0.92%', code: 'EMAMI · طرح جدید' },
+      { name: 'بیت‌کوین', price: '۲۱,۸۳۷,۰۰۰,۰۰۰', change: '+3.19%', code: 'BTC · رمزارز پایه' },
+      { name: 'طلای ۱۸ عیار', price: '۲۵,۳۵۸,۰۰۰', change: '+1.82%', code: '18K · هر گرم خام' },
+      { name: 'یورو اروپا', price: '۲۹۲,۲۰۰', change: '+0.78%', code: 'EUR · اسکناس بازار' },
     ];
 
     defaultFallbacks.forEach((d) => {
-      if (!postItems.some((pi) => pi.name === d.name) && postItems.length < 7) {
+      if (!postItems.some((pi) => pi.name === d.name) && postItems.length < 6) {
         postItems.push(d);
       }
     });
 
-    const rowW = width - 120; // 960px
-    const rowH = 86;
-    const gap = 11;
+    const gridGapX = 18;
+    const gridGapY = 18;
+    const colW = (contW - gridGapX) / 2; // ~477px
+    const tileH = 220;
 
-    for (let i = 0; i < 7; i++) {
-      const item = postItems[i] || defaultFallbacks[i];
-      const rowX = 60;
-      const rowY = curY + i * (rowH + gap);
+    itemsLoop: for (let idx = 0; idx < 6; idx++) {
+      const item = postItems[idx] || defaultFallbacks[idx];
+      const row = Math.floor(idx / 2);
+      // RTL: even index on right (col 1), odd index on left (col 0)
+      const col = idx % 2 === 0 ? 1 : 0;
 
-      // Card Background
-      const cardGrad = ctx.createLinearGradient(rowX, rowY, rowX + rowW, rowY + rowH);
-      cardGrad.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
-      cardGrad.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
-      ctx.fillStyle = cardGrad;
-      roundRect(ctx, rowX, rowY, rowW, rowH, 18);
+      const tileX = pad + (col === 1 ? colW + gridGapX : 0);
+      const tileY = curY + row * (tileH + gridGapY);
+
+      // Frosted Tile
+      const tileGrad = ctx.createLinearGradient(tileX, tileY, tileX, tileY + tileH);
+      tileGrad.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+      tileGrad.addColorStop(1, 'rgba(255, 255, 255, 0.03)');
+      ctx.fillStyle = tileGrad;
+      roundRect(ctx, tileX, tileY, colW, tileH, 26);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.09)';
+      const tileStroke = ctx.createLinearGradient(tileX, tileY, tileX, tileY + tileH);
+      tileStroke.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+      tileStroke.addColorStop(1, 'rgba(255, 255, 255, 0.04)');
+      ctx.strokeStyle = tileStroke;
       ctx.lineWidth = 1.2;
       ctx.stroke();
 
-      const centerY = rowY + rowH / 2;
-
-      // RIGHT SECTION: Custom Vector Badge + Name + Ticker
-      const code = getAssetCode(item.name, item.code);
-      const badgeX = rowX + rowW - 44;
-      drawAssetBadge(ctx, badgeX, centerY, 22, item.name, code);
+      // Top Row of Tile: Icon (Right) + Name & Ticker
+      const codeFull = getAssetCode(item.name, item.code);
+      const badgeX = tileX + colW - 42;
+      const badgeY = tileY + 44;
+      drawAssetBadge(ctx, badgeX, badgeY, 25, item.name, codeFull);
 
       ctx.textAlign = 'right';
       ctx.direction = 'rtl';
-      ctx.font = 'bold 23px Vazirmatn, Tahoma, sans-serif';
+      ctx.font = 'bold 22px "Vazirmatn", Tahoma, sans-serif';
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillText(item.name, badgeX - 34, centerY - 3);
+      ctx.fillText(item.name, badgeX - 36, badgeY - 5);
 
-      ctx.font = 'bold 14px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#94A3B8';
-      ctx.fillText(code, badgeX - 34, centerY + 20);
+      ctx.font = 'bold 13px "SF Pro Arabic", "SF Pro Display", "Vazirmatn", sans-serif';
+      ctx.fillStyle = '#64748B';
+      ctx.fillText(codeFull, badgeX - 36, badgeY + 18);
 
-      // LEFT SECTION: Price (Top) and Change Badge (Bottom)
+      // Bottom Section of Tile: Price (Large, Bold) + Change Pill
       const ch = formatChangePercent(item.change);
       const priceText = toPersianDigits(item.price);
+      const priceY = tileY + 130;
 
-      // 1. Live Price + "تومان"
-      ctx.textAlign = 'left';
+      ctx.textAlign = 'right';
       ctx.direction = 'rtl';
-      ctx.font = '900 26px Vazirmatn, Tahoma, sans-serif';
-      ctx.fillStyle = '#FBBF24';
-      ctx.fillText(priceText, rowX + 26, centerY - 4);
+      ctx.font = 'bold 30px "Vazirmatn", Tahoma, sans-serif';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText(priceText, tileX + colW - 24, priceY);
 
-      const pWidth = ctx.measureText(priceText).width;
-      ctx.font = 'normal 14.5px Vazirmatn, Tahoma, sans-serif';
+      const priceWidth = ctx.measureText(priceText).width;
+      ctx.font = '500 15px "Vazirmatn", Tahoma, sans-serif';
       ctx.fillStyle = '#94A3B8';
-      ctx.fillText('تومان', rowX + 26 + pWidth + 8, centerY - 5);
+      ctx.fillText('تومان', tileX + colW - 24 - priceWidth - 8, priceY);
 
-      // 2. Change Pill Badge directly below price
-      const pillW = 110;
-      const pillH = 28;
-      const pillX = rowX + 26;
-      const pillY = centerY + 8;
+      // Change Pill Badge at bottom left
+      const pillW = 114;
+      const pillH = 32;
+      const pillX = tileX + 24;
+      const pillY = tileY + tileH - 46;
 
-      ctx.fillStyle = ch.isPositive ? 'rgba(34, 197, 94, 0.18)' : 'rgba(239, 68, 68, 0.18)';
-      roundRect(ctx, pillX, pillY, pillW, pillH, 14);
+      ctx.fillStyle = ch.isPositive ? 'rgba(16, 185, 129, 0.16)' : 'rgba(239, 68, 68, 0.16)';
+      roundRect(ctx, pillX, pillY, pillW, pillH, 12);
       ctx.fill();
-      ctx.strokeStyle = ch.isPositive ? 'rgba(34, 197, 94, 0.5)' : 'rgba(239, 68, 68, 0.5)';
-      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = ch.isPositive ? 'rgba(16, 185, 129, 0.38)' : 'rgba(239, 68, 68, 0.38)';
+      ctx.lineWidth = 1.1;
       ctx.stroke();
 
       ctx.textAlign = 'center';
       ctx.direction = 'ltr';
-      ctx.font = 'bold 15px Vazirmatn, Tahoma, sans-serif';
+      ctx.font = 'bold 15px "Vazirmatn", "SF Pro Arabic", sans-serif';
       ctx.fillStyle = ch.isPositive ? '#34D399' : '#F87171';
-      ctx.fillText(ch.text, pillX + pillW / 2, pillY + 20);
-
-      // Subtle Center Connector Line
-      ctx.save();
-      ctx.setLineDash([3, 7]);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(badgeX - 180, centerY);
-      ctx.lineTo(rowX + 26 + pWidth + 65, centerY);
-      ctx.stroke();
-      ctx.restore();
+      ctx.fillText(ch.text, pillX + pillW / 2, pillY + 21);
     }
 
     // Footer
-    const footY = height - 68;
+    const footY = height - 42;
     ctx.textAlign = 'center';
     ctx.direction = 'rtl';
-    ctx.font = 'bold 22px Vazirmatn, Tahoma, sans-serif';
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillText('کی گلد • سامانه استعلام زنده قیمت طلا، سکه و ارز', width / 2, footY - 14);
+    ctx.font = 'bold 16px "Vazirmatn", Tahoma, sans-serif';
+    ctx.fillStyle = '#E2E8F0';
+    ctx.fillText('کی‌گلد • مرجع تخصصی نرخ طلا، سکه، ارز و رمزارزها', width / 2, footY - 8);
 
-    ctx.font = 'normal 15px Vazirmatn, Tahoma, sans-serif';
+    ctx.font = 'bold 12px "SF Pro Arabic", "SF Pro Display", -apple-system, sans-serif';
     ctx.fillStyle = '#64748B';
-    ctx.fillText('مرجع نرخ‌های لحظه‌ای و هشدارهای هوشمند بازار', width / 2, footY + 16);
+    ctx.fillText('KGOLD FINANCIAL INTELLIGENCE PLATFORM', width / 2, footY + 12);
   }
 }
 
