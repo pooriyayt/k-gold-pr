@@ -22,7 +22,7 @@
   </p>
 
   <p align="center">
-    <a href="#-فارسی">🌐 مستندات فارسی</a> &nbsp;•&nbsp; <a href="#-english">🌐 English Documentation</a>
+    <a href="#-فارسی">🇮🇷 مشاهده مستندات فارسی</a> &nbsp;•&nbsp; <a href="#-english">🇬🇧 View English Docs</a>
   </p>
 
   <p align="center">
