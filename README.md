@@ -22,7 +22,7 @@
   </p>
 
   <p align="center">
-    <a href="#-فارسی">🇮🇷 مشاهده مستندات فارسی</a> &nbsp;•&nbsp; <a href="#-english">🇬🇧 View English Docs</a>
+    <a href="#-فارسی">🌐 مستندات فارسی</a> &nbsp;•&nbsp; <a href="#-english">🌐 English Documentation</a>
   </p>
 
   <p align="center">
@@ -37,9 +37,9 @@
 
 <div id="-فارسی" dir="rtl">
 
-## 🇮🇷 درباره کی‌گلد (KGold)
+## 🌐 درباره کی‌گلد (KGold)
 
-**کی‌گلد** یک اپلیکیشن سبک، سریع و کاملاً مدرن برای سیستم‌عامل اندروید است که با تمرکز بر سرعت فوق‌العاده، طراحی لوکس و بدون هیچ‌گونه تبلیغات مزاحم توسعه داده شده است. این برنامه دسترسی لحظه‌ای و دقیق به قیمت‌های طلا، انواع سکه به همراه حباب، ارزهای بین‌المللی با پرچم رسمی، رمزارزهای مطرح و نرخ روز خودرو را برای کاربران فراهم می‌سازد.
+**کی‌گلد** یک اپلیکیشن سبک، سریع و کاملاً مدرن برای سیستم‌عامل اندروید است که با تمرکز بر سرعت فوق‌العاده، طراحی لوکس و بدون هیچ‌گونه تبلیغات مزاحم توسعه داده شده است. این برنامه دسترسی لحظه‌ای و دقیق به قیمت‌های طلا، انواع مسکوکات به همراه حباب، ارزهای بین‌المللی با پرچم رسمی، رمزارزهای مطرح و نرخ روز خودرو را برای کاربران فراهم می‌سازد.
 
 ---
 
@@ -178,9 +178,9 @@ cd android
 
 <div id="-english">
 
-## 🇬🇧 KGold - Overview (English)
+## 🌐 KGold - Overview (English)
 
-**KGold** is a lightweight, ultra-fast, and modern Android application designed for monitoring and tracking real-time prices of Iranian gold, coins (with bubble analysis), international fiat currencies with official country flags, cryptocurrencies, and domestic car prices.
+**KGold** is a lightweight, ultra-fast, and modern Android application designed for monitoring and tracking real-time prices of gold, bullion coins (with bubble analysis), foreign exchange rates, cryptocurrencies, and regional car prices.
 
 Built with performance and aesthetics in mind, KGold features an ad-free experience, Apple Human Interface Guidelines-inspired luxury design, and full background-synced home screen widgets.
 
