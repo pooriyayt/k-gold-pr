@@ -43,17 +43,34 @@
 
 ---
 
-### 📱 پیش‌نمایش کارت‌های اشتراک‌گذاری و رابط کاربری
+### 📱 پیش‌نمایش محیط برنامه و کارت‌های اشتراک‌گذاری
 
 <div align="center">
+  <p><b>نمای صفحات اصلی برنامه (In-App Interface)</b></p>
+  <table>
+    <tr>
+      <td align="center"><b>داشبورد اصلی</b></td>
+      <td align="center"><b>طلا و انواع سکه</b></td>
+      <td align="center"><b>ارزهای بین‌المللی</b></td>
+      <td align="center"><b>بازار رمزارزها</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/screen_dashboard.png" width="185" alt="داشبورد اصلی" /></td>
+      <td align="center"><img src="assets/screen_gold.png" width="185" alt="طلا و سکه" /></td>
+      <td align="center"><img src="assets/screen_currencies.png" width="185" alt="ارزهای بین‌المللی" /></td>
+      <td align="center"><img src="assets/screen_crypto.png" width="185" alt="رمزارزها" /></td>
+    </tr>
+  </table>
+
+  <p><b>کارت‌های اشتراک‌گذاری شبکه‌های اجتماعی (Social Share Cards)</b></p>
   <table>
     <tr>
       <td align="center"><b>کارت استوری اینستاگرام (۹:۱۶)</b></td>
-      <td align="center"><b>کارت پست و شبکه اجتماعی (۱:۱)</b></td>
+      <td align="center"><b>کارت پست و شبکه‌های اجتماعی (۱:۱)</b></td>
     </tr>
     <tr>
-      <td align="center"><img src="assets/preview_story.png" width="300" alt="Instagram Story Card" /></td>
-      <td align="center"><img src="assets/preview_post.png" width="300" alt="Post Share Card" /></td>
+      <td align="center"><img src="assets/preview_story.png" width="230" alt="Instagram Story Card" /></td>
+      <td align="center"><img src="assets/preview_post.png" width="230" alt="Post Share Card" /></td>
     </tr>
   </table>
 </div>
@@ -166,6 +183,40 @@ cd android
 **KGold** is a lightweight, ultra-fast, and modern Android application designed for monitoring and tracking real-time prices of Iranian gold, coins (with bubble analysis), international fiat currencies with official country flags, cryptocurrencies, and domestic car prices.
 
 Built with performance and aesthetics in mind, KGold features an ad-free experience, Apple Human Interface Guidelines-inspired luxury design, and full background-synced home screen widgets.
+
+---
+
+### 📱 In-App Screenshots & Social Share Cards
+
+<div align="center">
+  <p><b>Core Application Screens</b></p>
+  <table>
+    <tr>
+      <td align="center"><b>Dashboard</b></td>
+      <td align="center"><b>Gold & Coins</b></td>
+      <td align="center"><b>Currencies</b></td>
+      <td align="center"><b>Cryptocurrency</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/screen_dashboard.png" width="185" alt="Dashboard" /></td>
+      <td align="center"><img src="assets/screen_gold.png" width="185" alt="Gold & Coins" /></td>
+      <td align="center"><img src="assets/screen_currencies.png" width="185" alt="Fiat Currencies" /></td>
+      <td align="center"><img src="assets/screen_crypto.png" width="185" alt="Crypto" /></td>
+    </tr>
+  </table>
+
+  <p><b>Social Share Cards (Story & Post)</b></p>
+  <table>
+    <tr>
+      <td align="center"><b>Instagram Story (9:16)</b></td>
+      <td align="center"><b>Social Feed Post (1:1)</b></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/preview_story.png" width="230" alt="Instagram Story Card" /></td>
+      <td align="center"><img src="assets/preview_post.png" width="230" alt="Post Share Card" /></td>
+    </tr>
+  </table>
+</div>
 
 ---
 
